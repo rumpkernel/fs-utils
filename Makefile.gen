@@ -1,0 +1,45 @@
+
+FSU_TOPDIR=${.CURDIR}/../..
+BUILDRUMP_DESTDIR?=${FSU_TOPDIR}/../buildrump.sh/obj/dest
+
+OSNAME!=	uname -s
+.if ${OSNAME} == "NetBSD"
+.if exists(${FSU_TOPDIR}/../buildrump.sh)
+PREFIX=		${BUILDRUMP_DESTDIR}/usr
+.else
+PREFIX=		/usr/local
+.endif
+.else
+PREFIX=		${HOME}/pkg
+.endif
+BINDIR=		${PREFIX}/bin
+INCSDIR=	${PREFIX}/include
+LIBDIR=		${PREFIX}/lib
+MANDIR=		${PREFIX}/man
+
+MKCATPAGES=     no
+MKHTML=         no
+MKLINT=         no
+
+.if exists(${FSU_TOPDIR}/../buildrump.sh)
+RUMPLIBDIR=	${BUILDRUMP_DESTDIR}/usr/lib
+RUMPINCSDIR=	${BUILDRUMP_DESTDIR}/usr/include
+.else
+RUMPLIBDIR=	/usr/lib
+RUMPINCSDIR=	/usr/include
+.endif
+
+LDFLAGS+=	-Wl,-rpath=${LIBDIR}
+LDFLAGS+=	-Wl,-rpath=${FSU_TOPDIR}/lib/libfsu_utils
+LDFLAGS+=	-Wl,-rpath=${FSU_TOPDIR}/lib/libfsu_mount
+LDFLAGS+=	-Wl,-rpath=${RUMPLIBDIR}
+
+.if ${OSNAME} != "NetBSD"
+CFLAGS+=	-I${INCSDIR} -DHAVE_NBCOMPAT_H
+LDFLAGS+=	-L${LIBDIR} -lnbcompat -lc
+LDADD+=		-L${LIBDIR} -lnbcompat -lc
+.if ${OSNAME} == "Linux"
+LDFLAGS+=	-ldl -lbsd
+LDADD+=		-ldl -lbsd
+.endif
+.endif

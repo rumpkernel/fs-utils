@@ -1,0 +1,138 @@
+.\"	$NetBSD: fsu_touch.1,v 1.2 2009/11/16 07:22:17 stacktic Exp $
+.\" from
+.\"	NetBSD: touch.1,v 1.16 2003/08/07 11:16:44 agc Exp
+.\"
+.\" Copyright (c) 1991, 1993
+.\"	The Regents of the University of California.  All rights reserved.
+.\"
+.\" This code is derived from software contributed to Berkeley by
+.\" the Institute of Electrical and Electronics Engineers, Inc.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.\"     @(#)touch.1	8.3 (Berkeley) 4/28/95
+.\"
+.Dd November 15, 2009
+.Dt FSU_TOUCH 1
+.Os
+.Sh NAME
+.Nm fsu_touch
+.Nd change file access and modification times through RUMP
+.Sh SYNOPSIS
+.Nm
+.Op Fl o Ar opt_args
+.Op Fl s Ar fs_spec_args
+.Op Fl t Ar fstype
+.Op Fl f
+.Ar fsdevice
+.Op Fl achm
+.Op Fl r Ar file
+.Op Fl t Ar [[CC]YY]MMDDhhmm[.SS]
+.Ar fstype fsdevice file ...
+.Sh DESCRIPTION
+The
+.Nm
+utility sets the modification and access times of files to the
+current time of day.
+If the file doesn't exist, it is created with default permissions.
+.Pp
+The following options are available:
+.Bl -tag -width Ds
+.It Fl a
+Change the access time of the file.
+The modification time of the file is not changed unless the
+.Fl m
+flag is also specified.
+.It Fl c
+Do not create the file if it does not exist.
+The
+.Nm
+utility does not treat this as an error.
+No error messages are displayed and the exit value is not affected.
+.It Fl h
+If
+.Ar file
+is a symbolic link, access and/or modification time of the link is changed.
+This option implies
+.Fl c .
+.It Fl m
+Change the modification time of the file.
+The access time of the file is not changed unless the
+.Fl a
+flag is also specified.
+.It Fl r
+Use the access and modifications times from the specified file
+instead of the current time of day.
+.It Fl t
+Change the access and modification times to the specified time.
+The argument should be in the form
+.Dq [[CC]YY]MMDDhhmm[.SS]
+where each pair of letters represents the following:
+.Pp
+.Bl -tag -width Ds -compact -offset indent
+.It Ar CC
+The first two digits of the year (the century).
+.It Ar YY
+The second two digits of the year.
+If
+.Dq YY
+is specified, but
+.Dq CC
+is not, a value for
+.Dq YY
+between 69 and 99 results in a
+.Dq CC
+value of 19.
+Otherwise, a
+.Dq CC
+value of 20 is used.
+.It Ar MM
+The month of the year, from 1 to 12.
+.It Ar DD
+The day of the month, from 1 to 31.
+.It Ar hh
+The hour of the day, from 0 to 23.
+.It Ar mm
+The minute of the hour, from 0 to 59.
+.It Ar SS
+The second of the minute, from 0 to 61.
+.El
+.Pp
+If the
+.Dq CC
+and
+.Dq YY
+letter pairs are not specified, the values default to the current
+year.
+If the
+.Dq SS
+letter pair is not specified, the value defaults to 0.
+.El
+.Pp
+The
+.Nm
+utility exits 0 on success, and \*[Gt]0 if an error occurs.
+.Sh SEE ALSO
+.Xr utimes 2

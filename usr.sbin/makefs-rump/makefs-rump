@@ -1,0 +1,146 @@
+#!/bin/sh
+#
+#	$NetBSD: makefs-rump,v 1.2 2009/04/14 20:20:35 stacktic Exp $
+#
+# Copyright (c) 2009 Antti Kantee.  All rights reserved.
+# Development of this software was supported by The Nokia Foundation.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+
+#
+# WORK-IN-PROGRESS
+#
+# makefs(8) was originally implemented in C.  This experimental version
+# uses a shell script and fs-utils.  As a bonus, it supports more file
+# systems.
+#
+# Currently ffs and ext2fs use the modified original implementation
+# for calculating the correct image size.  This tool is called
+# "makefs-analyzetree".  Additionally, cd9660 is entirely form the
+# original implementation, since the kernel cd9660 file system does
+# not support writing.
+#
+
+ANALYZER=makefs-analyzetree
+
+usage ()
+{
+	echo "usage: [-t type] image directory"
+	exit 1
+}
+
+die ()
+{
+	echo $*
+	exit 1
+}
+
+create_ffs ()
+{
+
+	newfscmd=`${ANALYZER} -t ffs ${image} ${dir}`
+	${newfscmd}
+}
+
+create_ext2fs ()
+{
+
+	newfscmd=`${ANALYZER} -t ext2fs ${image} ${dir}`
+	${newfscmd}
+}
+
+# XXX: come up with a more exact size function
+MSDOSFS_DINO=1024
+create_msdos ()
+{
+
+	# file contents 
+	dirsize=`du ${dir} | awk '{print $1}'`
+	dirsizes=`wc -c ${dirlist} | awk '{print $1}'`
+
+	bonussize=`expr ${nfiles} \* ${MSDOSFS_DINO}`
+	imagesize=`expr ${dirsize} \* 512 + ${bonussize}`
+
+	newfs_msdos -C ${imagesize} ${image}
+}
+
+# delegate to makefs
+create_cd9660 ()
+{
+
+	makefs -t cd9660 ${image} ${dir}
+	exit $?
+}
+
+SYSVBFS_METADATA=2
+create_sysvbfs ()
+{
+
+	# XXX: why is it 5 instead of 6?  bug?
+	[ ${nfiles} -le 5 ] || die "too many files (${files}), max 5"
+
+	imagesize=`du ${dir} | awk '{print $1}'`
+	imagesize=`expr ${imagesize} + 2` # superblock + inodes
+	newfs_sysvbfs -F -s ${imagesize} ${image}
+}
+
+# defaults
+export BLOCKSIZE=512
+fstype='ffs'
+
+dirlist=`mktemp /tmp/${0##*}.XXXXXX`
+[ $? -eq 0 ] || die Cannot create dirlist tmpfile
+
+args=`getopt t: $*`
+[ $? -eq 0 ] || usage
+
+set -- $args
+while [ $# -gt 0 ]; do
+	case "$1" in
+	-t)
+		fstype=$2
+		shift
+		;;
+	--)
+		shift; break
+		;;
+	esac
+	shift
+done
+[ $# -eq 2 ] || usage
+
+image=$1
+dir=$2
+
+[ -d ${dir} ] || die \"${dir}\" is not a directory
+
+(cd ${dir} ; find . > ${dirlist})
+trap "rm ${dirlist}" 0
+
+nfiles=`wc -l ${dirlist} | awk '{print $1}'`
+
+# Call fs-specific routine to create image
+create_${fstype}
+
+# The rest is up to the fs-independent fsu_put
+fsu_put -t ${fstype} ${image} -R ${dir}/* /
