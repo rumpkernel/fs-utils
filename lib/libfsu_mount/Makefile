@@ -38,6 +38,7 @@ CFLAGS+=	-DHAVE_RUMP_PUB
 .endif # NetBSD
 .endif # SYSPUFFS
 
+.ifdef ENABLE_NFS
 # NFS
 SRCS+=		mount_nfs.c
 CFLAGS+=	-DNFS -DWITH_NFS -I${.CURDIR}/external
@@ -50,6 +51,7 @@ SRCS+=		udp_xfer.c
 SRCS+=		rpc.c net.c
 SRCS+=		getnfsargs_small.c
 CFLAGS+= 	-DNO_PMAP_CACHE
+.endif
 
 .ifdef FSU_WITH_SMBFS
 .PATH:		${NETBSDSRCDIR}/dist/smbfs/lib/smb
