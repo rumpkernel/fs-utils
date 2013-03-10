@@ -41,6 +41,7 @@
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,6 +49,7 @@
 
 #include <rump/rump_syscalls.h>
 
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 #include "fsu_flist.h"

@@ -64,6 +64,7 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #include <fts.h>
 #endif
 #include <locale.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -81,7 +82,7 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #include "extern.h"
 
 #ifdef USE_RUMP
-
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 #include <fsu_fts.h>
 #include <fts2fsufts.h>

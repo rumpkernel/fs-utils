@@ -75,6 +75,7 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #include <fts.h>
 #endif
 #include <locale.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -83,6 +84,8 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
+
+#include <fsu_utils.h>
 #include <fsu_fts.h>
 #include <fsu_mount.h>
 #include <fts2fsufts.h>
@@ -91,8 +94,6 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #define mkdir(path, mode) rump_sys_mkdir(path, mode)
 #define stat(path, sb) rump_sys_stat(path, sb)
 #define lstat(path, sb) rump_sys_lstat(path, sb)
-
-
 
 #endif
 

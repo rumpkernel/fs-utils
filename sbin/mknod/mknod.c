@@ -56,6 +56,7 @@ __RCSID("$NetBSD: mknod.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #include <err.h>
 #include <errno.h>
 #include <limits.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -74,9 +75,9 @@ static	void	usage(void);
 
 #ifdef USE_RUMP
 #undef KERN_DRIVERS
-
 #include <rump/rump_syscalls.h>
 
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 #define mknod(p, m, d) rump_sys_mknod(p, m, d)
@@ -86,10 +87,7 @@ static	void	usage(void);
 #define chown(p, o, g) rump_sys_chown(p, o, g)
 #define chmod(p, m) rump_sys_chmod(p, m)
 
-
 #endif
-
-
 
 #ifdef KERN_DRIVERS
 static struct kinfo_drivers *kern_drivers;

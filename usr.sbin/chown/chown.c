@@ -62,6 +62,7 @@ __RCSID("$NetBSD: chown.c,v 1.2 2009/11/06 11:47:42 stacktic Exp $");
 #endif
 #include <grp.h>
 #include <pwd.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,6 +72,7 @@ __RCSID("$NetBSD: chown.c,v 1.2 2009/11/06 11:47:42 stacktic Exp $");
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 

@@ -33,6 +33,17 @@
 
 #ifdef __linux__
 #include <sys/types.h>
+
+#include <bsd/string.h>
+#include <bsd/unistd.h>
+
+void setprogname(const char *);
+const char *getprogname(void);
+
+#define user_from_uid(a, b) (NULL)
+#define group_from_gid(a, b) (NULL)
+#define uid_from_user(a, b) (-1)
+
 #endif
 
 

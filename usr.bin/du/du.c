@@ -65,6 +65,7 @@ __RCSID("$NetBSD: du.c,v 1.3 2010/08/23 17:09:59 stacktic Exp $");
 #ifdef __NetBSD__
 #include <util.h>
 #endif
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

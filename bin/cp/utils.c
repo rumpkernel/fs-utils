@@ -55,6 +55,7 @@ __RCSID("$NetBSD: utils.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #ifndef USE_RUMP
 #include <fts.h>
 #endif
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

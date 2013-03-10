@@ -55,6 +55,7 @@ __RCSID("$NetBSD: ln.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #include <err.h>
 #include <errno.h>
 #include <locale.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

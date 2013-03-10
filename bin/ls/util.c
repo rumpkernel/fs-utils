@@ -74,6 +74,24 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include "ls.h"
 #include "extern.h"
 
+#ifndef VIS_OCTAL /* From include/vis.h */
+/*
+ * to select alternate encoding format
+ */
+#define	VIS_OCTAL	0x0001	/* use octal \ddd format */
+#define	VIS_CSTYLE	0x0002	/* use \[nrft0..] where appropiate */
+
+/*
+ * to alter set of characters encoded (default is to encode all
+ * non-graphic except space, tab, and newline).
+ */
+#define	VIS_SP		0x0004	/* also encode space */
+#define	VIS_TAB		0x0008	/* also encode tab */
+#define	VIS_NL		0x0010	/* also encode newline */
+#define	VIS_WHITE	(VIS_SP | VIS_TAB | VIS_NL)
+#define	VIS_SAFE	0x0020	/* only encode "unsafe" characters */
+#endif
+
 int
 safe_print(const char *src)
 {

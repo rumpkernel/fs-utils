@@ -61,6 +61,7 @@ __RCSID("$NetBSD: chmod.c,v 1.3 2009/11/06 11:47:40 stacktic Exp $");
 #endif
 #include <limits.h>
 #include <locale.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,9 +71,8 @@ __RCSID("$NetBSD: chmod.c,v 1.3 2009/11/06 11:47:40 stacktic Exp $");
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
+#include <fsu_utils.h>
 #include <fsu_mount.h>
-
-
 
 int __wrap_chmod(const char *, mode_t);
 int __wrap_lchmod(const char *, mode_t);

@@ -57,6 +57,7 @@ __RCSID("$NetBSD: chflags.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #ifndef USE_RUMP
 #include <fts.h>
 #endif
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,6 +76,20 @@ void	usage(void);
 #include <fts2fsufts.h>
 #include <fsu_mount.h>
 
+#ifdef __linux__
+int
+lchflags(const char *path, unsigned long flags)
+{
+        struct stat psb;
+
+        if (rump_sys_lstat(path, &psb) == -1)
+                return -1;
+        if (S_ISLNK(psb.st_mode)) {
+                return 0;
+        }
+        return (rump_sys_chflags(path, flags));
+}
+#endif
 
 int chflags(const char *path, u_long flags);
 int __wrap_chflags(const char *path, u_long flags);

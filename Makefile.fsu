@@ -3,12 +3,11 @@
 
 .include	"../../Makefile.gen"
 
-FSU_TOP=	${.CURDIR}/../..
 CFLAGS+=	-DUSE_RUMP -I${INCSDIR} -I${RUMPINCSDIR}
-CFLAGS+=	-I${FSU_TOP}/lib/libfsu_mount -I${FSU_TOP}/lib/libfsu_utils
-CFLAGS+=	-I${FSU_TOP}/fsu_compat
-LDADD+=		-L${FSU_TOP}/lib/libfsu_mount -lfsu_mount
-LDADD+=		-L${FSU_TOP}/lib/libfsu_utils -lfsu_utils
+CFLAGS+=	-I${FSU_TOPDIR}/lib/libfsu_mount -I${FSU_TOPDIR}/lib/libfsu_utils
+CFLAGS+=	-I${FSU_TOPDIR}/fsu_compat
+LDADD+=		-L${FSU_TOPDIR}/lib/libfsu_mount -lfsu_mount
+LDADD+=		-L${FSU_TOPDIR}/lib/libfsu_utils -lfsu_utils
 
 LDADD+=		-lutil -lpthread
 LDFLAGS+= 	-L${RUMPLIBDIR} -Wl,-rpath=${RUMPLIBDIR}
@@ -31,7 +30,3 @@ LDADD+=		-lrumpfs_v7fs
 # NOT YET
 # -lrumpfs_zfs -lrumpfs_smbfs -lrumpfs_null -lrumpfs_umap -lrumpfs_syspuffs -lrumpfs_ptyfs -lrumpfs_nfsserver
 LDADD+=		-lrumpvfs -lrumpdev_disk  -lrumpdev -lrumpuser -lrump
-
-.if ${OSNAME} != "NetBSD"
-LDADD+=		-lnbcompat
-.endif

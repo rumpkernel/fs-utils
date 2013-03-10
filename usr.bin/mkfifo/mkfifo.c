@@ -48,6 +48,7 @@ __RCSID("$NetBSD: mkfifo.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #include <nbcompat.h>
 #endif
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -61,10 +62,10 @@ __RCSID("$NetBSD: mkfifo.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 #define mkfifo(a, b) rump_sys_mkfifo(a, b)
-
 
 #endif /* USE_RUMP */
 

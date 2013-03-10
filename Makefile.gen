@@ -1,6 +1,7 @@
 
 FSU_TOPDIR=${.CURDIR}/../..
-BUILDRUMP_DESTDIR?=${FSU_TOPDIR}/../buildrump.sh/obj/dest
+BUILDRUMP_DIR?=${FSU_TOPDIR}/../buildrump.sh
+BUILDRUMP_DESTDIR?=${BUIDRUMP_DIR}/obj/dest
 
 OSNAME!=	uname -s
 .if ${OSNAME} == "NetBSD"
@@ -10,7 +11,7 @@ PREFIX=		${BUILDRUMP_DESTDIR}/usr
 PREFIX=		/usr/local
 .endif
 .else
-PREFIX=		${HOME}/pkg
+PREFIX=		${BUILDRUMP_DESTDIR}/usr
 .endif
 BINDIR=		${PREFIX}/bin
 INCSDIR=	${PREFIX}/include
@@ -21,7 +22,7 @@ MKCATPAGES=     no
 MKHTML=         no
 MKLINT=         no
 
-.if exists(${FSU_TOPDIR}/../buildrump.sh)
+.if exists(${BUILDRUMP_DESTDIR})
 RUMPLIBDIR=	${BUILDRUMP_DESTDIR}/usr/lib
 RUMPINCSDIR=	${BUILDRUMP_DESTDIR}/usr/include
 .else
@@ -35,9 +36,9 @@ LDFLAGS+=	-Wl,-rpath=${FSU_TOPDIR}/lib/libfsu_mount
 LDFLAGS+=	-Wl,-rpath=${RUMPLIBDIR}
 
 .if ${OSNAME} != "NetBSD"
-CFLAGS+=	-I${INCSDIR} -DHAVE_NBCOMPAT_H
-LDFLAGS+=	-L${LIBDIR} -lnbcompat -lc
-LDADD+=		-L${LIBDIR} -lnbcompat -lc
+CFLAGS+=	-I${INCSDIR}
+LDFLAGS+=	-lc
+LDADD+=		-lc
 .if ${OSNAME} == "Linux"
 LDFLAGS+=	-ldl -lbsd
 LDADD+=		-ldl -lbsd
