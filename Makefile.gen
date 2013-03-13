@@ -1,11 +1,15 @@
 
-FSU_TOPDIR=${.CURDIR}/../..
-BUILDRUMP_DIR?=${FSU_TOPDIR}/../buildrump.sh
-BUILDRUMP_DESTDIR?=${BUIDRUMP_DIR}/obj/dest
+FSU_TOPDIR=		${.CURDIR}/../..
+BUILDRUMP_DIR?=		${FSU_TOPDIR}/../buildrump.sh
+BUILDRUMP_DESTDIR?=	${BUILDRUMP_DIR}/obj/dest
 
 OSNAME!=	uname -s
+.if ${OSNAME} == "Linux"
+LIBCRT0=
+DESTDIR=	/
+.endif
 .if ${OSNAME} == "NetBSD"
-.if exists(${FSU_TOPDIR}/../buildrump.sh)
+.if exists(${BUILDRUMP_DIR})
 PREFIX=		${BUILDRUMP_DESTDIR}/usr
 .else
 PREFIX=		/usr/local
