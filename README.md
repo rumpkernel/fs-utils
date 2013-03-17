@@ -8,7 +8,6 @@ The aim of this project is to have a set of utilities to access and modify a fil
 Supported File Systems
 ----------------------
 - block device based file systems: cd9660, efs, ext2, hfs, ffs, fat, lfs, ntfs, sysvbfs, udf, v7fs
-- memory based file systems: tmpfs
 - network based file systems: nfs
 
 Instructions
@@ -25,7 +24,7 @@ Instructions
 Usage examples
 --------------
 
-    $ ./bin/fsu_ls/fsu_ls -t cd9660 -f  ~/NetBSD-6.1_RC1-amd64.iso -- -l /mnt/
+    $ ./bin/fsu_ls/fsu_ls -f ~/NetBSD-6.1_RC1-amd64.iso -- -l
     total 12584
     drwxr-xr-x   4 611  0     2048 Feb 19 20:26 amd64
     drwxr-xr-x   2 611  0     6144 Feb 19 20:13 bin
@@ -52,7 +51,7 @@ Usage examples
     drwxr-xr-x   8 611  0     2048 Feb 19 20:29 usr
     drwxr-xr-x   2 611  0     2048 Feb 19 20:29 var
 
-    $ ./bin/fsu_cat/fsu_cat -t cd9660 -f  ~/NetBSD-6.1_RC1-amd64.iso /mnt/boot.cfg
+    $ ./bin/fsu_cat/fsu_cat -f ~/NetBSD-6.1_RC1-amd64.iso /boot.cfg
     banner=Welcome to the NetBSD 6.1_RC1 installation CD
     banner================================================================================
     banner=

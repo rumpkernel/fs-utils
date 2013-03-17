@@ -57,6 +57,8 @@
 #include "filesystems.h"
 #include "fsu_alias.h"
 
+#define MOUNT_DIRECTORY "/mnt"
+
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 1024
 #endif
@@ -411,7 +413,7 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
         rv = fs->fs_parseargs(mntdp->mntd_argc, mntdp->mntd_argv, fs->fs_args,
             &(mntdp->mntd_flags), mntdp->mntd_canon_dev, mntdp->mntd_canon_dir);
 	if (rv != 0)
-		err(-1, "parseargs (%s)", fs->fs_name);
+		return -1;
 
 #ifndef __NetBSD__
 	emul_proc = rump_pub_lwproc_curlwp();
@@ -421,17 +423,17 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 	native_proc = rump_pub_lwproc_curlwp();
 #endif
 
-	if (rump_sys_mkdir("/mnt", 0777) == -1 && errno != EEXIST)
+	if (rump_sys_mkdir(MOUNT_DIRECTORY, 0777) == -1 && errno != EEXIST)
 		err(-1, "mkdir");
-	strcpy(mntdp->mntd_canon_dir, "/mnt");
+	strcpy(mntdp->mntd_canon_dir, MOUNT_DIRECTORY);
 
-        if (rv == 0)
-		rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
-				mntdp->mntd_flags,
-				fs->fs_args, fs->fs_args_size);
+	rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
+			mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
 #ifndef __NetBSD__
 	rump_pub_lwproc_switch(emul_proc);
 #endif
+	if (rv == 0)
+		rump_sys_chroot(MOUNT_DIRECTORY);
 #ifdef WITH_SMBFS
         if (strcmp(fs->fs_name, MOUNT_SMBFS) == 0) {
                 extern struct smb_ctx sctx;
@@ -452,6 +454,7 @@ fsu_unmount(void)
 {
 
 #ifndef __NetBSD__
+	rump_i_know_what_i_am_doing_with_sysents = 1;
 	rump_pub_lwproc_sysent_usenative();
 #endif
 	rump_sys_reboot(0, NULL);
