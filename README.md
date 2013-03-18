@@ -3,7 +3,12 @@ fs-utils: File System Access Utilities in Userland
 
 About
 -----
-The aim of this project is to have a set of utilities to access and modify a file system image without having to mount it (you do not have to be root, you just need read/write access to the image).
+The aim of this project is to have a set of utilities to access and
+modify a file system image without having to mount it.  To use fs-utils
+you do not have to be root, you just need read/write access to the
+image or device.  The advantage of fs-utils over similar projects such
+as mtools is supporting the usage of familiar Unix tools (`ls`, `cp`,
+`mv`, etc.) for a large number of file systems.
 
 Supported File Systems
 ----------------------
