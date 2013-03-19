@@ -230,7 +230,8 @@ fsu_mount(int *argc, char **argv[])
 		if (alias != NULL)
 			rv = mount_alias(alias, mntopts, specopts, &mntd);
 		free_alias_list();
-	} else {
+	}
+	if (fflag || alias == NULL) {
 		if (realpath(fsdevice, afsdev) != NULL)
 			fsdevice = afsdev;
 		if (stat(fsdevice, &sb) == 0 && S_ISREG(sb.st_mode)) {
