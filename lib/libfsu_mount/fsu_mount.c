@@ -80,11 +80,11 @@ struct mount_data_s {
 	fsu_fs_t *mntd_fs;
 	char mntd_canon_dev[MAXPATHLEN];
 	char mntd_canon_dir[MAXPATHLEN];
+	char *mntd_fsdevice;
 	int mntd_flags;
 	int mntd_argc;
 	char **mntd_argv;
 	int mntd_argv_size;
-	char *mntd_cwd;
 };
 
 static int mount_alias(struct fsu_fsalias_s *, char *, char *,
@@ -124,6 +124,7 @@ fsu_mount(int *argc, char **argv[])
 	fst = NULL;
 	fflag = 0;
 	memset(&mntd, 0, sizeof(mntd));
+	mntd.mntd_fsdevice = mntd.mntd_canon_dev;
 
 	rump_init();
 	atexit(fsu_unmount);
@@ -237,6 +238,7 @@ fsu_mount(int *argc, char **argv[])
 		if (stat(fsdevice, &sb) == 0 && S_ISREG(sb.st_mode)) {
 			rv = rump_pub_etfs_register("/dev/rumptest", fsdevice,
 					RUMP_ETFS_BLK);
+			mntd.mntd_fsdevice = fsdevice;
 			fsdevice = strdup("/dev/rumptest");
 		}
 		rv = mount_fstype(fst, fsdevice, mntopts, puffsexec, specopts,
@@ -445,7 +447,7 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
         if (rv != 0 && verbose) {
 		warn(NULL);
 		fprintf(stderr, "%s is not a valid %s image\n",
-		    mntdp->mntd_canon_dev, fs->fs_name);
+		    mntdp->mntd_fsdevice, fs->fs_name);
 	}
         return rv;
 }
