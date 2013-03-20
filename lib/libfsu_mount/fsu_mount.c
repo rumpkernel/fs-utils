@@ -88,9 +88,9 @@ struct mount_data_s {
 };
 
 static int mount_alias(struct fsu_fsalias_s *, char *, char *,
-    struct mount_data_s *);
+    struct mount_data_s *, int);
 static int mount_fstype(fsu_fs_t *, const char *, char *, char *,
-    char *, struct mount_data_s *);
+    char *, struct mount_data_s *, int);
 static int mount_struct(_Bool, struct mount_data_s *);
 #ifndef __NetBSD__
 extern int rump_i_know_what_i_am_doing_with_sysents;
@@ -108,21 +108,21 @@ fsu_mount(int *argc, char **argv[])
 	fsu_fs_t *fst;
 	struct fsu_fsalias_s *alias;
 	struct mount_data_s mntd;
-	int idx, fflag, rv;
+	int idx, fflag, rv, verbose;
 	char ch, *mntopts, afsdev[MAXPATHLEN], *path, *puffsexec, *specopts;
 	char *tmp;
 	char *fsdevice, *fstype;
 	struct stat sb;
 #ifdef WITH_SYSPUFFS
-	const char options[] = "f:o:p:s:t:";
+	const char options[] = "f:o:p:s:t:v";
 #else
-	const char options[] = "f:o:s:t:";
+	const char options[] = "f:o:s:t:v";
 #endif
 
 	alias = NULL;
 	fsdevice = fstype = mntopts = puffsexec = specopts = NULL;
 	fst = NULL;
-	fflag = 0;
+	verbose = fflag = 0;
 	memset(&mntd, 0, sizeof(mntd));
 	mntd.mntd_fsdevice = mntd.mntd_canon_dev;
 
@@ -166,6 +166,9 @@ fsu_mount(int *argc, char **argv[])
 		case 't':
 			if (fstype == NULL)
 				fstype = optarg;
+			break;
+		case 'v':
+			++verbose;
 			break;
 		case '?':
 		default:
@@ -229,7 +232,7 @@ fsu_mount(int *argc, char **argv[])
 		build_alias_list();
 		alias = get_alias(fsdevice);
 		if (alias != NULL)
-			rv = mount_alias(alias, mntopts, specopts, &mntd);
+			rv = mount_alias(alias, mntopts, specopts, &mntd, verbose);
 		free_alias_list();
 	}
 	if (fflag || alias == NULL) {
@@ -242,7 +245,7 @@ fsu_mount(int *argc, char **argv[])
 			fsdevice = strdup("/dev/rumptest");
 		}
 		rv = mount_fstype(fst, fsdevice, mntopts, puffsexec, specopts,
-				&mntd);
+				&mntd, verbose);
 	}
 
 	free(mntd.mntd_argv);
@@ -272,7 +275,7 @@ fsu_mount(int *argc, char **argv[])
 
 static int
 mount_fstype(fsu_fs_t *fs, const char *fsdev, char *mntopts, char *puffsexec,
-    char *specopts, struct mount_data_s *mntdp)
+    char *specopts, struct mount_data_s *mntdp, int verbose)
 {
 	int argvlen;
 
@@ -321,16 +324,17 @@ mount_fstype(fsu_fs_t *fs, const char *fsdev, char *mntopts, char *puffsexec,
 
 	/* filesystem given */
 	if (fs != NULL)
-                return mount_struct(1, mntdp);
+                return mount_struct(verbose, mntdp);
 
 	/* filesystem not given (auto detection) */
 	for (fs = fslist; fs->fs_name != NULL; ++fs) {
-		printf("Trying with fs %s\n", fs->fs_name);
+		if (verbose)
+			printf("Trying with fs %s\n", fs->fs_name);
 		if (fs->fs_flags & FS_NO_AUTO)
 			continue;
 		mntdp->mntd_flags = 0;
                 mntdp->mntd_fs = fs;
-                if (mount_struct(0, mntdp) == 0)
+                if (mount_struct(verbose > 1, mntdp) == 0)
 			return 0;
 	}
 	return -1;
@@ -338,7 +342,7 @@ mount_fstype(fsu_fs_t *fs, const char *fsdev, char *mntopts, char *puffsexec,
 
 static int
 mount_alias(struct fsu_fsalias_s *al, char *mntopts, char *specopts,
-    struct mount_data_s *mntdp)
+    struct mount_data_s *mntdp, int verbose)
 {
 	fsu_fs_t *cur;
 	int argvlen;
@@ -398,7 +402,7 @@ mount_alias(struct fsu_fsalias_s *al, char *mntopts, char *specopts,
 
         mntdp->mntd_fs = cur;
 
-	return mount_struct(1, mntdp);
+	return mount_struct(verbose, mntdp);
 }
 
 static int
@@ -460,7 +464,7 @@ fsu_unmount(void)
 	rump_i_know_what_i_am_doing_with_sysents = 1;
 	rump_pub_lwproc_sysent_usenative();
 #endif
-	rump_sys_reboot(0, NULL);
+	rump_sys_unmount(MOUNT_DIRECTORY, 0);
 }
 
 const char *
