@@ -83,6 +83,7 @@ __RCSID("$NetBSD: print.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #ifdef USE_RUMP
 #include <fsu_fts.h>
 #include <rump/rump_syscalls.h>
+#include <fsu_utils.h>
 #define FTSENT FSU_FTSENT
 #define readlink(n, p, s) rump_sys_readlink(n ,p, s)
 

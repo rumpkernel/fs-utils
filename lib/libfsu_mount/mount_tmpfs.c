@@ -58,6 +58,10 @@ __RCSID("$NetBSD: mount_tmpfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include "nb_fs.h"
 #endif
 
+#ifdef __linux__
+#include <bsd/string.h>
+#endif
+
 #include <limits.h>
 #ifndef LLONG_MAX
 #   define LLONG_MAX  9223372036854775807LL

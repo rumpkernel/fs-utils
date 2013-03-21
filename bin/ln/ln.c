@@ -64,6 +64,7 @@ __RCSID("$NetBSD: ln.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 

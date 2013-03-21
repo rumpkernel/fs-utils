@@ -101,6 +101,10 @@ __RCSID("$NetBSD: mount_kernfs.c,v 1.25 2011/08/29 14:35:01 joerg Exp $");
 #include <nb_fs.h>
 #endif
 
+#ifdef __linux__
+#include <bsd/string.h>
+#endif
+
 static const struct mntopt mopts[] = {
 	MOPT_STDOPTS,
 	MOPT_GETARGS,
@@ -155,19 +159,6 @@ mount_kernfs_parseargs(int argc, char *argv[], void *dummy, int *mntflags,
 		warnx("\"%s\" is a relative path.", argv[1]);
 		warnx("using \"%s\" instead.", canon_dir);
 	}
-}
-
-int
-mount_kernfs(int argc, char *argv[])
-{
-	char canon_dev[MAXPATHLEN], canon_dir[MAXPATHLEN];
-	int mntflags;
-
-	mount_kernfs_parseargs(argc, argv, NULL, &mntflags,
-	    canon_dev, canon_dir);
-	if (mount(MOUNT_KERNFS, canon_dir, mntflags, NULL, 0) == -1)
-		err(1, "kernfs on %s", argv[1]);
-	exit(0);
 }
 
 static void

@@ -49,6 +49,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <fsu_utils.h>
+
 #include "fsu_alias.h"
 
 static struct fsu_fsalias_s *alias_head, *alias_tail;

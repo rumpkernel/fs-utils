@@ -88,6 +88,8 @@ __RCSID("$NetBSD: mount_v7fs.c,v 1.1 2011/06/27 11:52:58 uch Exp $");
 #endif
 #include "mount_v7fs.h"
 
+#include <fsu_utils.h>
+
 #ifdef __linux__
 #include <endian.h>
 #define _BYTE_ORDER __BYTE_ORDER
@@ -113,44 +115,6 @@ main(int argc, char **argv)
 	return mount_v7fs(argc, argv);
 }
 #endif
-
-int
-mount_v7fs(int argc, char *argv[])
-{
-	struct v7fs_args args;
-	char canon_dev[MAXPATHLEN], canon_dir[MAXPATHLEN];
-	const char *errcause;
-	int mntflags;
-
-	mount_v7fs_parseargs(argc, argv, &args, &mntflags,
-	    canon_dev, canon_dir);
-
-	if (mount(MOUNT_V7FS, canon_dir, mntflags, &args, sizeof args) == -1) {
-		switch (errno) {
-		case EMFILE:
-			errcause = "mount table full";
-			break;
-		case EINVAL:
-			if (mntflags & MNT_UPDATE)
-				errcause =
-			    "specified device does not match mounted device";
-			else
-				errcause = "incorrect super block";
-			break;
-		default:
-			errcause = strerror(errno);
-			break;
-		}
-		errx(EXIT_FAILURE, "%s on %s: %s", canon_dev, canon_dir,
-		    errcause);
-	}
-
-	if (mntflags & MNT_GETARGS) {
-		printf("endian=%d\n", args.endian);
-	}
-
-	return EXIT_SUCCESS;
-}
 
 void
 mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,

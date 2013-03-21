@@ -108,7 +108,7 @@ fsu_mount(int *argc, char **argv[])
 	struct mount_data_s mntd;
 	int idx, fflag, rv, verbose;
 	int ch;
-	char *mntopts, afsdev[MAXPATHLEN], *path, *puffsexec, *specopts;
+	char *mntopts, afsdev[MAXPATHLEN], *puffsexec, *specopts;
 	char *tmp;
 	char *fsdevice, *fstype;
 	struct stat sb;
@@ -408,7 +408,6 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 {
         fsu_fs_t *fs;
         int rv;
-	char _device[MAXPATHLEN], *dev;
 
         fs = mntdp->mntd_fs;
 

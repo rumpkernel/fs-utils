@@ -54,16 +54,18 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#if defined(__NetBSD__) || defined (__FreeBSD__)
+#if defined(__NetBSD__) || defined (__FreeBSD__) || defined (__linux__)
 #include <vis.h>
 #else
 #if HAVE_NBCOMPAT_H
 #include <nbcompat.h>
 #endif
+#endif
+
 #ifndef SIZE_T_MAX
 #define SIZE_T_MAX UINT_MAX /*(0xffffffff)*/
 #endif
-#endif
+
 #include <wchar.h>
 #include <wctype.h>
 
