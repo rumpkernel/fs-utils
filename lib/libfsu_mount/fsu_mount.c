@@ -92,9 +92,7 @@ static int mount_alias(struct fsu_fsalias_s *, char *, char *,
 static int mount_fstype(fsu_fs_t *, const char *, char *, char *,
     char *, struct mount_data_s *, int);
 static int mount_struct(_Bool, struct mount_data_s *);
-#ifndef __NetBSD__
 extern int rump_i_know_what_i_am_doing_with_sysents;
-#endif
 
 _Bool fsu_readonly = false;
 
@@ -128,7 +126,6 @@ fsu_mount(int *argc, char **argv[])
 	mntd.mntd_fsdevice = mntd.mntd_canon_dev;
 
 	rump_init();
-	atexit(fsu_unmount);
 	/*
 	 * [-o mnt_args] [-t fstype] [-p puffsexec] fsdevice
 	 */
@@ -412,9 +409,6 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
         fsu_fs_t *fs;
         int rv;
 	char _device[MAXPATHLEN], *dev;
-#ifndef __NetBSD__
-	void *native_proc, *emul_proc;
-#endif
 
         fs = mntdp->mntd_fs;
 
@@ -423,13 +417,14 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 	if (rv != 0)
 		return -1;
 
-#ifndef __NetBSD__
-	emul_proc = rump_pub_lwproc_curlwp();
-	rump_pub_lwproc_rfork(0);
+	/*
+	 * Switch the default process to the native syscalls.
+	 * The bad thing about this is that it will fail in unobvious
+	 * way if programs using this go multithreaded, but worry about
+	 * that if it happens.
+	 */
 	rump_i_know_what_i_am_doing_with_sysents = 1;
 	rump_pub_lwproc_sysent_usenative();
-	native_proc = rump_pub_lwproc_curlwp();
-#endif
 
 	if (rump_sys_mkdir(MOUNT_DIRECTORY, 0777) == -1 && errno != EEXIST)
 		err(-1, "mkdir");
@@ -437,11 +432,17 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 
 	rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
 			mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
-#ifndef __NetBSD__
-	rump_pub_lwproc_switch(emul_proc);
-#endif
-	if (rv == 0)
-		rump_sys_chroot(MOUNT_DIRECTORY);
+
+	if (rv == 0) {
+		/* fork a rump kernel process to chroot() to the mountpoint */
+		if ((rv = rump_pub_lwproc_rfork(RUMP_RFCFDG)) != 0) {
+			warnx("fork failed!");
+			rump_sys_unmount(MOUNT_DIRECTORY, 0);
+		} else {
+			atexit(fsu_unmount);
+			rump_sys_chroot(MOUNT_DIRECTORY);
+		}
+	}
 #ifdef WITH_SMBFS
         if (strcmp(fs->fs_name, MOUNT_SMBFS) == 0) {
                 extern struct smb_ctx sctx;
@@ -454,6 +455,7 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 		fprintf(stderr, "%s is not a valid %s image\n",
 		    mntdp->mntd_fsdevice, fs->fs_name);
 	}
+
         return rv;
 }
 
@@ -461,11 +463,14 @@ void
 fsu_unmount(void)
 {
 
-#ifndef __NetBSD__
-	rump_i_know_what_i_am_doing_with_sysents = 1;
-	rump_pub_lwproc_sysent_usenative();
-#endif
-	rump_sys_unmount(MOUNT_DIRECTORY, 0);
+	/*
+	 * Release the emulated process.  This:
+	 *   1) free up the mountpoint vnode (chroot is gone)
+	 *   2) gives us a native process context so we can umount()
+	 */
+	rump_pub_lwproc_releaselwp();
+	if (rump_sys_unmount(MOUNT_DIRECTORY, 0) != 0)
+		warnx("unmount failed, image may be dirty!");
 }
 
 const char *
