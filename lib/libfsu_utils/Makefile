@@ -9,10 +9,6 @@ LIB=		fsu_utils
 INCS=		fsu_utils.h fsu_fts.h fts2fsufts.h
 SRCS=		fsu_fts.c fsu_dir.c fsu_file.c fsu_str2arg.c
 
-.if ${OSNAME} == "Linux"
-SRCS+=		progname.c
-.endif
-
 CFLAGS+=	-I${.CURDIR}
 
 MAN=		fsu_fclose.3 fsu_ferror.3 fsu_fflush.3 fsu_fgetc.3 fsu_fopen.3 \

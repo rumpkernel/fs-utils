@@ -77,6 +77,7 @@ __RCSID("$NetBSD: rm.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 #define lstat(a, b) rump_sys_lstat(a, b)
@@ -556,10 +557,12 @@ check(char *path, char *name, struct stat *sp)
 			    " be overwritten", path);
 			return 0;
 		}
+#ifndef __linux__
 		(void)fprintf(stderr, "override %s%s%s:%s for '%s'? ",
 		    modep + 1, modep[9] == ' ' ? "" : " ",
 		    user_from_uid(sp->st_uid, 0),
 		    group_from_gid(sp->st_gid, 0), path);
+#endif
 	}
 	(void)fflush(stderr);
 

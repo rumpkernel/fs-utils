@@ -45,6 +45,7 @@
 
 #include <rump/rump_syscalls.h>
 
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 #define FSU_MV_INTERACTIVE (0x01)

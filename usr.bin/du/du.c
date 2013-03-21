@@ -76,6 +76,7 @@ __RCSID("$NetBSD: du.c,v 1.3 2010/08/23 17:09:59 stacktic Exp $");
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 

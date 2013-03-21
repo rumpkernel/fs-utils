@@ -74,6 +74,7 @@ void	usage(void);
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
+#include <fsu_utils.h>
 #include <fsu_mount.h>
 
 #ifdef __linux__
