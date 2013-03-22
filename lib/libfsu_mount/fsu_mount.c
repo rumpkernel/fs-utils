@@ -67,6 +67,12 @@
 #define __UNCONST(a) ((char *)(unsigned long)(const char *)(a))
 #endif
 
+#ifdef __linux__
+#define GETOPT_PREFIX "+"
+#else
+#define GETOPT_PREFIX
+#endif
+
 #define ADD_ARG(m, a) 					\
     do { 						\
 	char *_tmp = (a);				\
@@ -113,9 +119,9 @@ fsu_mount(int *argc, char **argv[])
 	char *fsdevice, *fstype;
 	struct stat sb;
 #ifdef WITH_SYSPUFFS
-	const char options[] = "f:o:p:s:t:v";
+	const char options[] = GETOPT_PREFIX"f:o:p:s:t:v";
 #else
-	const char options[] = "f:o:s:t:v";
+	const char options[] = GETOPT_PREFIX"f:o:s:t:v";
 #endif
 
 	alias = NULL;
@@ -130,6 +136,7 @@ fsu_mount(int *argc, char **argv[])
 	 * [-o mnt_args] [-t fstype] [-p puffsexec] fsdevice
 	 */
 	while ((ch = getopt(*argc, *argv, options)) != -1) {
+		printf("%d\n", ch);
 		switch (ch) {
 		case 'f':
 			if (fsdevice == NULL)
