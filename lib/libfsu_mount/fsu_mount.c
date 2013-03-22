@@ -136,7 +136,6 @@ fsu_mount(int *argc, char **argv[])
 	 * [-o mnt_args] [-t fstype] [-p puffsexec] fsdevice
 	 */
 	while ((ch = getopt(*argc, *argv, options)) != -1) {
-		printf("%d\n", ch);
 		switch (ch) {
 		case 'f':
 			if (fsdevice == NULL)
