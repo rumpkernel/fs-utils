@@ -1,0 +1,174 @@
+.\"	$NetBSD: fsu_fseek.3,v 1.1 2009/03/23 20:54:14 stacktic Exp $
+.\" from
+.\"	NetBSD: fseek.3,v 1.24 2003/08/07 16:43:25 agc Exp
+.\"
+.\" Copyright (c) 1990, 1991, 1993
+.\"	The Regents of the University of California.  All rights reserved.
+.\"
+.\" This code is derived from software contributed to Berkeley by
+.\" Chris Torek and the American National Standards Committee X3,
+.\" on Information Processing Systems.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. Neither the name of the University nor the names of its contributors
+.\"    may be used to endorse or promote products derived from this software
+.\"    without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.\"     @(#)fseek.3	8.1 (Berkeley) 6/4/93
+.\"
+.Dd March 15, 2008
+.Dt FSU_FSEEK 3
+.Os
+.Sh NAME
+.Nm fsu_fseek ,
+.Nm fsu_fseeko ,
+.Nm fsu_fsetpos ,
+.Nm fsu_ftell ,
+.Nm fsu_ftello ,
+.Nm fsu_rewind
+.Nd reposition a stream
+.Sh LIBRARY
+fsu_utils Library (libfsu_utils, \-lfsu_utils)
+.Sh SYNOPSIS
+.In fsu_utils.h
+.Ft int
+.Fn fsu_fseek "FSU_FILE *stream" "long int offset" "int whence"
+.Ft int
+.Fn fsu_fseeko "FSU_FILE *stream" "off_t offset" "int whence"
+.Ft long int
+.Fn fsu_ftell "FSU_FILE *stream"
+.Ft off_t
+.Fn fsu_ftello "FSU_FILE *stream"
+.Ft void
+.Fn fsu_rewind "FSU_FILE *stream"
+.Sh DESCRIPTION
+The
+.Fn fsu_fseek
+function sets the file position indicator for the stream pointed
+to by
+.Fa stream .
+The new position, measured in bytes, is obtained by adding
+.Fa offset
+bytes to the position specified by
+.Fa whence .
+If
+.Fa whence
+is set to
+.Dv SEEK_SET ,
+.Dv SEEK_CUR ,
+or
+.Dv SEEK_END ,
+the offset is relative to the
+start of the file, the current position indicator, or end-of-file,
+respectively.
+A successful call to the
+.Fn fsu_fseek
+function clears the end-of-file indicator for the stream.
+.Pp
+The
+.Fn fsu_fseeko
+function is identical to the
+.Fn fsu_fseek
+function except that the
+.Fa offset
+argument is of type
+.Fa off_t .
+.Pp
+The
+.Fn fsu_ftell
+function
+obtains the current value of the file position indicator for the
+stream pointed to by
+.Fa stream .
+.Pp
+The
+.Fn fsu_ftello
+function is identical to the
+.Fn ftell
+function except that the return value is of type
+.Fa off_t .
+.Pp
+The
+.Fn fsu_rewind
+function sets the file position indicator for the stream pointed
+to by
+.Fa stream
+to the beginning of the file.
+It is equivalent to:
+.Pp
+.Dl (void)fsu_fseek(stream, 0L, SEEK_SET)
+.Pp
+except that the error indicator for the stream is also cleared
+(see
+.Xr fsu_clearerr 3 ) .
+.Sh RETURN VALUES
+The
+.Fn fsu_rewind
+function
+returns no value.
+Upon successful completion,
+.Fn fsu_fseek
+returns 0,
+and
+.Fn fsu_ftell
+returns the current offset.
+Otherwise,
+.Fn fsu_fseek
+and
+.Fn fsu_ftell
+return \-1 and
+the others
+return a nonzero value and the global variable
+.Va errno
+is set to indicate the error.
+.Sh ERRORS
+.Bl -tag -width Er
+.It Bq Er EBADF
+The
+.Fa stream
+specified
+is not a seekable stream.
+.It Bq Er EINVAL
+The
+.Fa whence
+argument to
+.Fn fsu_fseek
+was not
+.Dv SEEK_SET ,
+.Dv SEEK_END ,
+or
+.Dv SEEK_CUR .
+.El
+.Pp
+The functions
+.Fn fsu_fseek ,
+.Fn fsu_fseeko ,
+.Fn fsu_ftell ,
+.Fn fsu_ftello ,
+and
+.Fn fsu_rewind
+may also fail and set
+.Va errno
+for any of the errors specified for the routines
+.Xr fsu_fflush 3 ,
+and
+.Xr malloc 3 .
