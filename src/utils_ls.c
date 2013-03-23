@@ -54,8 +54,10 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#if defined(__NetBSD__) || defined (__FreeBSD__) || defined (__linux__)
+#if defined(__NetBSD__) || defined (__FreeBSD__)
 #include <vis.h>
+#elif defined(__linux__)
+#include <bsd/vis.h>
 #else
 #if HAVE_NBCOMPAT_H
 #include <nbcompat.h>
