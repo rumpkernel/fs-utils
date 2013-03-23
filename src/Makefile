@@ -12,7 +12,7 @@ LIBS=	-lrumpfs_cd9660 -lrumpfs_efs -lrumpfs_ext2fs -lrumpfs_fdesc -lrumpfs_ffs -
 all: ${ALLPROGS}
 
 .c.o:
-	cc -c $< ${CPPFLAGS}
+	cc -c $< ${CPPFLAGS} ${COPTS}
 
 fsu_cat: fsu_cat.o
 	cc -o $@ $^ ${LDFLAGS} ${LIBS}

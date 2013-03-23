@@ -24,7 +24,7 @@ CFLAGS+=-D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 #CFLAGS+= 	-DNO_PMAP_CACHE
 
 .c.o:
-	cc -fPIC -DPIC ${CFLAGS} -c $<
+	cc -fPIC -DPIC ${CFLAGS} ${COPTS} -c $<
 
 all: libfsu.so
 
