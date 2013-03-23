@@ -1,4 +1,5 @@
-RUMPBASE=	/home/pooka/buildrump.sh/rump
+TOP=..
+include ../Makefile.inc
 
 OBJS=		fsu_mount.o fsu_alias.o \
 		mount_cd9660.o mount_ext2fs.o mount_hfs.o  \
