@@ -1,13 +1,25 @@
-TOP=..
+TOP=${CURDIR}/..
 include ../Makefile.inc
 
 ALLPROGS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_dir fsu_ecp fsu_exec fsu_find fsu_ln fsu_ls fsu_mkdir fsu_mv fsu_rm fsu_rmdir fsu_stat fsu_write fsu_mknod fsu_chflags fsu_du fsu_mkfifo fsu_touch fsu_chown
 
-CPPFLAGS+=-I${RUMPBASE}/include -I../lib -DUSE_RUMP
+CPPFLAGS+=-I${RUMPBASE}/include -I${TOP}/lib -DUSE_RUMP
 CPPFLAGS+=-D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 CPPFLAGS+=-D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_BSD_SOURCE
-LDFLAGS=-L../lib -Wl,-R../lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
-LIBS=	-lrumpfs_cd9660 -lrumpfs_efs -lrumpfs_ext2fs -lrumpfs_fdesc -lrumpfs_ffs -lrumpfs_hfs -lrumpfs_kernfs -lrumpfs_lfs -lrumpfs_mfs -lrumpfs_msdos -lrumpfs_nilfs -lrumpfs_ntfs -lrumpfs_sysvbfs -lrumpfs_tmpfs -lrumpfs_udf -lrumpfs_union -lrumpfs_v7fs -lrumpkern_sys_linux -lpthread -lutil -lfsu -lc -lbsd -lrumpvfs -lrump -lrumpuser  -ldl -lrumpnet_netinet -lrumpnet_net -lrumpnet -lrumpdev_disk -lrumpdev
+LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
+OSNAME=	$(shell uname -s)
+ifeq ($(OSNAME),Linux)
+LIBS= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
+endif
+LIBS+=	-lrumpfs_cd9660 -lrumpfs_efs -lrumpfs_ext2fs -lrumpfs_fdesc -lrumpfs_ffs -lrumpfs_hfs -lrumpfs_kernfs -lrumpfs_lfs -lrumpfs_mfs -lrumpfs_msdos -lrumpfs_nilfs -lrumpfs_ntfs -lrumpfs_sysvbfs -lrumpfs_tmpfs -lrumpfs_udf -lrumpfs_union -lrumpfs_v7fs
+ifeq ($(ENABLE_NFS),1)
+LIBS+= -lrumpfs_nfs
+endif
+LIBS+= -lfsu -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
+ifeq ($(OSNAME),Linux)
+LIBS+= -lbsd -ldl -lpthread -lutil -lc
+endif
+LIBS+= -lpthread -lutil -lc
 
 all: ${ALLPROGS}
 
