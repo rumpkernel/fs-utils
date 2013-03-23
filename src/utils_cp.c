@@ -86,7 +86,7 @@ __RCSID("$NetBSD: utils.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #define FTSENT FSU_FTSENT
 #endif
 
-#include "extern.h"
+#include "extern_cp.h"
 
 int
 set_utimes(const char *file, struct stat *fs)
