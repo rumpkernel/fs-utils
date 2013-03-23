@@ -26,3 +26,6 @@ all: libfsu.so
 
 libfsu.so: ${OBJS}
 	cc -o libfsu.so -shared ${OBJS}
+
+clean:
+	rm -f ${OBJS} .dummy
