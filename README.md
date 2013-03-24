@@ -31,10 +31,13 @@ version.  Currently you can try to following:
 * edit Makefile.inc to set the correct RUMPBASE
 * `make`
 
+The build system does not currently support installing the resulting
+utilities.  We are working on it!
+
 Usage examples
 --------------
 
-    $ ./bin/fsu_ls/fsu_ls -f ~/NetBSD-6.1_RC1-amd64.iso -- -l
+    $ ./src/fsu_ls ~/NetBSD-6.1_RC1-amd64.iso -l
     total 12584
     drwxr-xr-x   4 611  0     2048 Feb 19 20:26 amd64
     drwxr-xr-x   2 611  0     6144 Feb 19 20:13 bin
@@ -61,7 +64,7 @@ Usage examples
     drwxr-xr-x   8 611  0     2048 Feb 19 20:29 usr
     drwxr-xr-x   2 611  0     2048 Feb 19 20:29 var
 
-    $ ./bin/fsu_cat/fsu_cat -f ~/NetBSD-6.1_RC1-amd64.iso /boot.cfg
+    $ ./src/fsu_cat ~/NetBSD-6.1_RC1-amd64.iso /boot.cfg
     banner=Welcome to the NetBSD 6.1_RC1 installation CD
     banner================================================================================
     banner=
