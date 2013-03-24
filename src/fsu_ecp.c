@@ -94,7 +94,7 @@ main(int argc, char *argv[])
 	int cur_arg, flags, rv;
 
 	setprogname(argv[0]);
-	if (fsu_mount(&argc, &argv) != 0)
+	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
 
 	flags = fsu_ecp_parse_arg(&argc, &argv);

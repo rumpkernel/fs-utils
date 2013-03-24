@@ -16,7 +16,7 @@ main(int argc, char *argv[])
 	struct stat sb;
 
 	setprogname(argv[0]);
-	if (fsu_mount3(&argc, &argv, MOUNT_READONLY) != 0)
+	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
 		errx(-1, NULL);
 	printf("Stating %s\n", argv[1]);
 	if (rump_sys_stat(argv[1], &sb) == -1)

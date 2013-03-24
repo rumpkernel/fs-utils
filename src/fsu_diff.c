@@ -69,7 +69,7 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-	if (fsu_mount3(&argc, &argv, MOUNT_READONLY) != 0)
+	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
 		errx(-1, NULL);
 
 	if (argc != 3) {

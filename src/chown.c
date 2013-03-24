@@ -125,7 +125,7 @@ main(int argc, char **argv)
 #endif
 
 #ifdef USE_RUMP
-	if (fsu_mount(&argc, &argv) != 0)
+	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
 #endif
 

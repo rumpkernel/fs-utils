@@ -105,7 +105,7 @@ extern int rump_i_know_what_i_am_doing_with_sysents;
  * if the fstype is not given try every supported types.
  */
 int
-fsu_mount3(int *argc, char **argv[], int mode)
+fsu_mount(int *argc, char **argv[], int mode)
 {
 	fsu_fs_t *fst;
 	struct fsu_fsalias_s *alias;
@@ -272,13 +272,6 @@ fsu_mount3(int *argc, char **argv[], int mode)
 	optreset = 1;
 #endif
 	return rv;
-}
-
-int
-fsu_mount(int *argc, char **argv[])
-{
-
-	return fsu_mount3(argc, argv, MOUNT_READWRITE);
 }
 
 static int
