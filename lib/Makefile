@@ -12,16 +12,18 @@ OBJS=		fsu_mount.o fsu_alias.o \
 CFLAGS+=	-DMOUNT_NOMAIN -DUSE_RUMP -I${RUMPBASE}/include -I.
 CFLAGS+=-D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 
-# NFS
-#OBJS+=		mount_nfs.o
-#CFLAGS+=	-DNFS -DWITH_NFS -I${.CURDIR}/external
-#.if ${OSNAME} != "NetBSD"
-#CFLAGS+=	-I${.CURDIR}/external
-#OBJS+=		snprintb.o
-#OBJS+=		udp_xfer.o
-#OBJS+=		rpc.o net.o
-#OBJS+=		getnfsargs_small.o
-#CFLAGS+= 	-DNO_PMAP_CACHE
+ifeq ($(ENABLE_NFS),1)
+OBJS+=		mount_nfs.o
+CFLAGS+=	-DNFS -DWITH_NFS -I${TOP}/lib/external
+ifneq ($(OSNAME),NetBSD)
+CFLAGS+=	-I${.CURDIR}/external
+OBJS+=		snprintb.o
+endif
+OBJS+=		udp_xfer.o
+OBJS+=		rpc.o net.o
+OBJS+=		getnfsargs_small.o
+CFLAGS+= 	-DNO_PMAP_CACHE
+endif
 
 .c.o:
 	cc -fPIC -DPIC ${CFLAGS} ${COPTS} -c $<
