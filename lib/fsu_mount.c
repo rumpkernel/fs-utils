@@ -100,14 +100,12 @@ static int mount_fstype(fsu_fs_t *, const char *, char *, char *,
 static int mount_struct(_Bool, struct mount_data_s *);
 extern int rump_i_know_what_i_am_doing_with_sysents;
 
-_Bool fsu_readonly = false;
-
 /*
  * Tries to mount an image.
  * if the fstype is not given try every supported types.
  */
 int
-fsu_mount(int *argc, char **argv[])
+fsu_mount3(int *argc, char **argv[], int mode)
 {
 	fsu_fs_t *fst;
 	struct fsu_fsalias_s *alias;
@@ -188,8 +186,7 @@ fsu_mount(int *argc, char **argv[])
 	if (mntopts == NULL)
 		mntopts = getenv("FSU_MNTOPTS");
 
-	/* Used by fsu_console */
-	if (fsu_readonly) {
+	if (mode == MOUNT_READONLY) {
 		if (mntopts == NULL)
 			mntopts = __UNCONST("ro");
 		else {
@@ -275,6 +272,13 @@ fsu_mount(int *argc, char **argv[])
 	optreset = 1;
 #endif
 	return rv;
+}
+
+int
+fsu_mount(int *argc, char **argv[])
+{
+
+	return fsu_mount3(argc, argv, MOUNT_READWRITE);
 }
 
 static int

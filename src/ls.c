@@ -148,7 +148,7 @@ ls_main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 #ifdef USE_RUMP
-	if (fsu_mount(&argc, &argv) != 0)
+	if (fsu_mount3(&argc, &argv, MOUNT_READONLY) != 0)
 		errx(-1, NULL);
 #endif
 

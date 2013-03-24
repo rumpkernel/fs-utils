@@ -30,8 +30,11 @@
 
 #include <errno.h>
 
+#define MOUNT_READWRITE 0
+#define MOUNT_READONLY 1
 
 int		fsu_mount(int *, char **[]);
+int		fsu_mount3(int *, char **[], int);
 const char	*fsu_mount_usage(void);
 void		fsu_unmount(void);
 
