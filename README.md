@@ -17,14 +17,19 @@ Supported File Systems
 
 Instructions
 ------------
+
+The build system is in the process of being converted to a portable
+version.  Currently you can try to following:
+
 - Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh) and this one
 - Build the rump drivers
 
-`./buildrump.sh checkout fullbuild`
+* `./buildrump.sh checkout fullbuild`
 
 - In the fs-utils directory
 
-`../buildrump.sh/obj/tooldir/rumpmake`
+* edit Makefile.inc to set the correct RUMPBASE
+* `make`
 
 Usage examples
 --------------
