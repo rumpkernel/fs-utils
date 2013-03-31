@@ -38,6 +38,7 @@
 #include <nbcompat.h>
 #endif
 
+#include <dlfcn.h>
 #include <err.h>
 #include <errno.h>
 #include <stdbool.h>
@@ -61,6 +62,10 @@
 
 #ifndef MAXPATHLEN
 #define MAXPATHLEN 1024
+#endif
+
+#ifndef RUMP_LIBDIR
+#define RUMP_LIBDIR "/usr/lib"
 #endif
 
 #ifndef __UNCONST
@@ -97,6 +102,8 @@ static int mount_alias(struct fsu_fsalias_s *, char *, char *,
     struct mount_data_s *, int);
 static int mount_fstype(fsu_fs_t *, const char *, char *, char *,
     char *, struct mount_data_s *, int);
+static int fsu_load_fs(const char *);
+
 static int mount_struct(_Bool, struct mount_data_s *);
 extern int rump_i_know_what_i_am_doing_with_sysents;
 
@@ -432,7 +439,10 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 		err(-1, "mkdir");
 	strcpy(mntdp->mntd_canon_dir, MOUNT_DIRECTORY);
 
-	rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
+	rv = fsu_load_fs(fs->fs_name);
+
+	if (rv == 0)
+		rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
 			mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
 
 	if (rv == 0) {
@@ -484,4 +494,34 @@ fsu_mount_usage(void)
 #else
 	return "[-o mnt_args] [-s specopts] [-t fstype] [-f] fsdevice";
 #endif
+}
+
+static int
+fsu_load_fs(const char *fsname)
+{
+	char fname[MAXPATHLEN + 1];
+	void *handle;
+	const struct modinfo *const *mi_start, *const *mi_end;
+	int error;
+
+	snprintf(fname, sizeof(fname) - 1, "%s/librumpfs_%s.so", RUMP_LIBDIR, fsname);
+	handle = dlopen(fname, RTLD_LAZY|RTLD_GLOBAL);
+	if (handle == NULL)
+		return -1;
+
+	mi_start = dlsym(handle, "__start_link_set_modules");
+	mi_end = dlsym(handle, "__stop_link_set_modules");
+	if (mi_start && mi_end) {
+		error = rump_pub_module_init(mi_start,
+		    (size_t)(mi_end-mi_start));
+		if (error)
+			goto errclose;
+		return 0;
+	}
+	error = EINVAL;
+
+ errclose:
+	dlclose(handle);
+	errno = error;
+	return -1;
 }

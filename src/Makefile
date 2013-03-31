@@ -11,10 +11,6 @@ OSNAME=	$(shell uname -s)
 ifeq ($(OSNAME),Linux)
 LIBS= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
 endif
-LIBS+=	-lrumpfs_cd9660 -lrumpfs_efs -lrumpfs_ext2fs -lrumpfs_fdesc -lrumpfs_ffs -lrumpfs_hfs -lrumpfs_kernfs -lrumpfs_lfs -lrumpfs_mfs -lrumpfs_msdos -lrumpfs_nilfs -lrumpfs_ntfs -lrumpfs_sysvbfs -lrumpfs_tmpfs -lrumpfs_udf -lrumpfs_union -lrumpfs_v7fs
-ifeq ($(ENABLE_NFS),1)
-LIBS+= -lrumpfs_nfs
-endif
 LIBS+= -lfsu -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
 ifeq ($(OSNAME),Linux)
 LIBS+= -lbsd -ldl -lpthread -lutil -lc

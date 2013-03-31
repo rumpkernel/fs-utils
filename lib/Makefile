@@ -1,6 +1,6 @@
-TOP=..
+TOP=${CURDIR}/..
 include ../Makefile.inc
-
+CFLAGS+= 	-D'RUMP_LIBDIR="${RUMPBASE}/lib"'
 OBJS=		fsu_mount.o fsu_alias.o \
 		mount_cd9660.o mount_ext2fs.o mount_hfs.o  \
 		mount_msdos.o mount_tmpfs.o mount_efs.o mount_ffs.o \
