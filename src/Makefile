@@ -1,7 +1,8 @@
 TOP=${CURDIR}/..
 include ../Makefile.inc
 
-ALLPROGS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_dir fsu_ecp fsu_exec fsu_find fsu_ln fsu_ls fsu_mkdir fsu_mv fsu_rm fsu_rmdir fsu_stat fsu_write fsu_mknod fsu_chflags fsu_du fsu_mkfifo fsu_touch fsu_chown
+ALLPROGS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp fsu_exec fsu_find fsu_ln fsu_ls fsu_mkdir fsu_mv fsu_rm fsu_rmdir fsu_write fsu_mknod fsu_chflags fsu_du fsu_mkfifo fsu_touch fsu_chown
+DEBUGPROGS= fsu_dir fsu_stat
 
 CPPFLAGS+=-I${RUMPBASE}/include -I${TOP}/lib -DUSE_RUMP
 CPPFLAGS+=-D'__COPYRIGHT(x)=' -D'__RCSID(x)='
@@ -18,6 +19,8 @@ endif
 LIBS+= -lpthread -lutil -lc
 
 all: ${ALLPROGS}
+
+debug: ${DEBUGPROGS}
 
 .c.o:
 	cc -c $< ${CPPFLAGS} ${COPTS}
