@@ -504,7 +504,7 @@ fsu_load_fs(const char *fsname)
 	const struct modinfo *const *mi_start, *const *mi_end;
 	int error;
 
-	snprintf(fname, sizeof(fname) - 1, "%s/librumpfs_%s.so", RUMP_LIBDIR, fsname);
+	snprintf(fname, sizeof(fname) - 1, "librumpfs_%s.so", fsname);
 	handle = dlopen(fname, RTLD_LAZY|RTLD_GLOBAL);
 	if (handle == NULL)
 		return -1;
