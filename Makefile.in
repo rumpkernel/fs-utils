@@ -52,6 +52,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+
+#libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
+@ENABLE_NFS_TRUE@am__append_1 = -Ilib/external -Ilib -DNFS -DWITH_NFS -DNO_PMAP_CACHE
+@ENABLE_NFS_TRUE@am__append_2 = lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
+@ENABLE_NFS_TRUE@		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
+
 bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_diff$(EXEEXT) fsu_dir$(EXEEXT) fsu_ecp$(EXEEXT) \
 	fsu_exec$(EXEEXT) fsu_find$(EXEEXT) fsu_ln$(EXEEXT) \
@@ -114,7 +120,19 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libfsu_la_LIBADD =
+am__libfsu_la_SOURCES_DIST = lib/fsu_mount.c lib/fsu_alias.c \
+	lib/mount_cd9660.c lib/mount_ext2fs.c lib/mount_hfs.c \
+	lib/mount_msdos.c lib/mount_tmpfs.c lib/mount_efs.c \
+	lib/mount_ffs.c lib/mount_lfs.c lib/mount_ntfs.c \
+	lib/mount_udf.c lib/mount_sysvbfs.c lib/mount_v7fs.c \
+	lib/mount_kernfs.c lib/pathadj.c lib/fattr.c lib/getmntopts.c \
+	lib/fsu_fts.c lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c \
+	lib/getbsize.c lib/stat_flags.c lib/mount_nfs.c lib/snprintb.c \
+	lib/udp_xfer.c lib/rpc.c lib/net.c lib/getnfsargs_small.c
 am__dirstamp = $(am__leading_dot)dirstamp
+@ENABLE_NFS_TRUE@am__objects_1 = lib/mount_nfs.lo lib/snprintb.lo \
+@ENABLE_NFS_TRUE@	lib/udp_xfer.lo lib/rpc.lo lib/net.lo \
+@ENABLE_NFS_TRUE@	lib/getnfsargs_small.lo
 am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/mount_cd9660.lo lib/mount_ext2fs.lo lib/mount_hfs.lo \
 	lib/mount_msdos.lo lib/mount_tmpfs.lo lib/mount_efs.lo \
@@ -123,7 +141,7 @@ am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/mount_kernfs.lo lib/pathadj.lo lib/fattr.lo \
 	lib/getmntopts.lo lib/fsu_fts.lo lib/fsu_dir.lo \
 	lib/fsu_file.lo lib/fsu_str2arg.lo lib/getbsize.lo \
-	lib/stat_flags.lo
+	lib/stat_flags.lo $(am__objects_1)
 libfsu_la_OBJECTS = $(am_libfsu_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -247,7 +265,7 @@ SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
-DIST_SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
+DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_diff_SOURCES) \
 	$(fsu_dir_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
@@ -387,6 +405,7 @@ datadir = @datadir@
 datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
+enable_nfs = @enable_nfs@
 exec_prefix = @exec_prefix@
 host = @host@
 host_alias = @host_alias@
@@ -420,7 +439,7 @@ AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS = -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' \
 	-D'__RCSID(x)=' -D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 \
-	-D_BSD_SOURCE -DMOUNT_NOMAIN
+	-D_BSD_SOURCE -DMOUNT_NOMAIN $(am__append_1)
 
 #
 # XXX: how do you avoid having to add foo/src.c a billion times?
@@ -429,15 +448,6 @@ AM_CPPFLAGS = -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' \
 # lib/
 #
 lib_LTLIBRARIES = libfsu.la
-
-#ifeq ($(ENABLE_NFS),1)
-#LIBS+= -lrumpfs_nfs
-#endif
-#LIBS+= -lfsu -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
-#ifeq ($(OSNAME),Linux)
-#LIBS+= -lbsd -ldl -lpthread -lutil -lc
-#endif
-#LIBS+= -lpthread -lutil -lc
 noinst_HEADERS = lib/filesystems.h lib/fs_args.h lib/fsu_alias.h \
 	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h \
 	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h \
@@ -449,16 +459,14 @@ noinst_HEADERS = lib/filesystems.h lib/fs_args.h lib/fsu_alias.h \
 	lib/nbstdlib.h lib/nbsysstat.h lib/net.h lib/pathnames.h \
 	lib/rpc.h lib/rpcv2.h lib/rump_syspuffs.h src/extern_cp.h \
 	src/extern_ls.h src/fsu_flist.h src/ls.h src/pack_dev.h
-libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c			\
-	lib/mount_cd9660.c lib/mount_ext2fs.c lib/mount_hfs.c		\
-	lib/mount_msdos.c lib/mount_tmpfs.c lib/mount_efs.c		\
-	lib/mount_ffs.c lib/mount_lfs.c lib/mount_ntfs.c		\
-	lib/mount_udf.c lib/mount_sysvbfs.c lib/mount_v7fs.c		\
-	lib/mount_kernfs.c						\
-	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c	\
-	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c	\
-	lib/stat_flags.c
-
+libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
+	lib/mount_ext2fs.c lib/mount_hfs.c lib/mount_msdos.c \
+	lib/mount_tmpfs.c lib/mount_efs.c lib/mount_ffs.c \
+	lib/mount_lfs.c lib/mount_ntfs.c lib/mount_udf.c \
+	lib/mount_sysvbfs.c lib/mount_v7fs.c lib/mount_kernfs.c \
+	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c \
+	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
+	lib/stat_flags.c $(am__append_2)
 
 #LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
 #OSNAME=	$(shell uname -s)
@@ -636,6 +644,13 @@ lib/fsu_file.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/fsu_str2arg.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/getbsize.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/stat_flags.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/mount_nfs.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/snprintb.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/udp_xfer.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/rpc.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/net.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/getnfsargs_small.lo: lib/$(am__dirstamp) \
+	lib/$(DEPDIR)/$(am__dirstamp)
 libfsu.la: $(libfsu_la_OBJECTS) $(libfsu_la_DEPENDENCIES) $(EXTRA_libfsu_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libfsu_la_OBJECTS) $(libfsu_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
@@ -823,6 +838,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/fsu_str2arg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/getbsize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/getmntopts.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/getnfsargs_small.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_cd9660.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_efs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_ext2fs.Plo@am__quote@
@@ -831,13 +847,18 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_kernfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_lfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_msdos.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_nfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_ntfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_sysvbfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_tmpfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_udf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_v7fs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/net.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/pathadj.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/rpc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/snprintb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/stat_flags.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/udp_xfer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chflags.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chmod.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chown.Po@am__quote@
