@@ -64,7 +64,7 @@ subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
 	$(srcdir)/config.h.in $(top_srcdir)/build-aux/depcomp \
-	$(include_HEADERS) build-aux/config.guess build-aux/config.sub \
+	$(noinst_HEADERS) build-aux/config.guess build-aux/config.sub \
 	build-aux/depcomp build-aux/install-sh build-aux/missing \
 	build-aux/ltmain.sh $(top_srcdir)/build-aux/config.guess \
 	$(top_srcdir)/build-aux/config.sub \
@@ -111,8 +111,7 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(includedir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libfsu_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -262,7 +261,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-HEADERS = $(include_HEADERS)
+HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) \
 	$(LISP)config.h.in
 # Read a list of newline-separated strings from the standard input,
@@ -419,9 +418,9 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
-AM_CPPFLAGS = -DUSE_RUMP -I. -Ilib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
-	-D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_BSD_SOURCE \
-	-DMOUNT_NOMAIN
+AM_CPPFLAGS = -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' \
+	-D'__RCSID(x)=' -D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 \
+	-D_BSD_SOURCE -DMOUNT_NOMAIN
 
 #
 # XXX: how do you avoid having to add foo/src.c a billion times?
@@ -430,7 +429,26 @@ AM_CPPFLAGS = -DUSE_RUMP -I. -Ilib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
 # lib/
 #
 lib_LTLIBRARIES = libfsu.la
-include_HEADERS = 
+
+#ifeq ($(ENABLE_NFS),1)
+#LIBS+= -lrumpfs_nfs
+#endif
+#LIBS+= -lfsu -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
+#ifeq ($(OSNAME),Linux)
+#LIBS+= -lbsd -ldl -lpthread -lutil -lc
+#endif
+#LIBS+= -lpthread -lutil -lc
+noinst_HEADERS = lib/filesystems.h lib/fs_args.h lib/fsu_alias.h \
+	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h \
+	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h \
+	lib/mount_efs.h lib/mount_ext2fs.h lib/mount_ffs.h \
+	lib/mount_hfs.h lib/mount_kernfs.h lib/mount_lfs.h \
+	lib/mount_msdos.h lib/mount_nfs.h lib/mount_ntfs.h \
+	lib/mountprog.h lib/mount_smbfs.h lib/mount_sysvbfs.h \
+	lib/mount_tmpfs.h lib/mount_udf.h lib/mount_v7fs.h lib/nb_fs.h \
+	lib/nbstdlib.h lib/nbsysstat.h lib/net.h lib/pathnames.h \
+	lib/rpc.h lib/rpcv2.h lib/rump_syspuffs.h src/extern_cp.h \
+	src/extern_ls.h src/fsu_flist.h src/ls.h src/pack_dev.h
 libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c			\
 	lib/mount_cd9660.c lib/mount_ext2fs.c lib/mount_hfs.c		\
 	lib/mount_msdos.c lib/mount_tmpfs.c lib/mount_efs.c		\
@@ -452,15 +470,6 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c			\
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \
 	-lrumpuser -lrumpnet_sockin -lrumpnet_net -lrumpnet \
 	-lrumpkern_sys_linux
-
-#ifeq ($(ENABLE_NFS),1)
-#LIBS+= -lrumpfs_nfs
-#endif
-#LIBS+= -lfsu -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
-#ifeq ($(OSNAME),Linux)
-#LIBS+= -lbsd -ldl -lpthread -lutil -lc
-#endif
-#LIBS+= -lpthread -lutil -lc
 fsu_cat_SOURCES = src/fsu_cat.c
 fsu_cat_LDADD = $(binlibs)
 fsu_chflags_SOURCES = src/chflags.c
@@ -892,27 +901,6 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool config.lt
-install-includeHEADERS: $(include_HEADERS)
-	@$(NORMAL_INSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(includedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(includedir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(includedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(includedir)" || exit $$?; \
-	done
-
-uninstall-includeHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(includedir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -1135,7 +1123,7 @@ all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS) config.h
 install-binPROGRAMS: install-libLTLIBRARIES
 
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(includedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -1196,7 +1184,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-includeHEADERS
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -1244,8 +1232,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
-	uninstall-libLTLIBRARIES
+uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 
 .MAKE: all install-am install-strip
 
@@ -1259,15 +1246,14 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-binPROGRAMS install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am \
-	install-includeHEADERS install-info install-info-am \
-	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-libLTLIBRARIES install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS \
-	uninstall-includeHEADERS uninstall-libLTLIBRARIES
+	uninstall-libLTLIBRARIES
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

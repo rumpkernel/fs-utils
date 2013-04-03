@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS= foreign
 ACLOCAL_AMFLAGS= -I m4
 
-AM_CPPFLAGS= -DUSE_RUMP -I. -Ilib -D'__COPYRIGHT(x)=' -D'__RCSID(x)='
+AM_CPPFLAGS= -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 AM_CPPFLAGS+=-D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_BSD_SOURCE
 AM_CPPFLAGS+=-DMOUNT_NOMAIN
 
@@ -13,7 +13,17 @@ AM_CPPFLAGS+=-DMOUNT_NOMAIN
 #
 
 lib_LTLIBRARIES= libfsu.la
-include_HEADERS= 
+
+noinst_HEADERS= lib/filesystems.h lib/fs_args.h lib/fsu_alias.h		\
+	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h	\
+	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h	\
+	lib/mount_efs.h lib/mount_ext2fs.h lib/mount_ffs.h		\
+	lib/mount_hfs.h lib/mount_kernfs.h lib/mount_lfs.h		\
+	lib/mount_msdos.h lib/mount_nfs.h lib/mount_ntfs.h		\
+	lib/mountprog.h lib/mount_smbfs.h lib/mount_sysvbfs.h		\
+	lib/mount_tmpfs.h lib/mount_udf.h lib/mount_v7fs.h lib/nb_fs.h	\
+	lib/nbstdlib.h lib/nbsysstat.h lib/net.h lib/pathnames.h	\
+	lib/rpc.h lib/rpcv2.h lib/rump_syspuffs.h
 
 libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 	lib/mount_cd9660.c lib/mount_ext2fs.c lib/mount_hfs.c		\
@@ -69,6 +79,9 @@ binlibs+= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
 #LIBS+= -lbsd -ldl -lpthread -lutil -lc
 #endif
 #LIBS+= -lpthread -lutil -lc
+
+noinst_HEADERS+= src/extern_cp.h src/extern_ls.h src/fsu_flist.h	\
+	src/ls.h src/pack_dev.h
 
 fsu_cat_SOURCES= src/fsu_cat.c
 fsu_cat_LDADD= $(binlibs)
