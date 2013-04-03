@@ -27,18 +27,11 @@ libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 
-#ifeq ($(ENABLE_NFS),1)
-#OBJS+=		mount_nfs.o
-#CFLAGS+=	-DNFS -DWITH_NFS -I${TOP}/lib/external
-#ifneq ($(OSNAME),NetBSD)
-#CFLAGS+=	-I${.CURDIR}/external
-#OBJS+=		snprintb.o
-#endif
-#OBJS+=		udp_xfer.o
-#OBJS+=		rpc.o net.o
-#OBJS+=		getnfsargs_small.o
-#CFLAGS+= 	-DNO_PMAP_CACHE
-#endif
+if ENABLE_NFS
+AM_CPPFLAGS+=-Ilib/external -Ilib -DNFS -DWITH_NFS -DNO_PMAP_CACHE
+libfsu_la_SOURCES+= lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
+		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
+endif
 
 
 #
@@ -61,14 +54,6 @@ binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
 # XXX only for Linux, but unconditional now
 binlibs+= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
 
-#ifeq ($(ENABLE_NFS),1)
-#LIBS+= -lrumpfs_nfs
-#endif
-#LIBS+= -lfsu -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
-#ifeq ($(OSNAME),Linux)
-#LIBS+= -lbsd -ldl -lpthread -lutil -lc
-#endif
-#LIBS+= -lpthread -lutil -lc
 
 fsu_cat_SOURCES= src/fsu_cat.c
 fsu_cat_LDADD= $(binlibs)

@@ -59,6 +59,12 @@ AC_CHECK_HEADERS([rump/rump.h],, AC_MSG_ERROR([rump kernel required]))
 #AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([atexit gettimeofday isascii iswprint lchown localeconv memmove memset mkdir mkfifo munmap realpath rmdir setenv setlocale socket strcasecmp strchr strcspn strdup strerror strrchr strspn strtol strtoul wcwidth])
 
+AC_ARG_ENABLE([nfs],
+	      [ --enable-nfs Enable Network File System],
+	      [enable_nfs=true],[enable_nfs=false])
+AM_CONDITIONAL([ENABLE_NFS], [test x$enable_nfs = xtrue])
+AC_SUBST(enable_nfs)
+
 AC_CONFIG_FILES([Makefile])
 
 AC_OUTPUT
