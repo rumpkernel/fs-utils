@@ -23,12 +23,18 @@ system does not supply rump kernels, build and install them in the
 following manner:
 
 - Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh)
-- Build the rump drivers: `./buildrump.sh checkout fullbuild`
+- Build and install: `./buildrump.sh -d destbase checkout fullbuild`
+
+The destbase directory can be e.g. `/usr/local`.
 
 Then, in the fs-utils directory:
 
 * `./configure`
 * `make`
+
+Note: if you installed rump kernel components to a non-standard directory,
+in the normal autoconf fashion you need to set `CPPFLAGS` and `LDFLAGS`
+before running configure.
 
 Usage examples
 --------------
