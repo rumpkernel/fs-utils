@@ -18,24 +18,22 @@ Supported File Systems
 Instructions
 ------------
 
-The build system is in the process of being converted to a portable
-version.  Currently you can try to following:
+fs-utils uses file system drivers provided by rump kernels.  If your
+system does not supply rump kernels, build and install them in the
+following manner:
 
-- Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh) and this one
+- Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh)
 - Build the rump drivers: `./buildrump.sh checkout fullbuild`
 
-In the fs-utils directory:
+Then, in the fs-utils directory:
 
-* edit Makefile.inc to set the correct RUMPBASE
+* `./configure`
 * `make`
-
-The build system does not currently support installing the resulting
-utilities.  We are working on it!
 
 Usage examples
 --------------
 
-    $ ./src/fsu_ls ~/NetBSD-6.1_RC1-amd64.iso -l
+    $ fsu_ls ~/NetBSD-6.1_RC1-amd64.iso -l
     total 12584
     drwxr-xr-x   4 611  0     2048 Feb 19 20:26 amd64
     drwxr-xr-x   2 611  0     6144 Feb 19 20:13 bin
@@ -62,7 +60,7 @@ Usage examples
     drwxr-xr-x   8 611  0     2048 Feb 19 20:29 usr
     drwxr-xr-x   2 611  0     2048 Feb 19 20:29 var
 
-    $ ./src/fsu_cat ~/NetBSD-6.1_RC1-amd64.iso /boot.cfg
+    $ fsu_cat ~/NetBSD-6.1_RC1-amd64.iso /boot.cfg
     banner=Welcome to the NetBSD 6.1_RC1 installation CD
     banner================================================================================
     banner=
