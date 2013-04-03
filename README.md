@@ -10,17 +10,25 @@ image or device.  The advantage of fs-utils over similar projects such
 as mtools is supporting the usage of familiar Unix tools (`ls`, `cp`,
 `mv`, etc.) for a large number of file systems.
 
+Development is still in the early stages, but v0.01 is able to
+successfully access and modify a number of different types of file system
+images on a Linux host.
+
 Supported File Systems
 ----------------------
 - block device based file systems: cd9660, efs, ext2, hfs, ffs, fat, lfs, ntfs, sysvbfs, udf, v7fs
 - network based file systems: nfs
 
-Instructions
-------------
+Build & Install Instructions
+----------------------------
 
-fs-utils uses file system drivers provided by rump kernels.  If your
-system does not supply rump kernels, build and install them in the
-following manner:
+Some distributions such as [Void Linux](http://github.com/xtraeme/xbps-packages/blob/master/srcpkgs/fs-utils/template)
+provide fs-utils as a package.  Using a package is recommended for
+non-developers.
+
+When building from source, you must first ensure the prerequisites are
+available.  fs-utils uses file system drivers provided by rump kernels.
+Build and install them in the following manner:
 
 - Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh)
 - Build and install: `./buildrump.sh -d destbase checkout fullbuild`
