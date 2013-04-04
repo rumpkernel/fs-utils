@@ -30,6 +30,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#include "fs-utils.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"

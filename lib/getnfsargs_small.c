@@ -89,6 +89,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifdef __NetBSD__
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: getnfsargs_small.c,v 1.1 2009/07/08 15:36:46 stacktic Exp $");

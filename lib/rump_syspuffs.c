@@ -28,6 +28,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #include <sys/types.h>
 #include <sys/mount.h>
 #include <sys/socket.h>

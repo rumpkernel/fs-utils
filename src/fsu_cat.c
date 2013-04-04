@@ -25,6 +25,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #include <sys/stat.h>
 
 #if HAVE_NBCOMPAT_H

@@ -34,6 +34,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0

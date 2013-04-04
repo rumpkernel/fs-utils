@@ -25,6 +25,7 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
 #include <sys/queue.h>
 #include <sys/stat.h>
 #ifdef __NetBSD__

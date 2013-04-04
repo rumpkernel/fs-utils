@@ -47,6 +47,8 @@
  * buffer space provided by the caller.  (See rpc_fromaddr)
  */
 
+#include "fs-utils.h"
+
 #include <sys/param.h>
 #include <sys/socket.h>
 

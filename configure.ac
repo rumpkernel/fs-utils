@@ -14,6 +14,8 @@ AC_PROG_CC
 AC_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
+AC_SYS_LARGEFILE
+
 # Checks for libraries.
 AC_CHECK_LIB([bsd], [strlcpy])
 AC_CHECK_LIB([dl], [dlopen])

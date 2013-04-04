@@ -26,6 +26,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 /*
  * snprintb: print an interpreted bitmask to a buffer
  *

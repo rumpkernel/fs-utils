@@ -31,6 +31,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994, 2003\

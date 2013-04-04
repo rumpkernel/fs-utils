@@ -30,8 +30,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifdef __linux__
-#define _FILE_OFFSET_BITS 64
 #define _XOPEN_SOURCE 500
 #define _BSD_SOURCE
 #endif

@@ -28,6 +28,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+
+#include "fs-utils.h"
 #ifdef __NetBSD__
 #include <sys/cdefs.h>
 #ifndef lint

@@ -33,8 +33,9 @@
  * Id: mount_ntfs.c,v 1.1.1.1 1999/02/03 03:51:19 semenu Exp
  */
 
+#include "fs-utils.h"
+
 #ifdef __linux__
-#define _FILE_OFFSET_BITS 64
 #define _XOPEN_SOURCE 500
 #define _BSD_SOURCE
 #endif

@@ -39,6 +39,8 @@
  * @(#) Header: net.c,v 1.9 93/08/06 19:32:15 leres Exp  (LBL)
  */
 
+#include "fs-utils.h"
+
 #include <sys/param.h>
 #include <sys/socket.h>
 

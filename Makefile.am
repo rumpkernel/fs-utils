@@ -2,11 +2,13 @@ AUTOMAKE_OPTIONS= foreign
 ACLOCAL_AMFLAGS= -I m4
 
 AM_CPPFLAGS= -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)='
-AM_CPPFLAGS+=-D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_BSD_SOURCE
+AM_CPPFLAGS+=-D_XOPEN_SOURCE=500 -D_BSD_SOURCE
 AM_CPPFLAGS+=-DMOUNT_NOMAIN
 
 # some envs default to --as-needed
 AM_LDFLAGS= -Wl,--no-as-needed
+
+noinst_HEADERS= fs-utils.h
 
 #
 # XXX: how do you avoid having to add foo/src.c a billion times?
@@ -17,7 +19,7 @@ AM_LDFLAGS= -Wl,--no-as-needed
 
 lib_LTLIBRARIES= libfsu.la
 
-noinst_HEADERS= lib/filesystems.h lib/fs_args.h lib/fsu_alias.h		\
+noinst_HEADERS+= lib/filesystems.h lib/fs_args.h lib/fsu_alias.h	\
 	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h	\
 	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h	\
 	lib/mount_efs.h lib/mount_ext2fs.h lib/mount_ffs.h		\

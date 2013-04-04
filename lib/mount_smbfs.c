@@ -34,8 +34,9 @@
  * from: Id: mount_smbfs.c,v 1.17 2002/04/10 04:17:51 bp Exp
  */
 
+#include "fs-utils.h"
+
 #ifdef __linux__
-#define _FILE_OFFSET_BITS 64
 #define _XOPEN_SOURCE 500
 #define _BSD_SOURCE
 #endif

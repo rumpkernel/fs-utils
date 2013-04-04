@@ -57,6 +57,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #if defined(__NetBSD__) || defined(__FreeBSD__)
 #include <sys/cdefs.h>
 #ifndef lint

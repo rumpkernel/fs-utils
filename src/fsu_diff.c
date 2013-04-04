@@ -25,6 +25,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #include <sys/stat.h>
 #ifdef __NetBSD__
 #include <sys/syslimits.h>

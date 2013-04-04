@@ -1,3 +1,4 @@
+#include "fs-utils.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <inttypes.h>

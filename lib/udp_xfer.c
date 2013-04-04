@@ -29,6 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #if defined(__NetBSD__) || defined(__FreeBSD__)
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: udp_xfer.c,v 1.1 2009/07/08 15:36:46 stacktic Exp $");

@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"
 #else

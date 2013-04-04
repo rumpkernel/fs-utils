@@ -25,6 +25,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #include <sys/param.h>
 
 #include <err.h>

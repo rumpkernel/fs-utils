@@ -1,4 +1,5 @@
-#define _FILE_OFFSET_BITS 64
+#include "fs-utils.h"
+
 #include <sys/stat.h>
 #include <sys/types.h>
 

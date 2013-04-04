@@ -35,6 +35,8 @@
  *
  *      @(#)mount_cd9660.c	8.7 (Berkeley) 5/1/95
  */
+
+#include "fs-utils.h"
 #ifdef __NetBSD__
 #include <sys/cdefs.h>
 #ifndef lint

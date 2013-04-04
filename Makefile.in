@@ -438,8 +438,8 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS = -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' \
-	-D'__RCSID(x)=' -D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 \
-	-D_BSD_SOURCE -DMOUNT_NOMAIN $(am__append_1)
+	-D'__RCSID(x)=' -D_XOPEN_SOURCE=500 -D_BSD_SOURCE \
+	-DMOUNT_NOMAIN $(am__append_1)
 
 # some envs default to --as-needed
 AM_LDFLAGS = -Wl,--no-as-needed
