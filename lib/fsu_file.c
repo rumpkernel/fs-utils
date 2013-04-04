@@ -183,7 +183,7 @@ fsu_fclose(FSU_FILE *file)
 	assert(file != NULL);
 
 	fsu_fflush(file);
-
+	rump_sys_close(file->fd_fd);
 	free(file->fd_name);
 	free(file);
 }

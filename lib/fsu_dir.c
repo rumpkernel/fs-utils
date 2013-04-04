@@ -79,7 +79,7 @@ fsu_closedir(FSU_DIR *dir)
 {
 
 	assert(dir != NULL);
-
+	rump_sys_close(dir->dd_fd);
 	free(dir->dd_path);
 	free(dir);
 }
