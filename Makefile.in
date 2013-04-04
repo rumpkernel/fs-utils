@@ -187,7 +187,10 @@ fsu_ecp_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_fsu_exec_OBJECTS = src/fsu_exec.$(OBJEXT)
 fsu_exec_OBJECTS = $(am_fsu_exec_OBJECTS)
 fsu_exec_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_fsu_find_OBJECTS = src/fsu_find.$(OBJEXT)
+am_fsu_find_OBJECTS = src/find_find.$(OBJEXT) \
+	src/find_function.$(OBJEXT) src/find_ls.$(OBJEXT) \
+	src/find_main.$(OBJEXT) src/find_misc.$(OBJEXT) \
+	src/find_operator.$(OBJEXT) src/find_option.$(OBJEXT)
 fsu_find_OBJECTS = $(am_fsu_find_OBJECTS)
 fsu_find_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_fsu_ln_OBJECTS = src/ln.$(OBJEXT)
@@ -510,7 +513,10 @@ fsu_ecp_SOURCES = src/fsu_ecp.c src/fsu_flist.c
 fsu_ecp_LDADD = $(binlibs)
 fsu_exec_SOURCES = src/fsu_exec.c
 fsu_exec_LDADD = $(binlibs)
-fsu_find_SOURCES = src/fsu_find.c
+fsu_find_SOURCES = src/find_extern.h src/find_find.c src/find_find.h \
+		  src/find_function.c src/find_ls.c src/find_main.c \
+		  src/find_misc.c src/find_operator.c src/find_option.c
+
 fsu_find_LDADD = $(binlibs)
 fsu_ln_SOURCES = src/ln.c
 fsu_ln_LDADD = $(binlibs)
@@ -781,7 +787,19 @@ src/fsu_exec.$(OBJEXT): src/$(am__dirstamp) \
 fsu_exec$(EXEEXT): $(fsu_exec_OBJECTS) $(fsu_exec_DEPENDENCIES) $(EXTRA_fsu_exec_DEPENDENCIES) 
 	@rm -f fsu_exec$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(fsu_exec_OBJECTS) $(fsu_exec_LDADD) $(LIBS)
-src/fsu_find.$(OBJEXT): src/$(am__dirstamp) \
+src/find_find.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/find_function.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/find_ls.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/find_main.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/find_misc.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/find_operator.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+src/find_option.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 fsu_find$(EXEEXT): $(fsu_find_OBJECTS) $(fsu_find_DEPENDENCIES) $(EXTRA_fsu_find_DEPENDENCIES) 
 	@rm -f fsu_find$(EXEEXT)
@@ -888,12 +906,18 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/cmp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/cp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/du.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_find.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_function.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_ls.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_misc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_operator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_option.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_cat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_diff.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_dir.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_ecp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_exec.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_find.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_flist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_mv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_stat.Po@am__quote@
