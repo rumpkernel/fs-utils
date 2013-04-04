@@ -54,7 +54,7 @@ build_triplet = @build@
 host_triplet = @host@
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
-@ENABLE_NFS_TRUE@am__append_1 = -Ilib/external -Ilib -DNFS -DWITH_NFS -DNO_PMAP_CACHE
+@ENABLE_NFS_TRUE@am__append_1 = -I${srcdir}/lib/external -DNFS -DWITH_NFS -DNO_PMAP_CACHE
 @ENABLE_NFS_TRUE@am__append_2 = lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
 @ENABLE_NFS_TRUE@		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
 
@@ -443,6 +443,18 @@ AM_CPPFLAGS = -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' \
 
 # some envs default to --as-needed
 AM_LDFLAGS = -Wl,--no-as-needed
+noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fs_args.h \
+	lib/fsu_alias.h lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h \
+	lib/fsu_utils.h lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h \
+	lib/mount_cd9660.h lib/mount_efs.h lib/mount_ext2fs.h \
+	lib/mount_ffs.h lib/mount_hfs.h lib/mount_kernfs.h \
+	lib/mount_lfs.h lib/mount_msdos.h lib/mount_nfs.h \
+	lib/mount_ntfs.h lib/mountprog.h lib/mount_smbfs.h \
+	lib/mount_sysvbfs.h lib/mount_tmpfs.h lib/mount_udf.h \
+	lib/mount_v7fs.h lib/nb_fs.h lib/nbstdlib.h lib/nbsysstat.h \
+	lib/net.h lib/pathnames.h lib/rpc.h lib/rpcv2.h \
+	lib/rump_syspuffs.h src/extern_cp.h src/extern_ls.h \
+	src/fsu_flist.h src/ls.h src/pack_dev.h
 
 #
 # XXX: how do you avoid having to add foo/src.c a billion times?
@@ -451,17 +463,6 @@ AM_LDFLAGS = -Wl,--no-as-needed
 # lib/
 #
 lib_LTLIBRARIES = libfsu.la
-noinst_HEADERS = lib/filesystems.h lib/fs_args.h lib/fsu_alias.h \
-	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h \
-	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h \
-	lib/mount_efs.h lib/mount_ext2fs.h lib/mount_ffs.h \
-	lib/mount_hfs.h lib/mount_kernfs.h lib/mount_lfs.h \
-	lib/mount_msdos.h lib/mount_nfs.h lib/mount_ntfs.h \
-	lib/mountprog.h lib/mount_smbfs.h lib/mount_sysvbfs.h \
-	lib/mount_tmpfs.h lib/mount_udf.h lib/mount_v7fs.h lib/nb_fs.h \
-	lib/nbstdlib.h lib/nbsysstat.h lib/net.h lib/pathnames.h \
-	lib/rpc.h lib/rpcv2.h lib/rump_syspuffs.h src/extern_cp.h \
-	src/extern_ls.h src/fsu_flist.h src/ls.h src/pack_dev.h
 libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/mount_ext2fs.c lib/mount_hfs.c lib/mount_msdos.c \
 	lib/mount_tmpfs.c lib/mount_efs.c lib/mount_ffs.c \
