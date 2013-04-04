@@ -5,6 +5,9 @@ AM_CPPFLAGS= -DUSE_RUMP -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 AM_CPPFLAGS+=-D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_BSD_SOURCE
 AM_CPPFLAGS+=-DMOUNT_NOMAIN
 
+# some envs default to --as-needed
+AM_LDFLAGS= -Wl,--no-as-needed
+
 #
 # XXX: how do you avoid having to add foo/src.c a billion times?
 
