@@ -42,7 +42,9 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 
 #include <err.h>
 #include <errno.h>
+#ifndef USE_RUMP
 #include <fts.h>
+#endif
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>

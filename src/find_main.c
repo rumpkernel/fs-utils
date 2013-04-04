@@ -48,7 +48,9 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
+#ifndef USE_RUMP
 #include <fts.h>
+#endif
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>

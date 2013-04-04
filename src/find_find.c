@@ -45,7 +45,9 @@ __RCSID("$NetBSD: find.c,v 1.29 2012/03/20 20:34:57 matt Exp $");
 
 #include <err.h>
 #include <errno.h>
+#ifndef USE_RUMP
 #include <fts.h>
+#endif
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
