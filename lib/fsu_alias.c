@@ -27,11 +27,6 @@
 
 #include "fs-utils.h"
 
-#ifdef __linux__
-#define _XOPEN_SOURCE 500
-#define _BSD_SOURCE
-#endif
-
 #if defined(__NetBSD__)
 #include <sys/syslimits.h>
 #elif defined(__FreeBSD__)

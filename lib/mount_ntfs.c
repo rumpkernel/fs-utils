@@ -35,11 +35,6 @@
 
 #include "fs-utils.h"
 
-#ifdef __linux__
-#define _XOPEN_SOURCE 500
-#define _BSD_SOURCE
-#endif
-
 #if defined(__NetBSD__) || defined(__FreeBSD__)
 #include <sys/cdefs.h>
 #ifndef lint

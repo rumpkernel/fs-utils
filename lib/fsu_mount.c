@@ -27,11 +27,6 @@
 
 #include "fs-utils.h"
 
-#ifdef __linux__
-#define _XOPEN_SOURCE 500
-#define _BSD_SOURCE
-#endif
-
 #include <sys/mount.h>
 #include <sys/stat.h>
 

@@ -36,11 +36,6 @@
 
 #include "fs-utils.h"
 
-#ifdef __linux__
-#define _XOPEN_SOURCE 500
-#define _BSD_SOURCE
-#endif
-
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: mount_smbfs.c,v 1.1 2009/11/05 14:02:42 stacktic Exp $");
 
