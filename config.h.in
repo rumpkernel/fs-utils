@@ -6,6 +6,9 @@
 /* Define to 1 if you have the <err.h> header file. */
 #undef HAVE_ERR_H
 
+/* define for getopt/optreset */
+#undef HAVE_GETOPT_OPTRESET
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 

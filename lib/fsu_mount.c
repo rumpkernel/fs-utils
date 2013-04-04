@@ -183,7 +183,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 	}
 	idx = optind;
 	optind = 1;
-#ifndef __linux__
+#ifdef HAVE_GETOPT_OPTRESET
 	optreset = 1;
 #endif
 	if (mntopts == NULL)
@@ -265,13 +265,13 @@ fsu_mount(int *argc, char **argv[], int mode)
 		*argv += idx;
 		*argc -= idx;
 		optind = 1;
-#ifndef __linux__
+#ifdef HAVE_GETOPT_OPTRESET
 		optreset = 1;
 #endif
 	}
 
 	optind = 1;
-#ifndef __linux__
+#ifdef HAVE_GETOPT_OPTRESET
 	optreset = 1;
 #endif
 	return rv;

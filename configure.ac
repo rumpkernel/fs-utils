@@ -67,6 +67,10 @@ AC_ARG_ENABLE([nfs],
 AM_CONDITIONAL([ENABLE_NFS], [test x$enable_nfs = xtrue])
 AC_SUBST(enable_nfs)
 
+AC_CHECK_DECL([optreset],
+	[AC_DEFINE(HAVE_GETOPT_OPTRESET, 1, [define for getopt/optreset])],,
+	[#include <getopt.h>])
+
 AC_CONFIG_FILES([Makefile])
 
 AC_OUTPUT

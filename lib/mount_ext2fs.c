@@ -94,7 +94,7 @@ mount_ext2fs_parseargs(int argc, char *argv[],
 
 	memset(args, 0, sizeof(*args));
 	*mntflags = 0;
-#ifdef __linux__
+#ifndef HAVE_GETOPT_OPTRESET
 	optind = 1;
 #else
 	optind = optreset = 1;

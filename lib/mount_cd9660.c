@@ -100,7 +100,7 @@ mount_cd9660_parseargs(int argc, char **argv,
 
 	memset(args, 0, sizeof(*args));
 	*mntflags = opts = 0;
-#ifdef __linux__
+#ifndef HAVE_GETOPT_OPTRESET
 	optind = 1;
 #else
 	optind = optreset = 1;

@@ -119,7 +119,7 @@ mount_tmpfs_parseargs(int argc, char *argv[],
 	uidset = 0; uid = 0;
 	modeset = 0; mode = 0;
 
-#ifdef __linux__
+#ifndef HAVE_GETOPT_OPTRESET
 	optind = 1;
 #else
 	optind = optreset = 1;

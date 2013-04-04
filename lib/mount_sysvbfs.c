@@ -83,7 +83,7 @@ mount_sysvbfs_parseargs(int argc, char **argv,
 	mntoptparse_t mp;
 
 	*mntflags = 0;
-#ifdef __linux__
+#ifndef HAVE_GETOPT_OPTRESET
 	optind = 1;
 #else
 	optind = optreset = 1;

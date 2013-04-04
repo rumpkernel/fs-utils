@@ -126,7 +126,7 @@ mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,
 	mntoptparse_t mp;
 	int endian = _BYTE_ORDER;
 	*mntflags = 0;
-#ifdef __linux__
+#ifndef HAVE_GETOPT_OPTRESET
 	optind = 1;		/* Reset for parse of new argv. */
 #else
 	optind = optreset = 1;		/* Reset for parse of new argv. */
