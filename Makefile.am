@@ -105,7 +105,9 @@ fsu_ecp_LDADD= $(binlibs)
 fsu_exec_SOURCES= src/fsu_exec.c
 fsu_exec_LDADD= $(binlibs)
 
-fsu_find_SOURCES= src/fsu_find.c
+fsu_find_SOURCES= src/find_extern.h src/find_find.c src/find_find.h \
+		  src/find_function.c src/find_ls.c src/find_main.c \
+		  src/find_misc.c src/find_operator.c src/find_option.c
 fsu_find_LDADD= $(binlibs)
 
 fsu_ln_SOURCES= src/ln.c
@@ -140,7 +142,6 @@ fsu_touch_LDADD= $(binlibs)
 
 fsu_write_SOURCES= src/fsu_write.c
 fsu_write_LDADD= $(binlibs)
-
 
 #
 # man/
