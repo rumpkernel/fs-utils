@@ -140,3 +140,17 @@ fsu_touch_LDADD= $(binlibs)
 
 fsu_write_SOURCES= src/fsu_write.c
 fsu_write_LDADD= $(binlibs)
+
+
+#
+# man/
+#
+
+dist_man_MANS= man/fsu_cat.1 man/fsu_chflags.1 man/fsu_chgrp.1		\
+	man/fsu_chmod.1 man/fsu_chown.1 man/fsu_cp.1 man/fsu_du.1	\
+	man/fsu_fclose.3 man/fsu_ferror.3 man/fsu_fflush.3		\
+	man/fsu_fgetc.3 man/fsu_fopen.3 man/fsu_fputc.3 man/fsu_fread.3	\
+	man/fsu_fseek.3 man/fsu_fts.3 man/fsu_ln.1 man/fsu_ls.1		\
+	man/fsu_mkdir.1 man/fsu_mkfifo.1 man/fsu_mknod.1		\
+	man/fsu_mount.3 man/fsu_mv.1 man/fsu_rm.1 man/fsu_rmdir.1	\
+	man/fsu_touch.1 man/fsu_utils.3
