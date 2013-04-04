@@ -22,7 +22,7 @@ AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([util], [forkpty])
 
 # Checks for header files.
-AC_CHECK_HEADERS([err.h])
+AC_CHECK_HEADERS([err.h sys/cdefs.h])
 
 # librump depends on librumpuser which has platform specific
 # dependencies.  trust that things are ok if rump.h is found.

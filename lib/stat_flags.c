@@ -40,7 +40,6 @@
 #include <nbcompat.h>
 #endif
 
-#include <sys/cdefs.h>
 #if !defined(lint)
 #if 0
 static char sccsid[] = "@(#)stat_flags.c	8.2 (Berkeley) 7/28/94";

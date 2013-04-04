@@ -36,7 +36,6 @@
 #include "nbtool_config.h"
 #endif
 
-#include <sys/cdefs.h>
 #if !defined(lint)
 __RCSID("$NetBSD: pack_dev.c,v 1.1 2009/03/23 21:03:59 stacktic Exp $");
 #endif /* not lint */

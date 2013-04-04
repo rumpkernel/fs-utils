@@ -33,7 +33,6 @@
  */
 
 #ifndef __NetBSD__
-#include <sys/cdefs.h>
 #ifndef lint
 #if 0
 static char sccsid[] = "from: @(#)function.c	8.10 (Berkeley) 5/4/95";

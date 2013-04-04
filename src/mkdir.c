@@ -32,7 +32,6 @@
  */
 #include "fs-utils.h"
 
-#include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1983, 1992, 1993\
  The Regents of the University of California.  All rights reserved.");

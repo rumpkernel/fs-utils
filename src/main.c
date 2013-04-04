@@ -32,8 +32,6 @@
  */
 #include "fs-utils.h"
 
-#include <sys/cdefs.h>
-
 #ifndef lint
 __RCSID("$NetBSD: main.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #endif /* not lint */

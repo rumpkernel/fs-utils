@@ -36,7 +36,6 @@
 #include "nbtool_config.h"
 #endif
 
-#include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1998\
  The NetBSD Foundation, Inc.  All rights reserved.");

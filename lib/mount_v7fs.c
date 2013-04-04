@@ -60,7 +60,6 @@
 #include "fs-utils.h"
 
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-#include <sys/cdefs.h>
 #ifndef lint
 __RCSID("$NetBSD: mount_v7fs.c,v 1.1 2011/06/27 11:52:58 uch Exp $");
 #endif /* not lint */

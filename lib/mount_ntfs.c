@@ -36,7 +36,6 @@
 #include "fs-utils.h"
 
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-#include <sys/cdefs.h>
 #ifndef lint
 __RCSID("$NetBSD: mount_ntfs.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #endif

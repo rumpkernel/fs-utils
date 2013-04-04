@@ -37,7 +37,6 @@
 #include "nbtool_config.h"
 #endif
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-#include <sys/cdefs.h>
 #if defined(LIBC_SCCS) && !defined(lint)
 #if 0
 static char sccsid[] = "@(#)fts.c	8.6 (Berkeley) 8/14/94";

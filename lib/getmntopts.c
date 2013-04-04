@@ -31,7 +31,6 @@
 
 #include "fs-utils.h"
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-#include <sys/cdefs.h>
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)getmntopts.c	8.3 (Berkeley) 3/29/95";

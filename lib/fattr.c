@@ -29,7 +29,6 @@
 #include "fs-utils.h"
 
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-#include <sys/cdefs.h>
 #ifndef lint
 __RCSID("$NetBSD: fattr.c,v 1.3 2009/11/05 14:02:42 stacktic Exp $");
 #endif /* not lint */

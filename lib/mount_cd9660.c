@@ -38,7 +38,6 @@
 
 #include "fs-utils.h"
 #ifdef __NetBSD__
-#include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1992, 1993, 1994\
  The Regents of the University of California.  All rights reserved.");

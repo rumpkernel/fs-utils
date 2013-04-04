@@ -35,7 +35,6 @@
  */
 #include "fs-utils.h"
 
-#include <sys/cdefs.h>
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)util.c	8.5 (Berkeley) 4/28/95";

@@ -60,7 +60,6 @@
 
 #include "fs-utils.h"
 #if defined(__NetBSD__) || defined(__FreeBSD__)
-#include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 2005 Yevgeny Binder.  All rights reserved.");
 #endif /* not lint */
