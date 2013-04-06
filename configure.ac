@@ -31,6 +31,8 @@ AC_CHECK_HEADERS([err.h sys/cdefs.h])
 
 AC_CHECK_HEADERS([rump/rump.h],, AC_MSG_ERROR([rump kernel required]))
 
+AC_C_BIGENDIAN
+
 # Checks for typedefs, structures, and compiler characteristics.
 #AC_HEADER_STDBOOL
 #AC_TYPE_UID_T

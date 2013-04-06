@@ -91,13 +91,13 @@ __RCSID("$NetBSD: mount_v7fs.c,v 1.1 2011/06/27 11:52:58 uch Exp $");
 
 #include <fsu_utils.h>
 
-#ifdef __linux__
-#include <endian.h>
-#define _BYTE_ORDER __BYTE_ORDER
-#define _LITTLE_ENDIAN __LITTLE_ENDIAN
-#define _BIG_ENDIAN __BIG_ENDIAN
-#define _PDP_ENDIAN __PDP_ENDIAN
-#endif
+/*
+ * Passed to the rump kernel, so define locally to match NetBSD ones.
+ * Maybe should use rumpdefs.h here.
+ */
+#define RUMP_LITTLE_ENDIAN	1234
+#define RUMP_BIG_ENDIAN		4321
+#define RUMP_PDP_ENDIAN		3412
 
 static const struct mntopt mopts[] = {
 	MOPT_STDOPTS,
@@ -123,7 +123,11 @@ mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,
 {
 	int ch;
 	mntoptparse_t mp;
-	int endian = _BYTE_ORDER;
+#ifdef WORDS_BIGENDIAN
+	int endian = RUMP_BIG_ENDIAN;
+#else
+	int endian = RUMP_LITTLE_ENDIAN;
+#endif
 	*mntflags = 0;
 #ifndef HAVE_GETOPT_OPTRESET
 	optind = 1;		/* Reset for parse of new argv. */
@@ -141,13 +145,13 @@ mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,
 		case 'B':
 		  switch (optarg[0]) {
 		    case 'l':
-		      endian = _LITTLE_ENDIAN;
+		      endian = RUMP_LITTLE_ENDIAN;
 		      break;
 		    case 'b':
-		      endian = _BIG_ENDIAN;
+		      endian = RUMP_BIG_ENDIAN;
 		      break;
 		    case 'p':
-		      endian = _PDP_ENDIAN;
+		      endian = RUMP_PDP_ENDIAN;
 		      break;
 		    }
 		  break;
