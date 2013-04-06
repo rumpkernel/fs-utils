@@ -6,6 +6,8 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
+AC_CANONICAL_TARGET
+
 AM_INIT_AUTOMAKE([1.11 foreign subdir-objects -Wall -Werror])
 AM_MAINTAINER_MODE
 
@@ -85,12 +87,11 @@ AC_CHECK_MEMBER([struct dirent.d_ino],
 	[AC_DEFINE(HAVE_DIRENT_D_INO, 1, [define if struct dirent has d_ino])],,
 	[#include <dirent.h>])
 
-AC_CONFIG_FILES([Makefile])
-
-AC_CANONICAL_TARGET
 AS_CASE([$target_os],
 	[linux*], [EXTRA_LIBS=-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux],
 	[EXTRA_LIBS=""])
 AC_SUBST([EXTRA_LIBS])
+
+AC_CONFIG_FILES([Makefile])
 
 AC_OUTPUT
