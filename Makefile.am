@@ -5,8 +5,7 @@ AM_CPPFLAGS= -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 AM_CPPFLAGS+=-D_BSD_SOURCE
 AM_CPPFLAGS+=-DMOUNT_NOMAIN
 
-# some envs default to --as-needed
-AM_LDFLAGS= -Wl,--no-as-needed
+AM_LDFLAGS= $(LINKER_NO_AS_NEEDED)
 
 noinst_HEADERS= fs-utils.h
 
