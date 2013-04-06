@@ -20,6 +20,8 @@ AC_SYS_LARGEFILE
 AC_CHECK_LIB([bsd], [strlcpy])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([util], [forkpty])
+AC_CHECK_LIB([socket], [socket])
+AC_CHECK_LIB([rt], [nanosleep])
 
 # Checks for header files.
 AC_CHECK_HEADERS([err.h sys/cdefs.h])
