@@ -52,6 +52,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 @ENABLE_NFS_TRUE@am__append_1 = -I${srcdir}/lib/external -DNFS -DWITH_NFS -DNO_PMAP_CACHE
@@ -152,81 +153,82 @@ am__v_lt_1 =
 PROGRAMS = $(bin_PROGRAMS)
 am_fsu_cat_OBJECTS = src/fsu_cat.$(OBJEXT)
 fsu_cat_OBJECTS = $(am_fsu_cat_OBJECTS)
-am__DEPENDENCIES_1 = libfsu.la
-fsu_cat_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am__DEPENDENCIES_1 =
+am__DEPENDENCIES_2 = libfsu.la $(am__DEPENDENCIES_1)
+fsu_cat_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_chflags_OBJECTS = src/chflags.$(OBJEXT)
 fsu_chflags_OBJECTS = $(am_fsu_chflags_OBJECTS)
-fsu_chflags_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_chflags_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_chmod_OBJECTS = src/chmod.$(OBJEXT)
 fsu_chmod_OBJECTS = $(am_fsu_chmod_OBJECTS)
-fsu_chmod_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_chmod_DEPENDENCIES = $(am__DEPENDENCIES_2)
 fsu_chmod_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(fsu_chmod_LDFLAGS) $(LDFLAGS) -o $@
 am_fsu_chown_OBJECTS = src/chown.$(OBJEXT)
 fsu_chown_OBJECTS = $(am_fsu_chown_OBJECTS)
-fsu_chown_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_chown_DEPENDENCIES = $(am__DEPENDENCIES_2)
 fsu_chown_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(fsu_chown_LDFLAGS) $(LDFLAGS) -o $@
 am_fsu_cp_OBJECTS = src/cp.$(OBJEXT) src/utils_cp.$(OBJEXT)
 fsu_cp_OBJECTS = $(am_fsu_cp_OBJECTS)
-fsu_cp_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_cp_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_diff_OBJECTS = src/fsu_diff.$(OBJEXT)
 fsu_diff_OBJECTS = $(am_fsu_diff_OBJECTS)
-fsu_diff_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_diff_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_dir_OBJECTS = src/fsu_dir.$(OBJEXT)
 fsu_dir_OBJECTS = $(am_fsu_dir_OBJECTS)
-fsu_dir_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_dir_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_du_OBJECTS = src/du.$(OBJEXT)
 fsu_du_OBJECTS = $(am_fsu_du_OBJECTS)
-fsu_du_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_du_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_ecp_OBJECTS = src/fsu_ecp.$(OBJEXT) src/fsu_flist.$(OBJEXT)
 fsu_ecp_OBJECTS = $(am_fsu_ecp_OBJECTS)
-fsu_ecp_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_ecp_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_exec_OBJECTS = src/fsu_exec.$(OBJEXT)
 fsu_exec_OBJECTS = $(am_fsu_exec_OBJECTS)
-fsu_exec_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_exec_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_find_OBJECTS = src/find_find.$(OBJEXT) \
 	src/find_function.$(OBJEXT) src/find_ls.$(OBJEXT) \
 	src/find_main.$(OBJEXT) src/find_misc.$(OBJEXT) \
 	src/find_operator.$(OBJEXT) src/find_option.$(OBJEXT)
 fsu_find_OBJECTS = $(am_fsu_find_OBJECTS)
-fsu_find_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_find_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_ln_OBJECTS = src/ln.$(OBJEXT)
 fsu_ln_OBJECTS = $(am_fsu_ln_OBJECTS)
-fsu_ln_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_ln_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_ls_OBJECTS = src/cmp.$(OBJEXT) src/ls.$(OBJEXT) \
 	src/main.$(OBJEXT) src/print.$(OBJEXT) src/utils_ls.$(OBJEXT)
 fsu_ls_OBJECTS = $(am_fsu_ls_OBJECTS)
-fsu_ls_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_ls_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_mkdir_OBJECTS = src/mkdir.$(OBJEXT)
 fsu_mkdir_OBJECTS = $(am_fsu_mkdir_OBJECTS)
-fsu_mkdir_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_mkdir_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_mkfifo_OBJECTS = src/mkfifo.$(OBJEXT)
 fsu_mkfifo_OBJECTS = $(am_fsu_mkfifo_OBJECTS)
-fsu_mkfifo_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_mkfifo_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_mknod_OBJECTS = src/mknod.$(OBJEXT) src/pack_dev.$(OBJEXT)
 fsu_mknod_OBJECTS = $(am_fsu_mknod_OBJECTS)
-fsu_mknod_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_mknod_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_mv_OBJECTS = src/fsu_mv.$(OBJEXT)
 fsu_mv_OBJECTS = $(am_fsu_mv_OBJECTS)
-fsu_mv_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_mv_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_rm_OBJECTS = src/rm.$(OBJEXT)
 fsu_rm_OBJECTS = $(am_fsu_rm_OBJECTS)
-fsu_rm_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_rm_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_rmdir_OBJECTS = src/rmdir.$(OBJEXT)
 fsu_rmdir_OBJECTS = $(am_fsu_rmdir_OBJECTS)
-fsu_rmdir_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_rmdir_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_stat_OBJECTS = src/fsu_stat.$(OBJEXT)
 fsu_stat_OBJECTS = $(am_fsu_stat_OBJECTS)
-fsu_stat_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_stat_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_touch_OBJECTS = src/fsu_touch.$(OBJEXT)
 fsu_touch_OBJECTS = $(am_fsu_touch_OBJECTS)
-fsu_touch_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_touch_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_write_OBJECTS = src/fsu_write.$(OBJEXT)
 fsu_write_OBJECTS = $(am_fsu_write_OBJECTS)
-fsu_write_DEPENDENCIES = $(am__DEPENDENCIES_1)
+fsu_write_DEPENDENCIES = $(am__DEPENDENCIES_2)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -352,6 +354,7 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+EXTRA_LIBS = @EXTRA_LIBS@
 FGREP = @FGREP@
 GREP = @GREP@
 INSTALL = @INSTALL@
@@ -364,6 +367,7 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LINKER_NO_AS_NEEDED = @LINKER_NO_AS_NEEDED@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -391,6 +395,7 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
+WRAP_LCHMOD = @WRAP_LCHMOD@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -440,7 +445,11 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
@@ -448,9 +457,7 @@ AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS = -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
 	-D_BSD_SOURCE -DMOUNT_NOMAIN $(am__append_1)
-
-# some envs default to --as-needed
-AM_LDFLAGS = -Wl,--no-as-needed
+AM_LDFLAGS = $(LINKER_NO_AS_NEEDED)
 noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fs_args.h \
 	lib/fsu_alias.h lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h \
 	lib/fsu_utils.h lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h \
@@ -485,20 +492,17 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 #ifeq ($(OSNAME),Linux)
 #LIBS= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
 #endif
-
-# XXX only for Linux, but unconditional now
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \
-	-lrumpuser -lrumpnet_sockin -lrumpnet_net -lrumpnet \
-	-lrumpkern_sys_linux
+	-lrumpuser $(EXTRA_LIBS)
 fsu_cat_SOURCES = src/fsu_cat.c
 fsu_cat_LDADD = $(binlibs)
 fsu_chflags_SOURCES = src/chflags.c
 fsu_chflags_LDADD = $(binlibs)
 fsu_chmod_SOURCES = src/chmod.c
-fsu_chmod_LDFLAGS = -Wl,--wrap=chmod,--wrap=lchmod
+fsu_chmod_LDFLAGS = -Wl,--wrap=chmod $(WRAP_LCHMOD)
 fsu_chmod_LDADD = $(binlibs)
 fsu_chown_SOURCES = src/chown.c
-fsu_chown_LDFLAGS = -Wl,--wrap=chown,--wrap=lchown
+fsu_chown_LDFLAGS = -Wl,--wrap=chown $(WRAP_LCHMOD)
 fsu_chown_LDADD = $(binlibs)
 fsu_cp_SOURCES = src/cp.c src/utils_cp.c
 fsu_cp_LDADD = $(binlibs)
