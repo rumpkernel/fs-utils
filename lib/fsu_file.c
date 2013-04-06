@@ -102,7 +102,7 @@ FSU_FILE
 	mask = ~mask;
 
 	exists = (rump_sys_stat(fname, &sb) == 0);
-#ifndef __linux__
+#ifdef EFTYPE
 	if (strchr(mode, 'f') != NULL && !S_ISREG(sb.st_mode)) {
 		errno = EFTYPE;
 		return NULL;
