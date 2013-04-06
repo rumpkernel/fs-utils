@@ -28,11 +28,6 @@
 #include "fs-utils.h"
 
 #include <sys/stat.h>
-#ifdef __NetBSD__
-#include <sys/syslimits.h>
-#elif !defined(PATH_MAX)
-#define PATH_MAX (1024)
-#endif
 
 #if HAVE_NBCOMPAT_H
 #include <nbcompat.h>
@@ -42,6 +37,7 @@
 #include <err.h>
 #include <fcntl.h>
 #include <getopt.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
