@@ -137,7 +137,7 @@ static	int64_t	find_parsenum(PLAN *, const char *, const char *, char *);
 	int	f_cmin(PLAN *, FTSENT *);
 	int	f_cnewer(PLAN *, FTSENT *);
 	int	f_ctime(PLAN *, FTSENT *);
-	int	f_delete(PLAN *, FTSENT *);
+	/*int	f_delete(PLAN *, FTSENT *);*/
 	int	f_empty(PLAN *, FTSENT *);
 	/*int	f_exec(PLAN *, FTSENT *);*/
 	/*int	f_execdir(PLAN *, FTSENT *);*/
@@ -402,6 +402,7 @@ c_ctime(char ***argvp, int isok)
 	return (new);
 }
 
+#if 0
 /*
  * -delete functions --
  *
@@ -461,6 +462,7 @@ c_delete(char ***argvp __unused, int isok)
 
 	return palloc(N_DELETE, f_delete);
 }
+#endif
 
 /*
  * -depth functions --

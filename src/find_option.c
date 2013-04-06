@@ -66,7 +66,7 @@ static OPTION const options[] = {
 	{ "-cmin",	N_CMIN,		c_cmin,		1 },
 	{ "-cnewer",	N_CNEWER,	c_cnewer,	1 },
 	{ "-ctime",	N_CTIME,	c_ctime,	1 },
-	{ "-delete",	N_DELETE,	c_delete,	0 },
+	/*{ "-delete",	N_DELETE,	c_delete,	0 },*/
 	{ "-depth",	N_DEPTH,	c_depth,	0 },
 	{ "-empty",	N_EMPTY,	c_empty,	0 },
 /*	{ "-exec",	N_EXEC,		c_exec,		1 },
@@ -101,7 +101,7 @@ static OPTION const options[] = {
 	{ "-printx",	N_PRINTX,	c_printx,	0 },
 	{ "-prune",	N_PRUNE,	c_prune,	0 },
 	{ "-regex",	N_REGEX,	c_regex,	1 },
-	{ "-rm",	N_DELETE,	c_delete,	0 },
+	/*{ "-rm",	N_DELETE,	c_delete,	0 },*/
 	{ "-size",	N_SIZE,		c_size,		1 },
 	{ "-type",	N_TYPE,		c_type,		1 },
 	{ "-user",	N_USER,		c_user,		1 },
