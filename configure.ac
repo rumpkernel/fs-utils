@@ -73,6 +73,12 @@ AC_ARG_ENABLE([nfs],
 AM_CONDITIONAL([ENABLE_NFS], [test x$enable_nfs = xtrue])
 AC_SUBST(enable_nfs)
 
+AC_TRY_LINK_FUNC([lchmod],
+	[AC_DEFINE([HAVE_LCHMOD], 1, [define if lchmod() is supported])
+	  WRAP_LCHMOD="-Wl,--wrap=lchmod"]
+)
+AC_SUBST([WRAP_LCHMOD])
+
 AC_CHECK_DECL([optreset],
 	[AC_DEFINE(HAVE_GETOPT_OPTRESET, 1, [define for getopt/optreset])],,
 	[#include <getopt.h>])

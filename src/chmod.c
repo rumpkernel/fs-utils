@@ -71,8 +71,14 @@ __RCSID("$NetBSD: chmod.c,v 1.3 2009/11/06 11:47:40 stacktic Exp $");
 #include <fsu_utils.h>
 #include <fsu_mount.h>
 
+#ifdef HAVE_LCHMOD
+#define WRAP_LCHMOD __wrap_lchmod
+#else
+#define WRAP_LCHMOD lchmod
+#endif
+
 int __wrap_chmod(const char *, mode_t);
-int __wrap_lchmod(const char *, mode_t);
+int WRAP_LCHMOD(const char *, mode_t);
 
 int
 __wrap_chmod(const char *path, mode_t mode)
@@ -82,7 +88,7 @@ __wrap_chmod(const char *path, mode_t mode)
 }
 
 int
-__wrap_lchmod(const char *path, mode_t mode)
+WRAP_LCHMOD(const char *path, mode_t mode)
 {
 
 	return rump_sys_lchmod(path, mode);

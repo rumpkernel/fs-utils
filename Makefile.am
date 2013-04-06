@@ -76,11 +76,11 @@ fsu_chflags_SOURCES= src/chflags.c
 fsu_chflags_LDADD= $(binlibs)
 
 fsu_chmod_SOURCES= src/chmod.c
-fsu_chmod_LDFLAGS= -Wl,--wrap=chmod,--wrap=lchmod
+fsu_chmod_LDFLAGS= -Wl,--wrap=chmod $(WRAP_LCHMOD)
 fsu_chmod_LDADD= $(binlibs)
 
 fsu_chown_SOURCES= src/chown.c
-fsu_chown_LDFLAGS= -Wl,--wrap=chown,--wrap=lchown
+fsu_chown_LDFLAGS= -Wl,--wrap=chown $(WRAP_LCHMOD)
 fsu_chown_LDADD= $(binlibs)
 
 fsu_cp_SOURCES= src/cp.c src/utils_cp.c
