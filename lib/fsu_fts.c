@@ -46,6 +46,10 @@ __RCSID("$NetBSD: fsu_fts.c,v 1.3 2009/11/05 14:02:43 stacktic Exp $");
 #endif /* LIBC_SCCS and not lint */
 #endif
 
+#ifndef MAX
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#endif
+
 #include <sys/param.h>
 #include <sys/stat.h>
 
