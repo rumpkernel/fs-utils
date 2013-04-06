@@ -88,8 +88,6 @@ mount_udf_parseargs(int argc, char **argv,
 	struct udf_args *args, int *mntflags,
 	char *canon_dev, char *canon_dir)
 {
-	struct tm *tm;
-	time_t	 now;
 	uid_t	 anon_uid, nobody_uid;
 	gid_t	 anon_gid, nobody_gid;
 	int	 ch, set_gmtoff;
@@ -147,10 +145,17 @@ mount_udf_parseargs(int argc, char **argv,
 		return 1;
 
 	if (!set_gmtoff) {
+#ifdef HAVE_TM_GMTOFF
+		time_t	 now;
+		struct tm *tm;
+
 		/* use user's time zone as default */
 		(void)time(&now);
 		tm = localtime(&now);
 		args->gmtoff = tm->tm_gmtoff;
+#else
+		args->gmtoff = 0;
+#endif
 	}
 
 	/* get device and directory specifier */

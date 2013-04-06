@@ -66,10 +66,6 @@ __RCSID("$NetBSD: fsu_fts.c,v 1.3 2009/11/05 14:02:43 stacktic Exp $");
 #include <fsu_utils.h>
 #include <fsu_fts.h>
 
-#if ! HAVE_NBTOOL_CONFIG_H && !defined(__linux__)
-#define	HAVE_STRUCT_DIRENT_D_NAMLEN
-#endif
-
 #ifndef _DIAGASSERT
 #define _DIAGASSERT(x)
 #endif
@@ -735,7 +731,7 @@ fsu_fts_build(FSU_FTS *sp, int type)
 	     (dp = fsu_readdir(dirp)) != NULL;) {
 		if (!ISSET(FTS_SEEDOT) && ISDOT(dp->d_name))
 			continue;
-#if defined(HAVE_STRUCT_DIRENT_D_NAMLEN)
+#if defined(HAVE_DIRENT_NAMLEN)
 		dnamlen = dp->d_namlen;
 #else
 		dnamlen = strlen(dp->d_name);

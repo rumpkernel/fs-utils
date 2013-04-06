@@ -280,7 +280,11 @@ static char
 		dent = (struct dirent *)buf;
 
 		while (size > 0) {
+#ifdef HAVE_DIRENT_INO
+			if (dent->d_ino == dot.st_ino)
+#else
 			if (dent->d_fileno == dot.st_ino)
+#endif
 				return strdup(dent->d_name);
 			size -= _DIRENT_SIZE(dent);
 			dent = _DIRENT_NEXT(dent);
