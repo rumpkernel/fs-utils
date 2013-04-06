@@ -49,8 +49,6 @@ extern uid_t myuid;
 extern int Rflag, rflag, Hflag, Lflag, Pflag, fflag, iflag, pflag, Nflag;
 extern mode_t myumask;
 
-#include <sys/cdefs.h>
-
 __BEGIN_DECLS
 int	copy_fifo(struct stat *, int);
 int	copy_file(FTSENT *, int);
