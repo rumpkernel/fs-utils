@@ -112,16 +112,6 @@ FSU_FILE
 	if (file == NULL)
 		return NULL;
 
-	if (fname[0] == '/')
-		file->fd_name = strdup(fname);
-	else
-		file->fd_name = fsu_getapath(fname);
-
-	if (file->fd_name == NULL) {
-		free(file);
-		return NULL;
-	}
-
 	file->fd_err = 0;
 	file->fd_fpos = file->fd_bpos = file->fd_last = 0;
 	file->fd_mode = 0;
@@ -171,7 +161,6 @@ FSU_FILE
 	return file;
 
 err:
-	free(file->fd_name);
 	free(file);
 	return NULL;
 }
@@ -184,7 +173,6 @@ fsu_fclose(FSU_FILE *file)
 
 	fsu_fflush(file);
 	rump_sys_close(file->fd_fd);
-	free(file->fd_name);
 	free(file);
 }
 

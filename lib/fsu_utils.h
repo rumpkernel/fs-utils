@@ -49,7 +49,6 @@
 
 typedef struct {
 	int fd_fd;
-        char *fd_name;          /* filename */
         uint8_t fd_buf[8192];   /* current buffer */
         size_t fd_bpos;         /* position in the buffer */
         size_t fd_fpos;         /* position in the file */
@@ -68,7 +67,6 @@ typedef struct {
 /* Directory descriptor */
 typedef struct {
 	int dd_fd;
-        char *dd_path;          /* dirname */
         uint8_t dd_buf[8192];   /* current buffer */
         off_t dd_off;           /* position in the directory */
         int dd_size;            /* size returned by last getdents */

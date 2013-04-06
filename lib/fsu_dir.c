@@ -63,11 +63,9 @@ FSU_DIR
 		return NULL;
         memset(dir, 0, sizeof(FSU_DIR));
 
-	dir->dd_path = strdup(path);
-	dir->dd_fd = rump_sys_open(dir->dd_path, RUMP_O_RDONLY|RUMP_O_DIRECTORY);
+	dir->dd_fd = rump_sys_open(path, RUMP_O_RDONLY|RUMP_O_DIRECTORY);
 
 	if (dir->dd_fd  == -1) {
-		free(dir->dd_path);
 		free(dir);
 		return NULL;
 	}
@@ -80,7 +78,6 @@ fsu_closedir(FSU_DIR *dir)
 
 	assert(dir != NULL);
 	rump_sys_close(dir->dd_fd);
-	free(dir->dd_path);
 	free(dir);
 }
 
