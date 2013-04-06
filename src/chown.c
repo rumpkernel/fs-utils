@@ -94,7 +94,7 @@ __wrap_lchown(const char *path, uid_t owner, gid_t group)
 
 static void	a_gid(const char *);
 static void	a_uid(const char *);
-static id_t	id(const char *, const char *);
+static int	id(const char *, const char *);
 static void	usage(void);
 
 static uid_t uid;
@@ -282,16 +282,16 @@ a_uid(const char *s)
 	return;
 }
 
-static id_t
+static int
 id(const char *name, const char *type)
 {
-	id_t val;
+	int val;
 	char *ep;
 
 	errno = 0;
 	if (*name == '#')
 		name++;
-	val = (id_t)strtoul(name, &ep, 10);
+	val = (int)strtoul(name, &ep, 10);
 	if (errno)
 		err(EXIT_FAILURE, "%s", name);
 	if (*ep != '\0')
