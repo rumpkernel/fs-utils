@@ -71,6 +71,10 @@ AC_CHECK_DECL([optreset],
 	[AC_DEFINE(HAVE_GETOPT_OPTRESET, 1, [define for getopt/optreset])],,
 	[#include <getopt.h>])
 
+AC_CHECK_MEMBER([struct tm.tm_gmtoff],
+	[AC_DEFINE(HAVE_TM_GMTOFF, 1, [define if struct tm has tm_gmtoff])],,
+	[#include <time.h>])
+
 AC_CONFIG_FILES([Makefile])
 
 AC_OUTPUT

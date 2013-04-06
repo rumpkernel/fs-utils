@@ -85,8 +85,6 @@ mount_msdos_parseargs(int argc, char **argv,
 	struct stat sb;
 	int c, set_gid, set_uid, set_mask, set_dirmask, set_gmtoff;
 	char *dev, *dir;
-	time_t now;
-	struct tm *tm;
 	mntoptparse_t mp;
 
 	*mntflags = set_gid = set_uid = set_mask = set_dirmask = set_gmtoff = 0;
@@ -176,11 +174,17 @@ mount_msdos_parseargs(int argc, char **argv,
 	}
 
 	if (!set_gmtoff) {
+#ifdef HAVE_TM_GMTOFF
+		time_t now;
+		struct tm *tm;
+
 		/* use user's time zone as default */
 		time(&now);
 		tm = localtime(&now);
 		args->gmtoff = tm->tm_gmtoff;
-
+#else
+		args->gmtoff = 0;
+#endif
 	}
 	args->flags |= MSDOSFSMNT_VERSIONED;
 	args->version = MSDOSFSMNT_VERSION;
