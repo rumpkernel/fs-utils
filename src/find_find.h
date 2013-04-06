@@ -35,6 +35,7 @@
  */
 
 #include <regex.h>
+#include <stdint.h>
 #include <fts2fsufts.h>
 
 /* node type */

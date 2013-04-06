@@ -37,6 +37,7 @@
  */
 
 #include <fsu_fts.h>
+#include <stdint.h>
 
 #define FTSENT FSU_FTSENT
 
