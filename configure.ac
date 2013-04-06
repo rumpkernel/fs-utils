@@ -93,9 +93,9 @@ AC_CHECK_MEMBER([struct dirent.d_ino],
 	[AC_DEFINE(HAVE_DIRENT_D_INO, 1, [define if struct dirent has d_ino])],,
 	[#include <dirent.h>])
 
+EXTRA_LIBS=""
 AS_CASE([$target_os],
-	[linux*], [EXTRA_LIBS=-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux],
-	[EXTRA_LIBS=""])
+	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"])
 AC_SUBST([EXTRA_LIBS])
 
 AC_CACHE_CHECK([whether linker requires --no-as-needed],
