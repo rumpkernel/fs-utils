@@ -100,7 +100,7 @@ AC_SUBST([EXTRA_LIBS])
 
 AC_CACHE_CHECK([whether linker requires --no-as-needed],
 	[my_cv_as_needed],
-	[if test $CC -Wl,--help 2>&1 | grep -q as-needed; then; 
+	[if $CC -Wl,--help 2>&1 | grep -q as-needed; then
 		LINKER_NO_AS_NEEDED="-Wl,--no-as-needed"
 		my_cv_as_needed=yes;
 	else
