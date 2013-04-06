@@ -142,8 +142,6 @@ typedef struct _fsu_ftsent {
 	char fts_name[1];		/* file name */
 } FSU_FTSENT;
 
-#include <sys/cdefs.h>
-
 
 FSU_FTSENT	*fsu_fts_children(FSU_FTS *, int);
 int		fsu_fts_close(FSU_FTS *);
