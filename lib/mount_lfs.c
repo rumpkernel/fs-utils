@@ -61,7 +61,6 @@ __RCSID("$NetBSD: mount_lfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <paths.h>
 
 #include <signal.h>
 
@@ -79,6 +78,7 @@ static const struct mntopt mopts[] = {
 };
 
 #ifdef WANT_CLEANER
+#include <paths.h>
 static void	invoke_cleaner(char *);
 static void	kill_daemon(char *);
 static void	kill_cleaner(char *);
