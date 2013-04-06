@@ -921,7 +921,7 @@ c_false(char ***argvp, int isok)
 int
 f_flags(PLAN *plan, FTSENT *entry)
 {
-	u_int32_t flags;
+	uint32_t flags;
 
 #if STAT_HAS_FLAGS
 	flags = entry->fts_statp->st_flags;

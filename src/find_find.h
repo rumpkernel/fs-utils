@@ -65,7 +65,7 @@ typedef struct _plandata {
 	int flags;				/* private flags */
 	enum ntype type;			/* plan node type */
 	union {
-		u_int32_t _f_data;		/* flags */
+		uint32_t _f_data;		/* flags */
 		gid_t _g_data;			/* gid */
 		ino_t _i_data;			/* inode */
 		mode_t _m_data;			/* mode mask */

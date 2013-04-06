@@ -492,7 +492,7 @@ display(FTSENT *p, FTSENT *list)
 	DISPLAY d;
 	FTSENT *cur;
 	NAMES *np;
-	u_int64_t btotal, stotal;
+	uint64_t btotal, stotal;
 	off_t maxsize;
 	blkcnt_t maxblock;
 	ino_t maxinode;
