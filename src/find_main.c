@@ -182,7 +182,7 @@ static void
 usage(void)
 {
 
-	(void)fprintf(stderr, "Usage: %s [-H | -L | -P] [-dEhsXx] [-f file] "
-	    "file [file ...] [expression]\n", getprogname());
+	(void)fprintf(stderr, "Usage: %s %s [-H | -L | -P] [-dEhsXx] [-f file] "
+	    "file [file ...] [expression]\n", getprogname(), fsu_mount_usage());
 	exit(1);
 }

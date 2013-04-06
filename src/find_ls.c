@@ -47,26 +47,24 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 #endif
 #include <grp.h>
 #include <pwd.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #ifdef __NetBSD__
 #include <tzfile.h>
+#else
+#define DAYSPERNYEAR 365
+#define SECSPERDAY 86400
 #endif
 #include <unistd.h>
 
 #include "find_find.h"
 
+#include <rump/rump_syscalls.h>
 #include <fsu_utils.h>
 
-#ifndef DAYSPERNYEAR
-#define DAYSPERNYEAR 365
-#endif
-
-#ifndef SECSPERDAY
-#define SECSPERDAY 86400
-#endif
 
 /* Derived from the print routines in the ls(1) source code. */
 
@@ -83,9 +81,8 @@ printlong(char *name,			/* filename to print */
 	(void)printf("%7lu %6lld ", (u_long)sb->st_ino,
 	    (long long)sb->st_blocks);
 	(void)strmode(sb->st_mode, modep);
-	(void)printf("%s %3lu %-*s %-*s ", modep, (unsigned long)sb->st_nlink,
-	    LOGIN_NAME_MAX, user_from_uid(sb->st_uid, 0), LOGIN_NAME_MAX,
-	    group_from_gid(sb->st_gid, 0));
+	(void)printf("%s %3lu %4d %4d ", modep, (unsigned long)sb->st_nlink,
+	   sb->st_uid, sb->st_gid);
 
 	if (S_ISCHR(sb->st_mode) || S_ISBLK(sb->st_mode))
 		(void)printf("%3llu,%5llu ",
@@ -128,7 +125,7 @@ printlink(char *name)
 	int lnklen;
 	char path[MAXPATHLEN + 1];
 
-	if ((lnklen = readlink(name, path, sizeof(path) - 1)) == -1) {
+	if ((lnklen = rump_sys_readlink(name, path, sizeof(path) - 1)) == -1) {
 		warn("%s", name);
 		return;
 	}

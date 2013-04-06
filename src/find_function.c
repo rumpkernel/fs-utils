@@ -66,14 +66,17 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 #include <string.h>
 #ifdef __NetBSD__
 #include <tzfile.h>
+#else
+#define SECSPERMIN 60
+#define SECSPERDAY 86400
 #endif
 #include <unistd.h>
 #ifdef __NetBSD__
 #include <util.h>
 #endif
-#ifdef __linux__
-#include <linux/limits.h>
-#endif
+
+#include <rump/rump_syscalls.h>
+
 #ifdef __NetBSD__
 #define STAT_HAS_FLAGS 1
 #else
@@ -89,14 +92,6 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 #endif
 #ifndef MNT_RDONLY
 #define	MNT_RDONLY  0x00000001
-#endif
-
-#ifndef SECSPERMIN
-#define SECSPERMIN 60
-#endif
-
-#ifndef SECSPERDAY
-#define SECSPERDAY 86400
 #endif
 
 #ifndef ARG_MAX
@@ -289,7 +284,7 @@ c_anewer(char ***argvp, int isok)
 	(*argvp)++;
 	ftsoptions &= ~FTS_NOSTAT;
 
-	if (stat(filename, &sb))
+	if (rump_sys_stat(filename, &sb))
 		err(1, "%s", filename);
 	new = palloc(N_ANEWER, f_anewer);
 	new->t_data = sb.st_atime;
@@ -375,7 +370,7 @@ c_cnewer(char ***argvp, int isok)
 	(*argvp)++;
 	ftsoptions &= ~FTS_NOSTAT;
 
-	if (stat(filename, &sb))
+	if (rump_sys_stat(filename, &sb))
 		err(1, "%s", filename);
 	new = palloc(N_CNEWER, f_cnewer);
 	new->t_data = sb.st_ctime;
@@ -446,10 +441,10 @@ f_delete(PLAN *plan __unused, FTSENT *entry)
 
 	/* rmdir directories, unlink everything else */
 	if (S_ISDIR(entry->fts_statp->st_mode)) {
-		if (rmdir(entry->fts_accpath) < 0 && errno != ENOTEMPTY)
+		if (rump_sys_rmdir(entry->fts_accpath) < 0 && errno != ENOTEMPTY)
 			warn("-delete: rmdir(%s)", entry->fts_path);
 	} else {
-		if (unlink(entry->fts_accpath) < 0)
+		if (rump_sys_unlink(entry->fts_accpath) < 0)
 			warn("-delete: unlink(%s)", entry->fts_path);
 	}
 
@@ -1409,7 +1404,7 @@ c_newer(char ***argvp, int isok)
 	(*argvp)++;
 	ftsoptions &= ~FTS_NOSTAT;
 
-	if (stat(filename, &sb))
+	if (rump_sys_stat(filename, &sb))
 		err(1, "%s", filename);
 	new = palloc(N_NEWER, f_newer);
 	new->t_data = sb.st_mtime;
