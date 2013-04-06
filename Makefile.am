@@ -65,10 +65,7 @@ bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_dir fsu_ecp		\
 #endif
 
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
-
-# XXX only for Linux, but unconditional now
-binlibs+= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
-
+binlibs+= $(PLATFORM_LIBS)
 
 noinst_HEADERS+= src/extern_cp.h src/extern_ls.h src/fsu_flist.h	\
 	src/ls.h src/pack_dev.h
