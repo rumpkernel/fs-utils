@@ -38,14 +38,5 @@
 void
 pathadj(const char *input, char *adjusted)
 {
-#ifdef USE_RUMP
 	realpath(input, adjusted);
-#else
-	if (realpath(input, adjusted) == NULL)
-		err(1, "realpath %s", input);
-	if (strncmp(input, adjusted, MAXPATHLEN)) {
-		warnx("\"%s\" is a non-resolved or relative path.", input);
-		warnx("using \"%s\" instead.", adjusted);
-	}
-#endif
 }

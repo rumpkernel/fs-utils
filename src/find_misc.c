@@ -45,9 +45,6 @@ __RCSID("$NetBSD: misc.c,v 1.14 2006/10/11 19:51:10 apb Exp $");
 
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

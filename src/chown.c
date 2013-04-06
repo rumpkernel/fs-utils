@@ -58,9 +58,6 @@ __RCSID("$NetBSD: chown.c,v 1.2 2009/11/06 11:47:42 stacktic Exp $");
 #include <err.h>
 #include <errno.h>
 #include <locale.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <grp.h>
 #include <pwd.h>
 #include <stdint.h>
@@ -69,7 +66,6 @@ __RCSID("$NetBSD: chown.c,v 1.2 2009/11/06 11:47:42 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
@@ -95,7 +91,6 @@ __wrap_lchown(const char *path, uid_t owner, gid_t group)
 	return rump_sys_lchown(path, owner, group);
 }
 
-#endif /* USE_RUMP */
 
 static void	a_gid(const char *);
 static void	a_uid(const char *);
@@ -119,16 +114,10 @@ main(int argc, char **argv)
 	(void)setlocale(LC_ALL, "");
 
 	myname = (cp = strrchr(*argv, '/')) ? cp + 1 : *argv;
-#ifdef USE_RUMP
 	ischown = (myname[6] == 'o' || myname[2] == 'o');
-#else
-	ischown = (myname[2] == 'o');
-#endif
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	Hflag = Lflag = Rflag = fflag = hflag = vflag = 0;
 	while ((ch = getopt(argc, argv, "HLPRfhv")) != -1)
@@ -313,16 +302,9 @@ id(const char *name, const char *type)
 static void
 usage(void)
 {
-#ifdef USE_RUMP
 	(void)fprintf(stderr,
 		      "usage: %s %s [-R [-H | -L | -P]] [-fhv] %s file ...\n",
 		      myname, fsu_mount_usage(),
 		      ischown ? "[owner][:group]" : "group");
-#else
-
-	(void)fprintf(stderr,
-	    "usage: %s [-R [-H | -L | -P]] [-fhv] %s file ...\n",
-	    myname, ischown ? "[owner][:group]" : "group");
-#endif
 	exit(EXIT_FAILURE);
 }

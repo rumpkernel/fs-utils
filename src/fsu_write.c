@@ -51,10 +51,8 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	append = 0;
 	while ((rv = getopt(argc, argv, "a")) != -1) {

@@ -47,9 +47,6 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <sys/stat.h>
 
 #include <err.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,10 +68,8 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <wchar.h>
 #include <wctype.h>
 
-#ifdef USE_RUMP
 #include <fsu_utils.h>
 #include <fsu_mount.h>
-#endif
 
 #include "ls.h"
 #include "extern_ls.h"
@@ -211,15 +206,9 @@ void
 usage(void)
 {
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr,
           "usage: %s %s [-AaBbCcdFfghikLlmnopqRrSsTtuWwx1] [file ...]\n",
 		      getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr,
-	    "usage: %s [-AaBbCcdFfghikLlmnopqRrSsTtuWwx1] [file ...]\n",
-	    getprogname());
-#endif
 	exit(EXIT_FAILURE);
 	/* NOTREACHED */
 }

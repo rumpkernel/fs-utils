@@ -55,9 +55,6 @@ __RCSID("$NetBSD: chflags.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,7 +68,6 @@ __RCSID("$NetBSD: chflags.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 
 void	usage(void);
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
@@ -120,7 +116,6 @@ __wrap_lchflags(const char *path, u_long flags)
 
 	return rump_sys_lchflags(path, flags);
 }
-#endif /* USE_RUMP */
 
 int
 main(int argc, char *argv[])
@@ -134,10 +129,8 @@ main(int argc, char *argv[])
 	int (*change_flags)(const char *, u_long);
 
         setprogname(argv[0]);
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	Hflag = Lflag = Rflag = hflag = 0;
 	while ((ch = getopt(argc, argv, "HLPRh")) != -1)
@@ -270,13 +263,8 @@ void
 usage(void)
 {
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr,
 	    "usage: %s %s [-R [-H | -L | -P]] [-h] flags file ...\n",
 	    getprogname(), fsu_mount_usage());
-#else /* USE_RUMP */
-	(void)fprintf(stderr,
-	    "usage: chflags [-R [-H | -L | -P]] [-h] flags file ...\n");
-#endif /* USE_RUMP */
 	exit(1);
 }

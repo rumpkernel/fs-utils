@@ -56,9 +56,6 @@ __RCSID("$NetBSD: rm.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <grp.h>
 #include <locale.h>
 #include <pwd.h>
@@ -73,7 +70,6 @@ __RCSID("$NetBSD: rm.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #define S_ISWHT(x) (0)
 #endif
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
@@ -87,7 +83,6 @@ __RCSID("$NetBSD: rm.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #define access(a, b) (0) /* we always have access */
 
 
-#endif
 
 int dflag, eval, fflag, iflag, Pflag, stdin_ok, vflag, Wflag;
 
@@ -122,10 +117,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	Pflag = rflag = 0;
 	while ((ch = getopt(argc, argv, "dfiPRrvW")) != -1)
@@ -409,126 +402,7 @@ rm_file(char **argv)
 int
 rm_overwrite(char *file, struct stat *sbp)
 {
-#ifdef USE_RUMP
 	return 0;
-#else
-	struct stat sb;
-	int fd, randint;
-	char randchar;
-
-	fd = -1;
-	if (sbp == NULL) {
-		if (lstat(file, &sb))
-			goto err;
-		sbp = &sb;
-	}
-	if (!S_ISREG(sbp->st_mode))
-		return 0;
-
-	/* flags to try to defeat hidden caching by forcing seeks */
-	if ((fd = open(file, O_RDWR|O_SYNC|O_RSYNC, 0)) == -1)
-		goto err;
-
-#define RAND_BYTES	1
-#define THIS_BYTE	0
-
-#define	WRITE_PASS(mode, byte) do {					\
-	off_t len;							\
-	size_t wlen, i;							\
-	char buf[8 * 1024];						\
-									\
-	if (fsync(fd) || lseek(fd, (off_t)0, SEEK_SET))			\
-		goto err;						\
-									\
-	if (mode == THIS_BYTE)						\
-		memset(buf, byte, sizeof(buf));				\
-	for (len = sbp->st_size; len > 0; len -= wlen) {		\
-		if (mode == RAND_BYTES) {				\
-			for (i = 0; i < sizeof(buf); 			\
-			    i+= sizeof(u_int32_t))			\
-				*(int *)(buf + i) = arc4random();	\
-		}							\
-		wlen = len < (off_t)sizeof(buf) ? (size_t)len : sizeof(buf); \
-		if ((size_t)write(fd, buf, wlen) != wlen)		\
-			goto err;					\
-	}								\
-	sync();		/* another poke at hidden caches */		\
-} while (/* CONSTCOND */ 0)
-
-#define READ_PASS(byte) do {						\
-	off_t len;							\
-	size_t rlen;							\
-	char pattern[8 * 1024];						\
-	char buf[8 * 1024];						\
-									\
-	if (fsync(fd) || lseek(fd, (off_t)0, SEEK_SET))			\
-		goto err;						\
-									\
-	memset(pattern, byte, sizeof(pattern));				\
-	for(len = sbp->st_size; len > 0; len -= rlen) {			\
-		rlen = len < (off_t)sizeof(buf) ? (size_t)len : sizeof(buf); \
-		if((size_t)read(fd, buf, rlen) != rlen)			\
-			goto err;					\
-		if(memcmp(buf, pattern, rlen))				\
-			goto err;					\
-	}								\
-	sync();		/* another poke at hidden caches */		\
-} while (/* CONSTCOND */ 0)
-
-	/*
-	 * DSS sanitization matrix "clear" for magnetic disks:
-	 * option 'c' "Overwrite all addressable locations with a single
-	 * character."
-	 */
-	randint = arc4random();
-	randchar = *(char *)&randint;
-	WRITE_PASS(THIS_BYTE, randchar);
-
-	/*
-	 * DSS sanitization matrix "sanitize" for magnetic disks:
-	 * option 'd', sub 2 "Overwrite all addressable locations with a
-	 * character, then its complement.  Verify "complement" character
-	 * was written successfully to all addressable locations, then
-	 * overwrite all addressable locations with random characters; or
-	 * verify third overwrite of random characters."  The rest of the
-	 * text in d-sub-2 specifies requirements for overwriting spared
-	 * sectors; we cannot conform to it when erasing only a file, thus
-	 * we do not conform to the standard.
-	 */
-
-	/* 1. "a character" */
-	WRITE_PASS(THIS_BYTE, 0xff);
-
-	/* 2. "its complement" */
-	WRITE_PASS(THIS_BYTE, 0x00);
-
-	/* 3. "Verify 'complement' character" */
-	READ_PASS(0x00);
-
-	/* 4. "overwrite all addressable locations with random characters" */
-
-	WRITE_PASS(RAND_BYTES, 0x00);
-
-	/*
-	 * As the file might be huge, and we note that this revision of
-	 * the matrix says "random characters", not "a random character"
-	 * as the original did, we do not verify the random-character
-	 * write; the "or" in the standard allows this.
-	 */
-
-	if (close(fd) == -1) {
-		fd = -1;
-		goto err;
-	}
-
-	return 0;
-
-err:	eval = 1;
-	warn("%s", file);
-	if (fd != -1)
-		close(fd);
-	return 1;
-#endif
 }
 
 int
@@ -617,13 +491,8 @@ usage(void)
 {
 
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr, "usage: %s %s [-f|-i] [-dPRrvW] file ...\n",
 	    getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr, "usage: %s [-f|-i] [-dPRrvW] file ...\n",
-	    getprogname());
-#endif
 
 	exit(1);
 	/* NOTREACHED */

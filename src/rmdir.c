@@ -60,7 +60,6 @@ __RCSID("$NetBSD: rmdir.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 int	rm_path(char *);
 void	usage(void);
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 #include <fsu_utils.h>
 #include <fsu_mount.h>
@@ -68,7 +67,6 @@ void	usage(void);
 
 
 #define rmdir(a) rump_sys_rmdir(a)
-#endif
 
 int	main(int, char *[]);
 
@@ -80,10 +78,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	pflag = 0;
 	while ((ch = getopt(argc, argv, "p")) != -1)
@@ -138,12 +134,8 @@ void
 usage(void)
 {
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr, "usage: %s %s [-p] directory ...\n",
 		      getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr, "usage: %s [-p] directory ...\n", getprogname());
-#endif
 	exit(1);
 	/* NOTREACHED */
 }

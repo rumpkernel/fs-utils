@@ -47,9 +47,7 @@
 
 #include "rump_syspuffs.h"
 
-#ifdef USE_RUMP
 #define err(a,b) do { warn(b); return a; } while (0 /*CONSTCOND*/)
-#endif
 
 int
 mount_syspuffs_parseargs(int argc, char *argv[],
@@ -64,21 +62,13 @@ mount_syspuffs_parseargs(int argc, char *argv[],
 	int rv;
 
 	if (argc < 2) {
-#ifdef USE_RUMP
 		return 1;
-#else
-		usage();
-#endif
 	}
 
 	/* Create sucketpair for communication with the real file server */
 	if (socketpair(PF_LOCAL, SOCK_STREAM, 0, sv) == -1)
 		err(1, "socketpair");
 
-#ifndef USE_RUMP
-	if ((rv = rump_init()) == -1)
-		err(1, "rump_init");
-#endif
 
 	switch (fork()) {
 	case 0:

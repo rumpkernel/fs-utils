@@ -73,7 +73,6 @@ static portdev_t callPack(pack_t *, int, u_long *);
 	int	main(int, char *[]);
 static	void	usage(void);
 
-#ifdef USE_RUMP
 #undef KERN_DRIVERS
 #include <rump/rump_syscalls.h>
 
@@ -87,7 +86,6 @@ static	void	usage(void);
 #define chown(p, o, g) rump_sys_chown(p, o, g)
 #define chmod(p, m) rump_sys_chmod(p, m)
 
-#endif
 
 #ifdef KERN_DRIVERS
 static struct kinfo_drivers *kern_drivers;
@@ -124,10 +122,8 @@ main(int argc, char **argv)
 	pack = pack_native;
 
         setprogname(argv[0]);
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 #ifdef KERN_DRIVERS
 	while ((ch = getopt(argc, argv, "lrRF:g:m:u:")) != -1) {
@@ -317,7 +313,6 @@ usage(void)
 {
 	const char *progname = getprogname();
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr,
 	    "usage: %s %s [-rR] [-F format] [-m mode] [-u user] [-g group]\n",
 		      progname, fsu_mount_usage());
@@ -326,24 +321,6 @@ usage(void)
 	    "                   | name [b | c] major unit subunit\n"
 	    "                   | name [b | c] number\n"
 	    "                   | name p ]\n");
-#else
-	(void)fprintf(stderr,
-	    "usage: %s [-rR] [-F format] [-m mode] [-u user] [-g group]\n",
-		      progname);
-
-	(void)fprintf(stderr,
-#ifdef KERN_DRIVERS
-	    "                   [ name [b | c] [major | driver] minor\n"
-#else
-	    "                   [ name [b | c] major minor\n"
-#endif
-	    "                   | name [b | c] major unit subunit\n"
-	    "                   | name [b | c] number\n"
-	    "                   | name p ]\n");
-#ifdef KERN_DRIVERS
-	(void)fprintf(stderr, "       %s -l [driver] ...\n", progname);
-#endif
-#endif
 
 	exit(1);
 }

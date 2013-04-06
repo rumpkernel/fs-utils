@@ -63,7 +63,6 @@ __RCSID("$NetBSD: mkdir.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fsu_utils.h>
@@ -74,9 +73,6 @@ __RCSID("$NetBSD: mkdir.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 
 #define mkpath(a, b, c) fsu_mkpath(a, b, c)
 int	fsu_mkpath(char *, mode_t, mode_t);
-#else /* USE_RUMP */
-int	mkpath(char *, mode_t, mode_t);
-#endif /* USE_RUMP */
 
 void	usage(void);
 int	main(int, char *[]);
@@ -91,10 +87,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	/*
 	 * The default file mode is a=rwx (0777) with selected permissions
@@ -177,7 +171,6 @@ main(int argc, char *argv[])
  *	mode     - file mode of terminal directory
  *	dir_mode - file mode of intermediate directories
  */
-#ifdef USE_RUMP
 
 static int
 builddirs(const char *pathname, mode_t mode,
@@ -227,83 +220,13 @@ fsu_mkpath(char *path, mode_t mode, mode_t dir_mode)
 	builddirs(path, mode, rump_sys_mkdir);
 	return rump_sys_chmod(path, dir_mode);
 }
-#else
-int
-mkpath(char *path, mode_t mode, mode_t dir_mode)
-{
-	struct stat sb;
-	char *slash;
-	int done, rv;
-
-	done = 0;
-	slash = path;
-
-	for (;;) {
-		slash += strspn(slash, "/");
-		slash += strcspn(slash, "/");
-
-		done = (*slash == '\0');
-		*slash = '\0';
-
-		rv = mkdir(path, done ? mode : dir_mode);
-		if (rv < 0) {
-			/*
-			 * Can't create; path exists or no perms.
-			 * stat() path to determine what's there now.
-			 */
-			int	sverrno;
-
-			sverrno = errno;
-			if (stat(path, &sb) < 0) {
-					/* Not there; use mkdir()s error */
-				errno = sverrno;
-				warn("%s", path);
-				return -1;
-			}
-			if (!S_ISDIR(sb.st_mode)) {
-					/* Is there, but isn't a directory */
-				errno = ENOTDIR;
-				warn("%s", path);
-				return -1;
-			}
-		} else if (done) {
-			/*
-			 * Created ok, and this is the last element
-			 */
-			/*
-			 * The mkdir() and umask() calls both honor only the
-			 * file permission bits, so if you try to set a mode
-			 * including the sticky, setuid, setgid bits you lose
-			 * them. So chmod().
-			 */
-			if ((mode & ~(S_IRWXU|S_IRWXG|S_IRWXO)) != 0 &&
-			    chmod(path, mode) == -1) {
-				warn("%s", path);
-				return -1;
-			}
-		}
-
-		if (done) {
-			break;
-		}
-		*slash = '/';
-	}
-
-	return 0;
-}
-#endif /* USE_RUMP */
 
 void
 usage(void)
 {
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr, "usage: %s %s [-p] [-m mode] dirname ...\n",
 		      getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr, "usage: %s [-p] [-m mode] dirname ...\n",
-	    getprogname());
-#endif
 
 	exit(EXIT_FAILURE);
 	/* NOTREACHED */

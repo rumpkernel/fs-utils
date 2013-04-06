@@ -60,9 +60,6 @@ __RCSID("$NetBSD: du.c,v 1.3 2010/08/23 17:09:59 stacktic Exp $");
 #include <dirent.h>
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #ifdef __NetBSD__
 #include <util.h>
 #endif
@@ -73,7 +70,6 @@ __RCSID("$NetBSD: du.c,v 1.3 2010/08/23 17:09:59 stacktic Exp $");
 #include <unistd.h>
 #include <limits.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
@@ -81,7 +77,6 @@ __RCSID("$NetBSD: du.c,v 1.3 2010/08/23 17:09:59 stacktic Exp $");
 #include <fsu_mount.h>
 
 
-#endif
 
 #ifndef __NetBSD__
 #include "fsu_compat.h"
@@ -107,10 +102,8 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
 		errx(-1, NULL);
-#endif
 
 	Hflag = Lflag = aflag = cflag = dflag = gkmflag = nflag = sflag = 0;
 	totalblocks = 0;
@@ -378,14 +371,8 @@ linkchk(dev_t dev, ino_t ino)
 void
 usage(void)
 {
-#ifdef USE_RUMP
 	(void)fprintf(stderr,
     "usage: %s %s [-H | -L | -P] [-a | -d depth | -s] [-cghkmnrx] [file ...]\n",
 		      getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr,
-  "usage: %s [-H | -L | -P] [-a | -d depth | -s] [-cghkmnrx] [file ...]\n",
-	              getprogname());
-#endif
 	exit(1);
 }

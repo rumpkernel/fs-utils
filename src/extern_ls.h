@@ -33,11 +33,9 @@
  *	@(#)extern.h	8.1 (Berkeley) 5/31/93
  */
 
-#ifdef USE_RUMP
 #include <fsu_fts.h>
 
 #define FTSENT FSU_FTSENT
-#endif
 
 int	 acccmp(const FTSENT *, const FTSENT *);
 int	 revacccmp(const FTSENT *, const FTSENT *);

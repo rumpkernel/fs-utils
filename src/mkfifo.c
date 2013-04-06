@@ -59,7 +59,6 @@ __RCSID("$NetBSD: mkfifo.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #include <unistd.h>
 #include <err.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fsu_utils.h>
@@ -67,7 +66,6 @@ __RCSID("$NetBSD: mkfifo.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 
 #define mkfifo(a, b) rump_sys_mkfifo(a, b)
 
-#endif /* USE_RUMP */
 
 int		main __P((int, char **));
 
@@ -83,10 +81,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	setlocale (LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	/* The default mode is the value of the bitwise inclusive or of
 	   S_IRUSR, S_IWUSR, S_IRGRP, S_IWGRP, S_IROTH, and S_IWOTH
@@ -128,13 +124,8 @@ void
 usage()
 {
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr, "usage: %s %s [-m mode] fifoname ...\n",
 		      getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr, "usage: %s [-m mode] fifoname ...\n",
-	              getprogname());
-#endif /* USE_RUMP */
 
 	exit(1);
 }

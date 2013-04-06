@@ -48,9 +48,6 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,12 +57,10 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 
 #include "find_find.h"
 
-#ifdef USE_RUMP
 #include <fsu_utils.h>
 #include <fsu_mount.h>
 #include <fsu_fts.h>
 #include <rump/rump_syscalls.h>
-#endif
 
 #ifndef REG_BASIC
 #define REG_BASIC 0
@@ -99,10 +94,8 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
 		errx(-1, NULL);
-#endif
 
 	/* array to hold dir list.  at most (argc - 1) elements. */
 	p = start = malloc(argc * sizeof (char *));

@@ -61,7 +61,6 @@ __RCSID("$NetBSD: ln.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fsu_utils.h>
@@ -89,7 +88,6 @@ __wrap_symlink(const char *name1, const char *name2)
 
 	return rump_sys_symlink(name1, name2);
 }
-#endif
 
 int	fflag;				/* Unlink existing files. */
 int	hflag;				/* Check new name for symlink first. */
@@ -115,10 +113,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif/* USE_RUMP */
 
 	while ((ch = getopt(argc, argv, "fhinsv")) != -1)
 		switch (ch) {
@@ -264,17 +260,11 @@ linkit(const char *target, const char *source, int isdir)
 void
 usage(void)
 {
-#ifndef USE_RUMP
-	(void)fprintf(stderr,
-	    "usage:\t%s [-fhinsv] file1 file2\n\t%s [-fhinsv] file ... directory\n",
-	    getprogname(), getprogname());
-#else
 	fprintf(stderr,
 		"usage:\t%s %s [-fhinsv] file1 file2\n"
 		"usage:\t%s %s [-fhinsv] file ... directory\n",
 		getprogname(), fsu_mount_usage(),
 		getprogname(), fsu_mount_usage());
-#endif
 	exit(1);
 	/* NOTREACHED */
 }

@@ -48,9 +48,6 @@ __RCSID("$NetBSD: print.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <grp.h>
 #include <pwd.h>
 #include <stdint.h>
@@ -80,14 +77,12 @@ __RCSID("$NetBSD: print.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #define SECSPERDAY	((long) SECSPERHOUR * HOURSPERDAY)
 #endif
 
-#ifdef USE_RUMP
 #include <fsu_fts.h>
 #include <rump/rump_syscalls.h>
 #include <fsu_utils.h>
 #define FTSENT FSU_FTSENT
 #define readlink(n, p, s) rump_sys_readlink(n ,p, s)
 
-#endif
 
 #include "ls.h"
 #include "extern_ls.h"

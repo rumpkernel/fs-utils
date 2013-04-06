@@ -72,9 +72,6 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <locale.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -82,7 +79,6 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 
@@ -96,7 +92,6 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #define stat(path, sb) rump_sys_stat(path, sb)
 #define lstat(path, sb) rump_sys_lstat(path, sb)
 
-#endif
 
 #include "extern_cp.h"
 
@@ -129,10 +124,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	Hflag = Lflag = Pflag = Rflag = 0;
 	while ((ch = getopt(argc, argv, "HLNPRfiprv")) != -1)

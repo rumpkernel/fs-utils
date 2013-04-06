@@ -60,9 +60,6 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #include <dirent.h>
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <locale.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -81,7 +78,6 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #include "ls.h"
 #include "extern_ls.h"
 
-#ifdef USE_RUMP
 #include <fsu_utils.h>
 #include <fsu_mount.h>
 #include <fsu_fts.h>
@@ -90,7 +86,6 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #define FTS FSU_FTS
 #define FTSENT FSU_FTSENT
 
-#endif
 
 static void	 display(FTSENT *, FTSENT *);
 static int	 mastercmp(const FTSENT **, const FTSENT **);
@@ -147,10 +142,8 @@ ls_main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
 		errx(-1, NULL);
-#endif
 
 	/* Terminal defaults to -Cq, non-terminal defaults to -1. */
 	if (isatty(STDOUT_FILENO)) {

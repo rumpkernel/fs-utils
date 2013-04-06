@@ -47,12 +47,8 @@ __RCSID("$NetBSD: cmp.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifndef USE_RUMP
-#include <fts.h>
-#else
 #include <fsu_fts.h>
 #include <fts2fsufts.h>
-#endif
 
 #include <string.h>
 

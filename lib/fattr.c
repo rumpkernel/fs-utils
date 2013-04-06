@@ -55,12 +55,8 @@ a_num(const char *s, const char *id_type)
 
 	id = strtol(s, &ep, 0);
 	if (*ep || s == ep || id < 0) {
-#ifdef USE_RUMP
 		warn("unknown %s id: %s", id_type, s);
 		return -1;
-#else
-		errx(1, "unknown %s id: %s", id_type, s);
-#endif
 	}
 	return id;
 }
@@ -93,12 +89,8 @@ a_mask(const char *s)
 
 	rv = strtol(s, &ep, 8);
 	if (s == ep || *ep || rv < 0) {
-#ifdef USE_RUMP
 		warn("invalid file mode: %s", s);
 		return -1;
-#else
-		errx(1, "invalid file mode: %s", s);
-#endif
 	}
 	return rv;
 }

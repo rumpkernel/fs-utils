@@ -34,11 +34,9 @@
 #ifndef _EXTERN_H_
 #define _EXTERN_H_
 
-#ifdef USE_RUMP
 #include <fsu_fts.h>
 
 #define FTSENT FSU_FTSENT
-#endif
 
 typedef struct {
 	char *p_end;			/* pointer to NULL at end of path */

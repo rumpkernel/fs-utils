@@ -67,9 +67,6 @@ __RCSID("$NetBSD: mount_ext2fs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include "mountprog.h"
 #include "mount_ext2fs.h"
 
-#ifndef USE_RUMP
-static void	ext2fs_usage(void);
-#endif
 
 static const struct mntopt mopts[] = {
 	MOPT_STDOPTS,

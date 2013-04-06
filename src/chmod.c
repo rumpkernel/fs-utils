@@ -57,9 +57,6 @@ __RCSID("$NetBSD: chmod.c,v 1.3 2009/11/06 11:47:40 stacktic Exp $");
 
 #include <err.h>
 #include <errno.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <limits.h>
 #include <locale.h>
 #include <stdint.h>
@@ -68,7 +65,6 @@ __RCSID("$NetBSD: chmod.c,v 1.3 2009/11/06 11:47:40 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#ifdef USE_RUMP
 #include <rump/rump_syscalls.h>
 
 #include <fts2fsufts.h>
@@ -92,7 +88,6 @@ __wrap_lchmod(const char *path, mode_t mode)
 	return rump_sys_lchmod(path, mode);
 }
 
-#endif /* USE_RUMP */
 
 int	main(int, char *[]);
 void	usage(void);
@@ -110,10 +105,8 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-#ifdef USE_RUMP
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
 		errx(-1, NULL);
-#endif
 
 	Hflag = Lflag = Rflag = fflag = hflag = 0;
 	while ((ch = getopt(argc, argv, "HLPRXfghorstuwx")) != -1)
@@ -248,15 +241,9 @@ void
 usage(void)
 {
 
-#ifdef USE_RUMP
 	(void)fprintf(stderr,
 		      "usage: %s %s [-R [-H | -L | -P]] [-h] mode file ...\n",
 		      getprogname(), fsu_mount_usage());
-#else
-	(void)fprintf(stderr,
-	    "usage: %s [-R [-H | -L | -P]] [-h] mode file ...\n",
-	    getprogname());
-#endif
 	exit(1);
 	/* NOTREACHED */
 }

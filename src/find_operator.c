@@ -43,9 +43,6 @@ __RCSID("$NetBSD: operator.c,v 1.9 2006/10/11 19:51:10 apb Exp $");
 #include <sys/types.h>
 
 #include <err.h>
-#ifndef USE_RUMP
-#include <fts.h>
-#endif
 #include <stdio.h>
 
 #include "find_find.h"
