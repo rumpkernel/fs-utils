@@ -74,49 +74,6 @@ void	usage(void);
 #include <fsu_utils.h>
 #include <fsu_mount.h>
 
-#ifdef __linux__
-int
-lchflags(const char *path, unsigned long flags)
-{
-        struct stat psb;
-
-        if (rump_sys_lstat(path, &psb) == -1)
-                return -1;
-        if (S_ISLNK(psb.st_mode)) {
-                return 0;
-        }
-        return (rump_sys_chflags(path, flags));
-}
-#endif
-
-int chflags(const char *path, u_long flags);
-int __wrap_chflags(const char *path, u_long flags);
-#ifdef __FreeBSD__
-int lchflags(const char *path, int flags);
-int __wrap_lchflags(const char *path, int flags);
-#else
-int lchflags(const char *path, u_long flags);
-int __wrap_lchflags(const char *path, u_long flags);
-#endif
-
-int
-__wrap_chflags(const char *path, u_long flags)
-{
-
-	return rump_sys_chflags(path, flags);
-}
-
-int
-#ifdef __FreeBSD__
-__wrap_lchflags(const char *path, int flags)
-#else
-__wrap_lchflags(const char *path, u_long flags)
-#endif
-{
-
-	return rump_sys_lchflags(path, flags);
-}
-
 int
 main(int argc, char *argv[])
 {
@@ -196,7 +153,7 @@ main(int argc, char *argv[])
 		err(1, "fts_open");
 
 	for (rval = 0; (p = fts_read(ftsp)) != NULL;) {
-		change_flags = chflags;
+		change_flags = rump_sys_chflags;
 		switch (p->fts_info) {
 		case FTS_D:
 			if (Rflag)		/* Change it at FTS_DP. */
@@ -225,7 +182,7 @@ main(int argc, char *argv[])
 			 * use lchflags only for FTS_SL and should use chflags
 			 * for others.
 			 */
-			change_flags = lchflags;
+			change_flags = rump_sys_lchflags;
 			break;
 		case FTS_SLNONE:		/* Ignore. */
 			/*
