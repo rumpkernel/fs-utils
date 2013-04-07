@@ -63,6 +63,10 @@
 #define TM_YEAR_BASE (1900)
 #endif
 
+#ifndef DEFFILEMODE
+#define DEFFILEMODE 0666
+#endif
+
 #define FSU_TOUCH_ACCESS_TIME (0x01)
 #define FSU_TOUCH_NO_CREAT (FSU_TOUCH_ACCESS_TIME<<1)
 #define FSU_TOUCH_CHANGE_LINK (FSU_TOUCH_NO_CREAT<<1)
@@ -297,7 +301,7 @@ stime_file(char *fname, struct timeval *tvp)
 
 	if (rump_sys_stat(fname, &sb))
 		warn("%s", fname);
-#ifdef __linux__
+#ifndef HAVE_STRUCT_STAT_ST_ATIMESPEC
         tvp[0].tv_sec = sb.st_atime;
         tvp[0].tv_usec = 0;
         tvp[1].tv_sec = sb.st_mtime;
