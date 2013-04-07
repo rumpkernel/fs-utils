@@ -80,6 +80,10 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 #define STAT_HAS_FLAGS 0
 #endif
 
+#ifndef S_ISTXT
+#define S_ISTXT S_ISVTX
+#endif
+
 #ifdef __linux__
 #define __unused
 #endif
