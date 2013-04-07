@@ -155,7 +155,7 @@ fsu_touch(const char *filename, char *rtime, char *ttime,
 	}
 
 	if (!(flags & FSU_TOUCH_ACCESS_TIME)) {
-#ifdef __linux__
+#ifndef HAVE_STRUCT_STAT_ST_ATIMESPEC
                 tv[0].tv_sec = sb.st_atime;
                 tv[0].tv_usec = 0;
 #else
@@ -163,7 +163,7 @@ fsu_touch(const char *filename, char *rtime, char *ttime,
 #endif
         }
 	if (!(flags & FSU_TOUCH_CHANGE_MOD_TIME)) {
-#ifdef __linux__
+#ifndef HAVE_STRUCT_STAT_ST_ATIMESPEC
                 tv[1].tv_sec = sb.st_mtime;
                 tv[1].tv_usec = 0;
 #else

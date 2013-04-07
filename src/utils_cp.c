@@ -88,7 +88,7 @@ set_utimes(const char *file, struct stat *fs)
 {
     static struct timeval tv[2];
 
-#ifdef __linux__
+#ifndef HAVE_STRUCT_STAT_ST_ATIMESPEC
     tv[0].tv_sec = fs->st_atime;
     tv[0].tv_usec = 0;
     tv[1].tv_sec = fs->st_mtime;
@@ -293,7 +293,7 @@ setfile(struct stat *fs, int fd)
 		warn("chmod: %s", to.p_path);
 		rval = 1;
 	}
-#ifndef __linux__
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	if (!islink && !Nflag) {
 		unsigned long fflags = fs->st_flags;
 		/*

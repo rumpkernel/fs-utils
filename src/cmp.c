@@ -55,15 +55,10 @@ __RCSID("$NetBSD: cmp.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include "ls.h"
 #include "extern_ls.h"
 
-#ifdef __linux__
+#ifndef HAVE_STRUCT_STAT_ST_ATIMESPEC
 #define ATIMENSEC_CMP(x, op, y) ((x)->st_atime op (y)->st_atime)
 #define CTIMENSEC_CMP(x, op, y) ((x)->st_ctime op (y)->st_ctime)
 #define MTIMENSEC_CMP(x, op, y) ((x)->st_mtime op (y)->st_mtime)
-#elif defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) || \
-    defined(_XOPEN_SOURCE) || defined(__NetBSD__)
-#define ATIMENSEC_CMP(x, op, y) ((x)->st_atimensec op (y)->st_atimensec)
-#define CTIMENSEC_CMP(x, op, y) ((x)->st_ctimensec op (y)->st_ctimensec)
-#define MTIMENSEC_CMP(x, op, y) ((x)->st_mtimensec op (y)->st_mtimensec)
 #else
 #define ATIMENSEC_CMP(x, op, y) \
 	((x)->st_atimespec.tv_nsec op (y)->st_atimespec.tv_nsec)
