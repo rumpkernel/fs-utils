@@ -67,9 +67,7 @@ __RCSID("$NetBSD: mkfifo.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #define mkfifo(a, b) rump_sys_mkfifo(a, b)
 
 
-int		main __P((int, char **));
-
-static void usage __P((void));
+static void usage(void);
 
 int
 main(int argc, char *argv[])
@@ -120,8 +118,8 @@ main(int argc, char *argv[])
 	exit(exitval);
 }
 
-void
-usage()
+static void
+usage(void)
 {
 
 	(void)fprintf(stderr, "usage: %s %s [-m mode] fifoname ...\n",
