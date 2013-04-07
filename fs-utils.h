@@ -17,6 +17,10 @@
 # endif
 #endif
 
+#ifndef __dead
+#define __dead __attribute__((noreturn))
+#endif
+
 #include <sys/types.h>
 
 #endif /* FSUTILS_H_ */
