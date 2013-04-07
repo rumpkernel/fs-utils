@@ -12410,7 +12410,10 @@ ac_fn_c_check_member "$LINENO" "struct tm" "tm_gmtoff" "ac_cv_member_struct_tm_t
 "
 if test "x$ac_cv_member_struct_tm_tm_gmtoff" = xyes; then :
 
-$as_echo "#define HAVE_TM_GMTOFF 1" >>confdefs.h
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_TM_TM_GMTOFF 1
+_ACEOF
+
 
 fi
 
@@ -12418,7 +12421,10 @@ ac_fn_c_check_member "$LINENO" "struct dirent" "d_namlen" "ac_cv_member_struct_d
 "
 if test "x$ac_cv_member_struct_dirent_d_namlen" = xyes; then :
 
-$as_echo "#define HAVE_DIRENT_D_NAMLEN 1" >>confdefs.h
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_DIRENT_D_NAMLEN 1
+_ACEOF
+
 
 fi
 
@@ -12426,7 +12432,32 @@ ac_fn_c_check_member "$LINENO" "struct dirent" "d_ino" "ac_cv_member_struct_dire
 "
 if test "x$ac_cv_member_struct_dirent_d_ino" = xyes; then :
 
-$as_echo "#define HAVE_DIRENT_D_INO 1" >>confdefs.h
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_DIRENT_D_INO 1
+_ACEOF
+
+
+fi
+
+ac_fn_c_check_member "$LINENO" "struct stat" "st_atimespec" "ac_cv_member_struct_stat_st_atimespec" "#include <sys/stat.h>
+"
+if test "x$ac_cv_member_struct_stat_st_atimespec" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_STAT_ST_ATIMESPEC 1
+_ACEOF
+
+
+fi
+
+ac_fn_c_check_member "$LINENO" "struct stat" "st_flags" "ac_cv_member_struct_stat_st_flags" "#include <sys/stat.h>
+"
+if test "x$ac_cv_member_struct_stat_st_flags" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_STAT_ST_FLAGS 1
+_ACEOF
+
 
 fi
 

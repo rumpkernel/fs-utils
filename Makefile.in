@@ -60,13 +60,12 @@ target_triplet = @target@
 @ENABLE_NFS_TRUE@		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
 
 bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
-	fsu_diff$(EXEEXT) fsu_dir$(EXEEXT) fsu_ecp$(EXEEXT) \
-	fsu_exec$(EXEEXT) fsu_find$(EXEEXT) fsu_ln$(EXEEXT) \
-	fsu_ls$(EXEEXT) fsu_mkdir$(EXEEXT) fsu_mv$(EXEEXT) \
-	fsu_rm$(EXEEXT) fsu_rmdir$(EXEEXT) fsu_stat$(EXEEXT) \
-	fsu_write$(EXEEXT) fsu_mknod$(EXEEXT) fsu_chflags$(EXEEXT) \
-	fsu_du$(EXEEXT) fsu_mkfifo$(EXEEXT) fsu_touch$(EXEEXT) \
-	fsu_chown$(EXEEXT)
+	fsu_diff$(EXEEXT) fsu_ecp$(EXEEXT) fsu_exec$(EXEEXT) \
+	fsu_find$(EXEEXT) fsu_ln$(EXEEXT) fsu_ls$(EXEEXT) \
+	fsu_mkdir$(EXEEXT) fsu_mv$(EXEEXT) fsu_rm$(EXEEXT) \
+	fsu_rmdir$(EXEEXT) fsu_stat$(EXEEXT) fsu_write$(EXEEXT) \
+	fsu_mknod$(EXEEXT) fsu_chflags$(EXEEXT) fsu_du$(EXEEXT) \
+	fsu_mkfifo$(EXEEXT) fsu_touch$(EXEEXT) fsu_chown$(EXEEXT)
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
@@ -177,9 +176,6 @@ fsu_cp_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_diff_OBJECTS = src/fsu_diff.$(OBJEXT)
 fsu_diff_OBJECTS = $(am_fsu_diff_OBJECTS)
 fsu_diff_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am_fsu_dir_OBJECTS = src/fsu_dir.$(OBJEXT)
-fsu_dir_OBJECTS = $(am_fsu_dir_OBJECTS)
-fsu_dir_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_du_OBJECTS = src/du.$(OBJEXT)
 fsu_du_OBJECTS = $(am_fsu_du_OBJECTS)
 fsu_du_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -266,18 +262,18 @@ am__v_CCLD_1 =
 SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_diff_SOURCES) \
-	$(fsu_dir_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
-	$(fsu_exec_SOURCES) $(fsu_find_SOURCES) $(fsu_ln_SOURCES) \
-	$(fsu_ls_SOURCES) $(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
+	$(fsu_du_SOURCES) $(fsu_ecp_SOURCES) $(fsu_exec_SOURCES) \
+	$(fsu_find_SOURCES) $(fsu_ln_SOURCES) $(fsu_ls_SOURCES) \
+	$(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
 DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_diff_SOURCES) \
-	$(fsu_dir_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
-	$(fsu_exec_SOURCES) $(fsu_find_SOURCES) $(fsu_ln_SOURCES) \
-	$(fsu_ls_SOURCES) $(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
+	$(fsu_du_SOURCES) $(fsu_ecp_SOURCES) $(fsu_exec_SOURCES) \
+	$(fsu_find_SOURCES) $(fsu_ln_SOURCES) $(fsu_ls_SOURCES) \
+	$(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
@@ -487,6 +483,8 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
 	lib/stat_flags.c $(am__append_2)
 
+#bin_PROGRAMS+= fsu_dir
+
 #LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
 #OSNAME=	$(shell uname -s)
 #ifeq ($(OSNAME),Linux)
@@ -508,8 +506,9 @@ fsu_cp_SOURCES = src/cp.c src/utils_cp.c
 fsu_cp_LDADD = $(binlibs)
 fsu_diff_SOURCES = src/fsu_diff.c
 fsu_diff_LDADD = $(binlibs)
-fsu_dir_SOURCES = src/fsu_dir.c
-fsu_dir_LDADD = $(binlibs)
+
+#fsu_dir_SOURCES= src/fsu_dir.c
+#fsu_dir_LDADD= $(binlibs)
 fsu_du_SOURCES = src/du.c
 fsu_du_LDADD = $(binlibs)
 fsu_ecp_SOURCES = src/fsu_ecp.c src/fsu_flist.c
@@ -769,11 +768,6 @@ src/fsu_diff.$(OBJEXT): src/$(am__dirstamp) \
 fsu_diff$(EXEEXT): $(fsu_diff_OBJECTS) $(fsu_diff_DEPENDENCIES) $(EXTRA_fsu_diff_DEPENDENCIES) 
 	@rm -f fsu_diff$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(fsu_diff_OBJECTS) $(fsu_diff_LDADD) $(LIBS)
-src/fsu_dir.$(OBJEXT): src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-fsu_dir$(EXEEXT): $(fsu_dir_OBJECTS) $(fsu_dir_DEPENDENCIES) $(EXTRA_fsu_dir_DEPENDENCIES) 
-	@rm -f fsu_dir$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(fsu_dir_OBJECTS) $(fsu_dir_LDADD) $(LIBS)
 src/du.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 fsu_du$(EXEEXT): $(fsu_du_OBJECTS) $(fsu_du_DEPENDENCIES) $(EXTRA_fsu_du_DEPENDENCIES) 
 	@rm -f fsu_du$(EXEEXT)
@@ -918,7 +912,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_option.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_cat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_diff.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_dir.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_ecp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_exec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_flist.Po@am__quote@
