@@ -441,7 +441,7 @@ printtype(u_int mode)
 	case S_IFSOCK:
 		(void)putchar('=');
 		return (1);
-#ifndef __linux__
+#ifdef S_IFWHT
         case S_IFWHT:
 		(void)putchar('%');
 		return (1);
