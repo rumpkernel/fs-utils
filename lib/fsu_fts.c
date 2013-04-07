@@ -735,7 +735,7 @@ fsu_fts_build(FSU_FTS *sp, int type)
 	     (dp = fsu_readdir(dirp)) != NULL;) {
 		if (!ISSET(FTS_SEEDOT) && ISDOT(dp->d_name))
 			continue;
-#if defined(HAVE_DIRENT_D_NAMLEN)
+#if defined(HAVE_STRUCT_DIRENT_D_NAMLEN)
 		dnamlen = dp->d_namlen;
 #else
 		dnamlen = strlen(dp->d_name);

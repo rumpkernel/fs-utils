@@ -83,15 +83,9 @@ AC_CHECK_DECL([optreset],
 	[AC_DEFINE(HAVE_GETOPT_OPTRESET, 1, [define for getopt/optreset])],,
 	[#include <getopt.h>])
 
-AC_CHECK_MEMBER([struct tm.tm_gmtoff],
-	[AC_DEFINE(HAVE_TM_GMTOFF, 1, [define if struct tm has tm_gmtoff])],,
-	[#include <time.h>])
-AC_CHECK_MEMBER([struct dirent.d_namlen],
-	[AC_DEFINE(HAVE_DIRENT_D_NAMLEN, 1, [define if struct dirent has d_namlen])],,
-	[#include <dirent.h>])
-AC_CHECK_MEMBER([struct dirent.d_ino],
-	[AC_DEFINE(HAVE_DIRENT_D_INO, 1, [define if struct dirent has d_ino])],,
-	[#include <dirent.h>])
+AC_CHECK_MEMBERS([struct tm.tm_gmtoff],,,[#include <time.h>])
+AC_CHECK_MEMBERS([struct dirent.d_namlen],,,[#include <dirent.h>])
+AC_CHECK_MEMBERS([struct dirent.d_ino],,,[#include <dirent.h>])
 
 EXTRA_LIBS=""
 AS_CASE([$target_os],

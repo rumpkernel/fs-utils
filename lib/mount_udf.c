@@ -145,7 +145,7 @@ mount_udf_parseargs(int argc, char **argv,
 		return 1;
 
 	if (!set_gmtoff) {
-#ifdef HAVE_TM_GMTOFF
+#ifdef HAVE_STRUCT_TM_TM_GMTOFF
 		time_t	 now;
 		struct tm *tm;
 
