@@ -65,7 +65,7 @@ __RCSID("$NetBSD: rm.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#ifdef __linux__
+#ifndef S_IFWHT
 #define S_IFWHT (0)
 #define S_ISWHT(x) (0)
 #endif

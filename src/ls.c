@@ -590,7 +590,7 @@ display(FTSENT *p, FTSENT *list)
 					maxuser = ulen;
 				if ((glen = strlen(group)) > maxgroup)
 					maxgroup = glen;
-#ifndef __linux__
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 				if (f_flags) {
 					flags =
 					    flags_to_string((u_long)sp->st_flags, "-");
