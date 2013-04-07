@@ -23,7 +23,10 @@ AC_CHECK_LIB([bsd], [strlcpy])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([util], [forkpty])
 AC_CHECK_LIB([socket], [socket])
-AC_CHECK_LIB([rt], [nanosleep])
+
+AC_TRY_LINK_FUNC([nanosleep],,
+        AC_CHECK_LIB([rt], [nanosleep])
+)
 
 # Checks for header files.
 AC_CHECK_HEADERS([err.h sys/cdefs.h])
