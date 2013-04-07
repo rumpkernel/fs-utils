@@ -32,6 +32,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)main.c	8.4 (Berkeley) 5/4/95";
@@ -171,7 +173,7 @@ main(int argc, char *argv[])
 	exit(find_execute(find_formplan(argv), start));
 }
 
-static void
+static void __dead
 usage(void)
 {
 
