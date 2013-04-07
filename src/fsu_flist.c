@@ -139,6 +139,7 @@ static FSU_FENT
 	FSU_FENT *child;
 	int rv;
 	bool is_child_of_slash;
+	size_t dnamelen;
 
 	is_child_of_slash = (parent->path[0] == '/' && parent->path[1] == '\0');
 
@@ -149,21 +150,16 @@ static FSU_FENT
 	}
 
 	child->parent = parent;
+#ifndef HAVE_STRUCT_DIRENT_D_NAMLEN
+	dnamelen = strlen(dent->d_name);
+#else
+	dnamelen = dent->d_namlen;
+#endif
 
 	if (is_child_of_slash)
-		child->pathlen = parent->pathlen +
-#ifdef __linux__
-		strlen(dent->d_name);
-#else
-		dent->d_namlen;
-#endif
+		child->pathlen = parent->pathlen + dnamelen;
 	else
-		child->pathlen = parent->pathlen + 1 +
-#ifdef __linux__
-		strlen(dent->d_name);
-#else
-		dent->d_namlen;
-#endif
+		child->pathlen = parent->pathlen + 1 + dnamelen;
 
 	child->path = malloc(child->pathlen + 1);
 	if (child->path == NULL) {
@@ -185,12 +181,7 @@ static FSU_FENT
 		return NULL;
 	}
 
-	child->filename = child->path + child->pathlen -
-#ifdef __linux__
-		strlen(dent->d_name);
-#else
-		dent->d_namlen;
-#endif
+	child->filename = child->path + child->pathlen - dnamelen;
 	child->childno = 0;
 
 	if (flags & FSU_FLIST_REALFS) {
