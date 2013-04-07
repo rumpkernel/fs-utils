@@ -220,7 +220,7 @@ main(int argc, char *argv[])
 			case FTS_SLNONE:
 				/* nothing */
 				break;
-#ifndef __linux__
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 			default:
 				if (p->fts_statp->st_flags & UF_NODUMP) {
 					fts_set(fts, p, FTS_SKIP);

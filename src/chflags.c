@@ -241,7 +241,7 @@ main(int argc, char *argv[])
 		if (oct)
 			newflags = set;
 		else {
-#ifdef __linux__
+#ifndef HAVE_STRUCT_STAT_ST_FLAGS
                         newflags = 0;
 #else
 			newflags = p->fts_statp->st_flags;
