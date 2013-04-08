@@ -51,6 +51,10 @@
 #include "fsu_compat.h"
 #endif
 
+#ifdef HAVE_SYS_MKDEV_H
+#include <sys/mkdev.h>
+#endif
+
 #include <fsu_utils.h>
 #include <fsu_mount.h>
 #include <rump/rump_syscalls.h>
@@ -565,7 +569,7 @@ format1(const struct stat *st,
     int flags, int size, int prec, int ofmt,
     int hilo, int what, int quiet)
 {
-	u_int64_t data;
+	uint64_t data;
 	char *stmp, lfmt[24], tmp[20];
 	const char *sdata;
 	char smode[12], sid[12], path[PATH_MAX + 4], visbuf[PATH_MAX * 4 + 4];
@@ -1124,7 +1128,7 @@ format1(const struct stat *st,
 	 * for some forms.
 	 */
 	if (small && ofmt != FMTF_DECIMAL)
-		data = (u_int32_t)data;
+		data = (uint32_t)data;
 
 	/*
 	 * The four "numeric" output forms.
