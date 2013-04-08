@@ -26,7 +26,7 @@ noinst_HEADERS+= lib/filesystems.h lib/fs_args.h lib/fsu_alias.h	\
 	lib/mount_msdos.h lib/mount_nfs.h lib/mount_ntfs.h		\
 	lib/mountprog.h lib/mount_smbfs.h lib/mount_sysvbfs.h		\
 	lib/mount_tmpfs.h lib/mount_udf.h lib/mount_v7fs.h lib/nb_fs.h	\
-	lib/nbstdlib.h lib/nbsysstat.h lib/net.h lib/pathnames.h	\
+	lib/nbsysstat.h lib/net.h lib/pathnames.h			\
 	lib/rpc.h lib/rpcv2.h lib/rump_syspuffs.h
 
 libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\

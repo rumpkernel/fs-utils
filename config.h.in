@@ -12,6 +12,9 @@
 /* define for getopt/optreset */
 #undef HAVE_GETOPT_OPTRESET
 
+/* Define to 1 if you have the `getprogname' function. */
+#undef HAVE_GETPROGNAME
+
 /* Define to 1 if you have the `humanize_number' function. */
 #undef HAVE_HUMANIZE_NUMBER
 
@@ -74,6 +77,9 @@
 
 /* Define to 1 if `tm_gmtoff' is a member of `struct tm'. */
 #undef HAVE_STRUCT_TM_TM_GMTOFF
+
+/* Define to 1 if you have the `strvis' function. */
+#undef HAVE_STRVIS
 
 /* Define to 1 if you have the <sys/cdefs.h> header file. */
 #undef HAVE_SYS_CDEFS_H
