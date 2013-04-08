@@ -63,6 +63,9 @@
 /* Define to 1 if you have the `strmode' function. */
 #undef HAVE_STRMODE
 
+/* Define to 1 if you have the `strsep' function. */
+#undef HAVE_STRSEP
+
 /* Define to 1 if `d_ino' is a member of `struct dirent'. */
 #undef HAVE_STRUCT_DIRENT_D_INO
 
