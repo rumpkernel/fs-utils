@@ -19,7 +19,6 @@ AC_PROG_LIBTOOL
 AC_SYS_LARGEFILE
 
 # Checks for libraries.
-AC_CHECK_LIB([bsd], [strlcpy])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([util], [forkpty])
 AC_CHECK_LIB([socket], [socket])
@@ -59,16 +58,7 @@ AC_C_BIGENDIAN
 #AC_TYPE_UINT8_T
 
 # Checks for library functions.
-#AC_FUNC_CHOWN
-#AC_FUNC_FORK
-#AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
-#AC_HEADER_MAJOR
-#AC_FUNC_MALLOC
-#AC_FUNC_MBRTOWC
-#AC_FUNC_MKTIME
-#AC_FUNC_MMAP
-#AC_FUNC_REALLOC
-#AC_CHECK_FUNCS([atexit gettimeofday isascii iswprint lchown localeconv memmove memset mkdir mkfifo munmap realpath rmdir setenv setlocale socket strcasecmp strchr strcspn strdup strerror strrchr strspn strtol strtoul wcwidth])
+AC_CHECK_FUNCS([humanize_number setmode strmode strlcpy strvis])
 
 AC_ARG_ENABLE([nfs],
 	      [ --enable-nfs Enable Network File System],

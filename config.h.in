@@ -12,14 +12,14 @@
 /* define for getopt/optreset */
 #undef HAVE_GETOPT_OPTRESET
 
+/* Define to 1 if you have the `humanize_number' function. */
+#undef HAVE_HUMANIZE_NUMBER
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
 /* define if lchmod() is supported */
 #undef HAVE_LCHMOD
-
-/* Define to 1 if you have the `bsd' library (-lbsd). */
-#undef HAVE_LIBBSD
 
 /* Define to 1 if you have the `dl' library (-ldl). */
 #undef HAVE_LIBDL
@@ -39,6 +39,9 @@
 /* Define to 1 if you have the <rump/rump.h> header file. */
 #undef HAVE_RUMP_RUMP_H
 
+/* Define to 1 if you have the `setmode' function. */
+#undef HAVE_SETMODE
+
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
@@ -50,6 +53,12 @@
 
 /* Define to 1 if you have the <string.h> header file. */
 #undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strlcpy' function. */
+#undef HAVE_STRLCPY
+
+/* Define to 1 if you have the `strmode' function. */
+#undef HAVE_STRMODE
 
 /* Define to 1 if `d_ino' is a member of `struct dirent'. */
 #undef HAVE_STRUCT_DIRENT_D_INO

@@ -32,6 +32,8 @@
 
 #include "fs-utils.h"
 
+#ifndef HAVE_HUMANIZE_NUMBER
+
 #if defined(LIBC_SCCS) && !defined(lint)
 __RCSID("$NetBSD: humanize_number.c,v 1.1 2009/11/05 14:39:16 stacktic Exp $");
 #endif /* LIBC_SCCS and not lint */
@@ -43,7 +45,6 @@ __RCSID("$NetBSD: humanize_number.c,v 1.1 2009/11/05 14:39:16 stacktic Exp $");
 #include <locale.h>
 
 #include "fsu_compat.h"
-#include "nbstdlib.h"
 
 int
 humanize_number(char *buf, size_t len, int64_t bytes,
@@ -146,3 +147,5 @@ humanize_number(char *buf, size_t len, int64_t bytes,
 
 	return (r);
 }
+
+#endif /* !HAVE_HUMANIZE_NUMBER */

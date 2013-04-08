@@ -37,7 +37,7 @@ libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 	lib/mount_kernfs.c						\
 	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c	\
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c	\
-	lib/stat_flags.c
+	lib/stat_flags.c lib/compat.c lib/humanize_number.c
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 

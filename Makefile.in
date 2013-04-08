@@ -129,7 +129,8 @@ am__libfsu_la_SOURCES_DIST = lib/fsu_mount.c lib/fsu_alias.c \
 	lib/mount_udf.c lib/mount_sysvbfs.c lib/mount_v7fs.c \
 	lib/mount_kernfs.c lib/pathadj.c lib/fattr.c lib/getmntopts.c \
 	lib/fsu_fts.c lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c \
-	lib/getbsize.c lib/stat_flags.c lib/mount_nfs.c lib/snprintb.c \
+	lib/getbsize.c lib/stat_flags.c lib/compat.c \
+	lib/humanize_number.c lib/mount_nfs.c lib/snprintb.c \
 	lib/udp_xfer.c lib/rpc.c lib/net.c lib/getnfsargs_small.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @ENABLE_NFS_TRUE@am__objects_1 = lib/mount_nfs.lo lib/snprintb.lo \
@@ -143,7 +144,8 @@ am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/mount_kernfs.lo lib/pathadj.lo lib/fattr.lo \
 	lib/getmntopts.lo lib/fsu_fts.lo lib/fsu_dir.lo \
 	lib/fsu_file.lo lib/fsu_str2arg.lo lib/getbsize.lo \
-	lib/stat_flags.lo $(am__objects_1)
+	lib/stat_flags.lo lib/compat.lo lib/humanize_number.lo \
+	$(am__objects_1)
 libfsu_la_OBJECTS = $(am_libfsu_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -481,7 +483,8 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/mount_sysvbfs.c lib/mount_v7fs.c lib/mount_kernfs.c \
 	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
-	lib/stat_flags.c $(am__append_2)
+	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
+	$(am__append_2)
 
 #bin_PROGRAMS+= fsu_dir
 
@@ -675,6 +678,9 @@ lib/fsu_file.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/fsu_str2arg.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/getbsize.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/stat_flags.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/compat.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/humanize_number.lo: lib/$(am__dirstamp) \
+	lib/$(DEPDIR)/$(am__dirstamp)
 lib/mount_nfs.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/snprintb.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/udp_xfer.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
@@ -867,6 +873,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/compat.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/fattr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/fsu_alias.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/fsu_dir.Plo@am__quote@
@@ -877,6 +884,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/getbsize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/getmntopts.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/getnfsargs_small.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/humanize_number.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_cd9660.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_efs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_ext2fs.Plo@am__quote@

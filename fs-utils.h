@@ -23,4 +23,27 @@
 
 #include <sys/types.h>
 
+/* compat funcs */
+
+#ifndef HAVE_SETMODE
+void *setmode(const char *);
+mode_t getmode(const void *, mode_t);
+#endif
+
+#ifndef HAVE_STRMODE
+void strmode(mode_t, char *);
+#endif
+
+#ifndef HAVE_STRLCPY
+size_t strlcpy(char *, const char *, size_t);
+size_t strlcat(char *, const char *, size_t);
+#endif
+
+#ifndef HAVE_STRVIS
+char *vis(char *, int, int, int);
+int strvis(char *, const char *, int);
+int strvisx(char *, const char *, size_t, int);
+int strnvis(char *, const char *, size_t, int);
+#endif
+
 #endif /* FSUTILS_H_ */

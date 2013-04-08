@@ -51,15 +51,6 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#if defined(__NetBSD__) || defined (__FreeBSD__)
-#include <vis.h>
-#elif defined(__linux__)
-/*#include <bsd/vis.h>*/
-#else
-#if HAVE_NBCOMPAT_H
-#include <nbcompat.h>
-#endif
-#endif
 
 #ifndef SIZE_T_MAX
 #define SIZE_T_MAX UINT_MAX /*(0xffffffff)*/
@@ -74,22 +65,10 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include "ls.h"
 #include "extern_ls.h"
 
-#ifndef VIS_OCTAL /* From include/vis.h */
-/*
- * to select alternate encoding format
- */
-#define	VIS_OCTAL	0x0001	/* use octal \ddd format */
-#define	VIS_CSTYLE	0x0002	/* use \[nrft0..] where appropiate */
-
-/*
- * to alter set of characters encoded (default is to encode all
- * non-graphic except space, tab, and newline).
- */
-#define	VIS_SP		0x0004	/* also encode space */
-#define	VIS_TAB		0x0008	/* also encode tab */
-#define	VIS_NL		0x0010	/* also encode newline */
-#define	VIS_WHITE	(VIS_SP | VIS_TAB | VIS_NL)
-#define	VIS_SAFE	0x0020	/* only encode "unsafe" characters */
+#ifdef HAVE_STRNVIS
+#include <vis.h>
+#else
+#include "fsu_compat.h"
 #endif
 
 int
