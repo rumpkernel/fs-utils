@@ -84,7 +84,8 @@ AC_CHECK_MEMBERS([struct stat.st_flags],,,[#include <sys/stat.h>])
 
 EXTRA_LIBS=""
 AS_CASE([$target_os],
-	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"])
+	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"],
+	[AC_MSG_ERROR([Conversions for $target_os data types not available])])
 AC_SUBST([EXTRA_LIBS])
 
 AC_CACHE_CHECK([whether linker requires --no-as-needed],
