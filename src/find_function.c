@@ -213,7 +213,7 @@ find_parsenum(PLAN *plan, const char *option, const char *vp, char *endch)
 	 * and endchar points to the beginning of the string we know we have
 	 * a syntax error.
 	 */
-	value = strtoq(str, &endchar, 10);
+	value = (int64_t)strtoll(str, &endchar, 10);
 	if (value == 0 && endchar == str)
 		errx(1, "%s: %s: illegal numeric value", option, vp);
 	if (endchar[0] && (endch == NULL || endchar[0] != *endch))
