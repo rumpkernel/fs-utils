@@ -80,6 +80,7 @@ AC_CHECK_MEMBERS([struct dirent.d_namlen],,,[#include <dirent.h>])
 AC_CHECK_MEMBERS([struct dirent.d_ino],,,[#include <dirent.h>])
 AC_CHECK_MEMBERS([struct stat.st_atimespec],,,[#include <sys/stat.h>])
 AC_CHECK_MEMBERS([struct stat.st_flags],,,[#include <sys/stat.h>])
+AC_CHECK_MEMBERS([struct stat.st_gen],,,[#include <sys/stat.h>])
 
 EXTRA_LIBS=""
 AS_CASE([$target_os],

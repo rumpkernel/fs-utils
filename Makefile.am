@@ -55,7 +55,7 @@ endif
 bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp		\
 	fsu_exec fsu_find fsu_ln fsu_ls fsu_mkdir fsu_mv fsu_rm		\
 	fsu_rmdir fsu_write fsu_mknod fsu_chflags fsu_du	\
-	fsu_mkfifo fsu_touch fsu_chown
+	fsu_mkfifo fsu_touch fsu_chown fsu_stat
 
 #LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
 #OSNAME=	$(shell uname -s)
@@ -132,6 +132,9 @@ fsu_touch_LDADD= $(binlibs)
 
 fsu_write_SOURCES= src/fsu_write.c
 fsu_write_LDADD= $(binlibs)
+
+fsu_stat_SOURCES= src/fsu_stat.c
+fsu_stat_LDADD= $(binlibs)
 
 #
 # man/
