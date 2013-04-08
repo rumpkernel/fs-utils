@@ -12088,7 +12088,7 @@ rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 
 # Checks for header files.
-for ac_header in err.h sys/cdefs.h
+for ac_header in err.h sys/cdefs.h sys/mkdev.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
