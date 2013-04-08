@@ -957,3 +957,29 @@ strvisx(char *dst, const char *src, size_t len, int flag)
 }
 
 #endif /* !HAVE_STRVIS */
+
+#ifndef HAVE_GETPROGNAME
+#include <string.h>
+
+const char *fsu_compat_progname;
+
+const char *
+getprogname(void)
+{
+
+	return (fsu_compat_progname);
+}
+
+void
+setprogname(const char *progname)
+{
+	const char *slash;
+
+	slash = strrchr(progname, '/');
+	if (!slash)
+		fsu_compat_progname = progname;
+	else
+		fsu_compat_progname = slash + 1;
+}
+
+#endif /* !HAVE_GETPROGNAME */
