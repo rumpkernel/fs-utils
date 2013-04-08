@@ -45,7 +45,6 @@ __RCSID("$NetBSD: getmntopts.c,v 1.1 2009/11/05 14:02:42 stacktic Exp $");
 #include <sys/mount.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdlib.h>

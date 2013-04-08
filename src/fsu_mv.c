@@ -37,7 +37,6 @@
 #include <nbcompat.h>
 #endif
 
-#include <err.h>
 #include <getopt.h>
 #include <stdint.h>
 #include <stdio.h>

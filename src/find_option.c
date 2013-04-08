@@ -43,7 +43,6 @@ __RCSID("$NetBSD: option.c,v 1.26 2007/02/06 15:33:22 perry Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

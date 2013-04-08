@@ -58,7 +58,7 @@ AC_C_BIGENDIAN
 #AC_TYPE_UINT8_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([getprogname humanize_number setmode strmode strlcpy strvis])
+AC_CHECK_FUNCS([getprogname humanize_number setmode strmode strlcpy strsep strvis])
 
 AC_ARG_ENABLE([nfs],
 	      [ --enable-nfs Enable Network File System],

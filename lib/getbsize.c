@@ -40,7 +40,6 @@ __RCSID("$NetBSD: getbsize.c,v 1.2 2009/11/06 11:47:41 stacktic Exp $");
 #endif /* not lint */
 
 #include <assert.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

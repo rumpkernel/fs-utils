@@ -46,7 +46,6 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>

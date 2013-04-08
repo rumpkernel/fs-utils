@@ -52,7 +52,6 @@ __RCSID("$NetBSD: mount_msdos.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #else
 #include "nb_fs.h"
 #endif
-#include <err.h>
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>

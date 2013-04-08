@@ -55,7 +55,6 @@ __RCSID("$NetBSD: chmod.c,v 1.3 2009/11/06 11:47:40 stacktic Exp $");
 #include <nbcompat.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>

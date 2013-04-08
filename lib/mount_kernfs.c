@@ -89,7 +89,6 @@ __RCSID("$NetBSD: mount_kernfs.c,v 1.25 2011/08/29 14:35:01 joerg Exp $");
 #include <sys/mount.h>
 #endif
 
-#include <err.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>

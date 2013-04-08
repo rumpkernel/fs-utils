@@ -30,7 +30,6 @@
 #include <sys/stat.h>
 
 #include <assert.h>
-#include <err.h>
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>

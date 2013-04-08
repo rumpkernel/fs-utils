@@ -70,7 +70,6 @@ __RCSID("$NetBSD: cp.c,v 1.2 2009/11/05 14:39:14 stacktic Exp $");
 #include <nbcompat.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>

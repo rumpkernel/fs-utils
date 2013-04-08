@@ -55,7 +55,6 @@ __RCSID("$NetBSD: mount_cd9660.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include <sys/param.h>
 #include <sys/mount.h>
 #endif
-#include <err.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

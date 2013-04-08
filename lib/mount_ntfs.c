@@ -51,7 +51,6 @@ __RCSID("$NetBSD: mount_ntfs.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #else
 #include "nb_fs.h"
 #endif
-#include <err.h>
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>

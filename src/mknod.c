@@ -50,7 +50,6 @@ __RCSID("$NetBSD: mknod.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #include <nbcompat.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdint.h>

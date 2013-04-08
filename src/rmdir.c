@@ -49,7 +49,6 @@ __RCSID("$NetBSD: rmdir.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <nbcompat.h>
 #endif
 
-#include <err.h>
 #include <locale.h>
 #include <stdint.h>
 #include <stdio.h>

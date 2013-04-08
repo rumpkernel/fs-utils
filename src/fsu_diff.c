@@ -34,7 +34,6 @@
 #endif
 
 #include <assert.h>
-#include <err.h>
 #include <fcntl.h>
 #include <getopt.h>
 #include <limits.h>

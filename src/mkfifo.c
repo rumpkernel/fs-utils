@@ -57,7 +57,6 @@ __RCSID("$NetBSD: mkfifo.c,v 1.2 2009/11/05 15:08:19 stacktic Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <err.h>
 
 #include <rump/rump_syscalls.h>
 

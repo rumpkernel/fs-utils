@@ -55,7 +55,6 @@ __RCSID("$NetBSD: chown.c,v 1.2 2009/11/06 11:47:42 stacktic Exp $");
 
 #include <ctype.h>
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <grp.h>

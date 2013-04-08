@@ -22,6 +22,7 @@
 #endif
 
 #include <sys/types.h>
+#include <stdint.h>
 
 /* compat funcs */
 
@@ -44,6 +45,19 @@ char *vis(char *, int, int, int);
 int strvis(char *, const char *, int);
 int strvisx(char *, const char *, size_t, int);
 int strnvis(char *, const char *, size_t, int);
+#endif
+
+#ifdef HAVE_ERR_H
+#include <err.h>
+#else
+void	err(int, const char *, ...);
+void	errx(int, const char *, ...);
+void	warn(const char *, ...);
+void	warnx(const char *, ...);
+#endif
+
+#ifndef HAVE_STRSEP
+char *strsep(char **, const char *);
 #endif
 
 #endif /* FSUTILS_H_ */

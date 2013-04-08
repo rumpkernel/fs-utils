@@ -50,7 +50,6 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 #include <sys/mount.h>
 
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <fnmatch.h>
 #include <grp.h>

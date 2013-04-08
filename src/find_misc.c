@@ -43,7 +43,6 @@ __RCSID("$NetBSD: misc.c,v 1.14 2006/10/11 19:51:10 apb Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

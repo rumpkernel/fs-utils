@@ -71,7 +71,6 @@ __RCSID("$NetBSD: getnfsargs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 
 #include <arpa/inet.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <netdb.h>

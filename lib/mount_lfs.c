@@ -55,7 +55,6 @@ __RCSID("$NetBSD: mount_lfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include "nb_fs.h"
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

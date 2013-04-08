@@ -48,7 +48,6 @@ __RCSID("$NetBSD: mount_udf.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #endif
 
 #include <assert.h>
-#include <err.h>
 #include <errno.h>
 #include <grp.h>
 #include <pwd.h>

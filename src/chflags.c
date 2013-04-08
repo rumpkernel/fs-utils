@@ -53,7 +53,6 @@ __RCSID("$NetBSD: chflags.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #include <nbcompat.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>

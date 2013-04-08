@@ -66,7 +66,6 @@ __RCSID("$NetBSD: mount_tmpfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #endif
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <grp.h>
 #include <mntopts.h>

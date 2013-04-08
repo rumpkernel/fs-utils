@@ -29,7 +29,6 @@
 #include "nb_fs.h"
 #endif
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 

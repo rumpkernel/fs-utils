@@ -40,7 +40,6 @@
 
 #include <assert.h>
 #include <dirent.h>
-#include <err.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

@@ -37,7 +37,6 @@ __RCSID("$NetBSD: fattr.c,v 1.3 2009/11/05 14:02:42 stacktic Exp $");
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
-#include <err.h>
 #include <grp.h>
 #include <pwd.h>
 #include <stdio.h>

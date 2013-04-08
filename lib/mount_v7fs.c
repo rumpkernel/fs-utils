@@ -70,7 +70,6 @@ __RCSID("$NetBSD: mount_v7fs.c,v 1.1 2011/06/27 11:52:58 uch Exp $");
 #include <sys/mount.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

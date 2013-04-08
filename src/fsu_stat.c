@@ -21,7 +21,7 @@ main(int argc, char *argv[])
 		errx(-1, NULL);
 	printf("Stating %s\n", argv[1]);
 	if (rump_sys_stat(argv[1], &sb) == -1)
-		err("stat failed");
+		err(1, "stat failed");
 	printf("File type:                ");
 
 	switch (sb.st_mode & S_IFMT) {

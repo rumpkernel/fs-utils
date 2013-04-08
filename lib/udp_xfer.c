@@ -41,7 +41,6 @@ __RCSID("$NetBSD: udp_xfer.c,v 1.1 2009/07/08 15:36:46 stacktic Exp $");
 #include <netinet/in.h>
 #include <sys/poll.h>
 #include <netdb.h>
-#include <err.h>
 
 typedef uint32_t n_long;
 #include <net.h>

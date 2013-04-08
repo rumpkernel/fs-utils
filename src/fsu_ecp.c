@@ -39,7 +39,6 @@
 #endif
 
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdint.h>

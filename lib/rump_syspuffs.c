@@ -36,7 +36,6 @@
 #include <sys/syslimits.h>
 
 #include <assert.h>
-#include <err.h>
 #include <paths.h>
 #include <puffs.h>
 #include <stdio.h>

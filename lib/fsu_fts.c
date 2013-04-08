@@ -63,7 +63,6 @@ __RCSID("$NetBSD: fsu_fts.c,v 1.3 2009/11/05 14:02:43 stacktic Exp $");
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <err.h>
 
 #include <rump/rump_syscalls.h>
 

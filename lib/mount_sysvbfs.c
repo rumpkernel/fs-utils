@@ -51,7 +51,6 @@ __RCSID("$NetBSD: mount_sysvbfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include <fs/sysvbfs/sysvbfs_args.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

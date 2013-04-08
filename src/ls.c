@@ -58,7 +58,6 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #include <sys/ioctl.h>
 
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <stdint.h>

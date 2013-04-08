@@ -46,7 +46,6 @@ __RCSID("$NetBSD: print.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <grp.h>
 #include <pwd.h>
