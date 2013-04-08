@@ -87,6 +87,8 @@ main(int argc, char *argv[])
 	int cur_arg, flags, rv;
 	char *rtime, *ttime;
 
+	setprogname(argv[0]);
+
 	ttime = rtime = NULL;
 
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
