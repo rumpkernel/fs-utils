@@ -63,9 +63,9 @@ bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_diff$(EXEEXT) fsu_ecp$(EXEEXT) fsu_exec$(EXEEXT) \
 	fsu_find$(EXEEXT) fsu_ln$(EXEEXT) fsu_ls$(EXEEXT) \
 	fsu_mkdir$(EXEEXT) fsu_mv$(EXEEXT) fsu_rm$(EXEEXT) \
-	fsu_rmdir$(EXEEXT) fsu_stat$(EXEEXT) fsu_write$(EXEEXT) \
-	fsu_mknod$(EXEEXT) fsu_chflags$(EXEEXT) fsu_du$(EXEEXT) \
-	fsu_mkfifo$(EXEEXT) fsu_touch$(EXEEXT) fsu_chown$(EXEEXT)
+	fsu_rmdir$(EXEEXT) fsu_write$(EXEEXT) fsu_mknod$(EXEEXT) \
+	fsu_chflags$(EXEEXT) fsu_du$(EXEEXT) fsu_mkfifo$(EXEEXT) \
+	fsu_touch$(EXEEXT) fsu_chown$(EXEEXT)
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
@@ -218,9 +218,6 @@ fsu_rm_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_rmdir_OBJECTS = src/rmdir.$(OBJEXT)
 fsu_rmdir_OBJECTS = $(am_fsu_rmdir_OBJECTS)
 fsu_rmdir_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am_fsu_stat_OBJECTS = src/fsu_stat.$(OBJEXT)
-fsu_stat_OBJECTS = $(am_fsu_stat_OBJECTS)
-fsu_stat_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_touch_OBJECTS = src/fsu_touch.$(OBJEXT)
 fsu_touch_OBJECTS = $(am_fsu_touch_OBJECTS)
 fsu_touch_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -268,8 +265,7 @@ SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_find_SOURCES) $(fsu_ln_SOURCES) $(fsu_ls_SOURCES) \
 	$(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
-	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
-	$(fsu_write_SOURCES)
+	$(fsu_rmdir_SOURCES) $(fsu_touch_SOURCES) $(fsu_write_SOURCES)
 DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_diff_SOURCES) \
@@ -277,8 +273,7 @@ DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
 	$(fsu_find_SOURCES) $(fsu_ln_SOURCES) $(fsu_ls_SOURCES) \
 	$(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
-	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
-	$(fsu_write_SOURCES)
+	$(fsu_rmdir_SOURCES) $(fsu_touch_SOURCES) $(fsu_write_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -486,8 +481,6 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
 	$(am__append_2)
 
-#bin_PROGRAMS+= fsu_dir
-
 #LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
 #OSNAME=	$(shell uname -s)
 #ifeq ($(OSNAME),Linux)
@@ -510,8 +503,6 @@ fsu_cp_LDADD = $(binlibs)
 fsu_diff_SOURCES = src/fsu_diff.c
 fsu_diff_LDADD = $(binlibs)
 
-#fsu_dir_SOURCES= src/fsu_dir.c
-#fsu_dir_LDADD= $(binlibs)
 fsu_du_SOURCES = src/du.c
 fsu_du_LDADD = $(binlibs)
 fsu_ecp_SOURCES = src/fsu_ecp.c src/fsu_flist.c
@@ -539,8 +530,6 @@ fsu_rm_SOURCES = src/rm.c
 fsu_rm_LDADD = $(binlibs)
 fsu_rmdir_SOURCES = src/rmdir.c
 fsu_rmdir_LDADD = $(binlibs)
-fsu_stat_SOURCES = src/fsu_stat.c
-fsu_stat_LDADD = $(binlibs)
 fsu_touch_SOURCES = src/fsu_touch.c
 fsu_touch_LDADD = $(binlibs)
 fsu_write_SOURCES = src/fsu_write.c
@@ -848,11 +837,6 @@ src/rmdir.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 fsu_rmdir$(EXEEXT): $(fsu_rmdir_OBJECTS) $(fsu_rmdir_DEPENDENCIES) $(EXTRA_fsu_rmdir_DEPENDENCIES) 
 	@rm -f fsu_rmdir$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(fsu_rmdir_OBJECTS) $(fsu_rmdir_LDADD) $(LIBS)
-src/fsu_stat.$(OBJEXT): src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-fsu_stat$(EXEEXT): $(fsu_stat_OBJECTS) $(fsu_stat_DEPENDENCIES) $(EXTRA_fsu_stat_DEPENDENCIES) 
-	@rm -f fsu_stat$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(fsu_stat_OBJECTS) $(fsu_stat_LDADD) $(LIBS)
 src/fsu_touch.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 fsu_touch$(EXEEXT): $(fsu_touch_OBJECTS) $(fsu_touch_DEPENDENCIES) $(EXTRA_fsu_touch_DEPENDENCIES) 
@@ -924,7 +908,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_exec.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_flist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_mv.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_stat.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_touch.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_write.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/ln.Po@am__quote@

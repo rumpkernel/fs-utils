@@ -54,10 +54,8 @@ endif
 
 bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp		\
 	fsu_exec fsu_find fsu_ln fsu_ls fsu_mkdir fsu_mv fsu_rm		\
-	fsu_rmdir fsu_stat fsu_write fsu_mknod fsu_chflags fsu_du	\
+	fsu_rmdir fsu_write fsu_mknod fsu_chflags fsu_du	\
 	fsu_mkfifo fsu_touch fsu_chown
-
-#bin_PROGRAMS+= fsu_dir
 
 #LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
 #OSNAME=	$(shell uname -s)
@@ -90,9 +88,6 @@ fsu_cp_LDADD= $(binlibs)
 
 fsu_diff_SOURCES= src/fsu_diff.c
 fsu_diff_LDADD= $(binlibs)
-
-#fsu_dir_SOURCES= src/fsu_dir.c
-#fsu_dir_LDADD= $(binlibs)
 
 fsu_du_SOURCES= src/du.c
 fsu_du_LDADD= $(binlibs)
@@ -131,9 +126,6 @@ fsu_rm_LDADD= $(binlibs)
 
 fsu_rmdir_SOURCES= src/rmdir.c
 fsu_rmdir_LDADD= $(binlibs)
-
-fsu_stat_SOURCES= src/fsu_stat.c
-fsu_stat_LDADD= $(binlibs)
 
 fsu_touch_SOURCES= src/fsu_touch.c
 fsu_touch_LDADD= $(binlibs)
