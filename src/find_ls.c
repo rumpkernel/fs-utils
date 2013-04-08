@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "from: @(#)ls.c	8.1 (Berkeley) 6/6/93";
@@ -56,6 +58,10 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 #define SECSPERDAY 86400
 #endif
 #include <unistd.h>
+
+#ifdef HAVE_SYS_MKDEV_H
+#include <sys/mkdev.h>
+#endif
 
 #include "find_find.h"
 

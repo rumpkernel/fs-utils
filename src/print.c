@@ -56,16 +56,10 @@ __RCSID("$NetBSD: print.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#ifdef __NetBSD__
-#include <tzfile.h>
-#include <util.h>
-#elif defined(__FreeBSD__)
-#include <libutil.h>
-#elif defined(__linux__)
-#if HAVE_NBCOMPAT_H
-#include <nbcompat.h>
-#endif
 #include "fsu_compat.h"
+
+#ifdef HAVE_SYS_MKDEV_H
+#include <sys/mkdev.h>
 #endif
 
 #ifndef DAYSPERNYEAR
@@ -111,6 +105,10 @@ printscol(DISPLAY *dp)
 		(void)putchar('\n');
 	}
 }
+
+#ifndef S_BLKSIZE
+#define S_BLKSIZE 512
+#endif
 
 void
 printlong(DISPLAY *dp)

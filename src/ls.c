@@ -75,6 +75,10 @@ __RCSID("$NetBSD: ls.c,v 1.4 2010/08/23 17:09:59 stacktic Exp $");
 #include "fsu_compat.h"
 #endif
 
+#ifdef HAVE_SYS_MKDEV_H
+#include <sys/mkdev.h>
+#endif
+
 #include "ls.h"
 #include "extern_ls.h"
 

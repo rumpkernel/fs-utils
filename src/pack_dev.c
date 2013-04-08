@@ -43,6 +43,10 @@ __RCSID("$NetBSD: pack_dev.c,v 1.1 2009/03/23 21:03:59 stacktic Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#ifdef HAVE_SYS_MKDEV_H
+#include <sys/mkdev.h>
+#endif
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
