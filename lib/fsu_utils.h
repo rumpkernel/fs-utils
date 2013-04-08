@@ -37,12 +37,11 @@
 #include <bsd/stdlib.h>
 #include <bsd/string.h>
 #include <bsd/unistd.h>
+#endif
 
 #define user_from_uid(a, b) (NULL)
 #define group_from_gid(a, b) (NULL)
 #define uid_from_user(a, b) (-1)
-
-#endif
 
 
 /* File Descriptor */
