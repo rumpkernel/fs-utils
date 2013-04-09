@@ -136,6 +136,11 @@ fsu_write_LDADD= $(binlibs)
 fsu_stat_SOURCES= src/fsu_stat.c
 fsu_stat_LDADD= $(binlibs)
 
+# hard linked aliases
+install-exec-hook:
+	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_get
+	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_put
+
 #
 # man/
 #
