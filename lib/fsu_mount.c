@@ -113,7 +113,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 	struct fsu_fsalias_s *alias;
 	struct mount_data_s mntd;
 	int idx, fflag, rv, verbose;
-	int ch;
+	int ch, stopopts;
 	char *mntopts, afsdev[MAXPATHLEN], *puffsexec, *specopts;
 	char *tmp;
 	char *fsdevice, *fstype;
@@ -128,10 +128,12 @@ fsu_mount(int *argc, char **argv[], int mode)
 	fsdevice = fstype = mntopts = puffsexec = specopts = NULL;
 	fst = NULL;
 	verbose = fflag = 0;
+	stopopts = 0;
 	memset(&mntd, 0, sizeof(mntd));
 	mntd.mntd_fsdevice = mntd.mntd_canon_dev;
 
 	rump_init();
+	opterr = 0;
 	/*
 	 * [-o mnt_args] [-t fstype] [-p puffsexec] fsdevice
 	 */
@@ -176,11 +178,15 @@ fsu_mount(int *argc, char **argv[], int mode)
 			break;
 		case '?':
 		default:
-			errno = EINVAL;
-			return -1;
+			--optind;
+			stopopts = 1;
+			break;
 		}
+		if (stopopts)
+			break;
 	}
 	idx = optind;
+	opterr = 1;
 	optind = 1;
 #ifdef HAVE_GETOPT_OPTRESET
 	optreset = 1;
