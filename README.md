@@ -10,9 +10,9 @@ image or device.  The advantage of fs-utils over similar projects such
 as mtools is supporting the usage of familiar Unix tools (`ls`, `cp`,
 `mv`, etc.) for a large number of file systems.
 
-Development is still in the early stages, but v0.01 is able to
+Development is still in the early stages, but the codebase is able to
 successfully access and modify a number of different types of file system
-images on a Linux host.
+images on Linux and Solaris-derived hosts.
 
 Supported File Systems
 ----------------------
