@@ -1419,7 +1419,7 @@ Optional Features:
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --disable-largefile     omit support for large files
- --enable-nfs Enable Network File System
+  --enable-nfs            Enable Network File System
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -12349,7 +12349,6 @@ else
 fi
 
 
-
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -12438,6 +12437,17 @@ if test "x$ac_cv_member_struct_stat_st_flags" = xyes; then :
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_STRUCT_STAT_ST_FLAGS 1
+_ACEOF
+
+
+fi
+
+ac_fn_c_check_member "$LINENO" "struct stat" "st_gen" "ac_cv_member_struct_stat_st_gen" "#include <sys/stat.h>
+"
+if test "x$ac_cv_member_struct_stat_st_gen" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_STAT_ST_GEN 1
 _ACEOF
 
 

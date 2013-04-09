@@ -78,6 +78,9 @@
 /* Define to 1 if `st_flags' is a member of `struct stat'. */
 #undef HAVE_STRUCT_STAT_ST_FLAGS
 
+/* Define to 1 if `st_gen' is a member of `struct stat'. */
+#undef HAVE_STRUCT_STAT_ST_GEN
+
 /* Define to 1 if `tm_gmtoff' is a member of `struct tm'. */
 #undef HAVE_STRUCT_TM_TM_GMTOFF
 
