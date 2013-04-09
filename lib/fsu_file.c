@@ -31,6 +31,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -133,7 +134,7 @@ FSU_FILE
 			rump_sys_unlink(fname);
 		}
 
-		rv = rump_sys_open(fname, 0666 & mask);
+		rv = rump_sys_open(fname, O_RDWR | O_CREAT, 0666 & mask);
 		if (rv == -1)
 			goto err;
 		file->fd_fd = rv;
@@ -143,7 +144,7 @@ FSU_FILE
 		file->fd_dirty = true;
 	} else if (mode[0] == 'a') {
 		if (!exists) {
-			rv = rump_sys_open(fname, 0666 & mask);
+			rv = rump_sys_open(fname, O_RDWR, 0666 & mask);
 			if (rv != 0)
 				goto err;
 			file->fd_fd = rv;
