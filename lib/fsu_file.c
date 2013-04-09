@@ -94,12 +94,13 @@ FSU_FILE
 {
 	FSU_FILE *file;
 	struct stat sb;
-	int rv;
+	int rv, flags;
 	bool exists;
 	mode_t mask;
 
 	umask((mask = umask(0)));
 	mask = ~mask;
+	flags = 0;
 
 	exists = (rump_sys_stat(fname, &sb) == 0);
 #ifdef EFTYPE
@@ -117,52 +118,31 @@ FSU_FILE
 	file->fd_mode = 0;
 	file->fd_eof = file->fd_dirty = false;
 
-	if (mode[0] == 'r') {
-		if (!exists) {
-			errno = ENOENT;
-			goto err;
-		}
-
-		file->fd_mode = FSU_FILE_READ;
-		fsu_fill_buffer(file);
-	} else if (mode[0] == 'w') {
-		if (exists) {
-			if (S_ISDIR(sb.st_mode)) {
-				errno = EISDIR;
-				goto err;
-			}
-			rump_sys_unlink(fname);
-		}
-
-		rv = rump_sys_open(fname, O_RDWR | O_CREAT, 0666 & mask);
-		if (rv == -1)
-			goto err;
-		file->fd_fd = rv;
-		file->fd_mode = FSU_FILE_WRITE;
-
-		memset(file->fd_buf, 0, sizeof(file->fd_buf));
-		file->fd_dirty = true;
-	} else if (mode[0] == 'a') {
-		if (!exists) {
-			rv = rump_sys_open(fname, O_RDWR, 0666 & mask);
-			if (rv != 0)
-				goto err;
-			file->fd_fd = rv;
-		} else
+	switch(mode[0]) {
+		case 'r':
+			flags |= O_RDONLY;
+			break;
+		case 'w':
+			flags |= O_WRONLY | O_CREAT | O_TRUNC;
+			break;
+		case 'a':
+			flags |= O_WRONLY | O_CREAT | O_APPEND;
 			file->fd_fpos = file->fd_last = sb.st_size;
+			break;
 
-		file->fd_mode = FSU_FILE_WRITE;
-	} else
-		goto err;
+	}
 
 	if (strchr(mode, '+') != NULL)
-		file->fd_mode = FSU_FILE_READWRITE;
+		flags |= O_RDWR;
 
+	rv = rump_sys_open(fname, flags, 0666 & mask);
+	if (rv == -1) {
+		free(file);
+		return NULL;
+	}
+	file->fd_fd = rv;
+	file->fd_mode = flags & O_WRONLY ? FSU_FILE_WRITE : FSU_FILE_READ;
 	return file;
-
-err:
-	free(file);
-	return NULL;
 }
 
 void
@@ -289,8 +269,8 @@ fsu_fflush(FSU_FILE *file)
 
 	if (file->fd_dirty) {
 		rv = rump_sys_pwrite(file->fd_fd, file->fd_buf,
-				file->fd_fpos - file->fd_bpos,
-				file->fd_bpos);
+				file->fd_bpos,
+				file->fd_fpos - file->fd_bpos);
 		if (rv == -1 || rv != (int)file->fd_bpos)
 			file->fd_err = errno;
 		file->fd_dirty = false;
