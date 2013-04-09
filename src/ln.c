@@ -71,23 +71,6 @@ __RCSID("$NetBSD: ln.c,v 1.3 2009/11/06 11:47:41 stacktic Exp $");
 #define lstat(a, b) rump_sys_lstat(a, b)
 #define unlink(a) rump_sys_unlink(a)
 
-int __wrap_link(const char *, const char *);
-int __wrap_symlink(const char *, const char *);
-
-int
-__wrap_link(const char *name1, const char *name2)
-{
-
-	return rump_sys_link(name1, name2);
-}
-
-int
-__wrap_symlink(const char *name1, const char *name2)
-{
-
-	return rump_sys_symlink(name1, name2);
-}
-
 int	fflag;				/* Unlink existing files. */
 int	hflag;				/* Check new name for symlink first. */
 int	iflag;				/* Interactive mode. */
@@ -145,10 +128,10 @@ main(int argc, char *argv[])
 	argc -= optind;
 
 	if (sflag) {
-		linkf  = symlink;
+		linkf  = rump_sys_symlink;
 		linkch = '-';
 	} else {
-		linkf  = link;
+		linkf  = rump_sys_link;
 		linkch = '=';
 	}
 
