@@ -21,10 +21,14 @@ Supported File Systems
 
 Utilities
 ---------
-- `fsu_cat`, `fsu_chmod`, `fsu_chown`, `fsu_cp`, `fsu_diff`, `fsu_du`, `fsu_find`, `fsu_ln`, `fsu_ls`, `fsu_mkdir`, fsu_mv`, `fsu_rm, `fsu_rmdir`, `fsu_mknod`, `fsu_mkfifo`, `fsu_chflags`, `fsu_touch`, `fsu_stat`: just like their Unix counterparts
+
+The following operate on a file system image like their standard Unix
+counterparts:
+
+- `fsu_cat`, `fsu_chmod`, `fsu_chown`, `fsu_cp`, `fsu_diff`, `fsu_du`, `fsu_find`, `fsu_ln`, `fsu_ls`, `fsu_mkdir`, `fsu_mv`, `fsu_rm`, `fsu_rmdir`, `fsu_mknod`, `fsu_mkfifo`, `fsu_chflags`, `fsu_touch`, `fsu_stat`
 
 Since the host kernel does not have knowledge of the image, we supply
-additional tools to preserve normal work patterns.
+additional tools to preserve normal work patterns:
 
 - `fsu_ecp`, `fsu_get`, `fsu_put`: external copy; copy files between the host and image (`fsu_cp` copies within the image).
 - `fsu_write`: write stdin to a file within the image.  This can be used where shell output redirection would normally be used.
