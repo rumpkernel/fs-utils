@@ -355,7 +355,8 @@ static void
 usage(const char *synopsis)
 {
 
-	(void)fprintf(stderr, "usage: %s %s\n", getprogname(), synopsis);
+	(void)fprintf(stderr, "usage: %s %s %s\n", getprogname(),
+	    fsu_mount_usage(), synopsis);
 	exit(1);
 }
 
