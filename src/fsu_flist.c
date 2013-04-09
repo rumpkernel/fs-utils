@@ -63,7 +63,7 @@ fsu_flist
 	struct dirent *dent;
 	fsu_flist *head;
 
-	if ((!(flags & FSU_FLIST_REALFS)) || rootp == NULL)
+	if (rootp == NULL)
 		return NULL;
 
 	curdir = NULL;

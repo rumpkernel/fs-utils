@@ -767,9 +767,9 @@ copy_fileout(const char *from, const char *to)
 		warn("%s", to);
 		return -1;
 	}
-	fdfrom = open(to, O_RDONLY, from_stat.st_mode);
+	fdfrom = open(from, O_RDONLY, from_stat.st_mode);
 	if (fdfrom == -1) {
-		warn("%s", to);
+		warn("%s", from);
 		close(fdto);
 		return -1;
 	}
