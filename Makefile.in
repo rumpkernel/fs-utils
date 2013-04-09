@@ -1344,7 +1344,8 @@ install-dvi: install-dvi-am
 install-dvi-am:
 
 install-exec-am: install-binPROGRAMS install-libLTLIBRARIES
-
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
 install-html: install-html-am
 
 install-html-am:
@@ -1390,7 +1391,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES \
 
 uninstall-man: uninstall-man1 uninstall-man3
 
-.MAKE: all install-am install-strip
+.MAKE: all install-am install-exec-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--refresh check check-am clean \
 	clean-binPROGRAMS clean-cscope clean-generic \
@@ -1402,17 +1403,22 @@ uninstall-man: uninstall-man1 uninstall-man3
 	distuninstallcheck dvi dvi-am html html-am info info-am \
 	install install-am install-binPROGRAMS install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES install-man \
-	install-man1 install-man3 install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	install-exec-am install-exec-hook install-html install-html-am \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-man install-man1 install-man3 install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS \
 	uninstall-libLTLIBRARIES uninstall-man uninstall-man1 \
 	uninstall-man3
 
+
+# hard linked aliases
+install-exec-hook:
+	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_get
+	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_put
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -85,6 +85,7 @@ AC_CHECK_MEMBERS([struct stat.st_gen],,,[#include <sys/stat.h>])
 EXTRA_LIBS=""
 AS_CASE([$target_os],
 	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"],
+	[solaris*], [EXTRA_LIBS="-lrumpkern_sys_sunos"],
 	[AC_MSG_ERROR([Conversions for $target_os data types not available])])
 AC_SUBST([EXTRA_LIBS])
 

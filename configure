@@ -12458,6 +12458,8 @@ EXTRA_LIBS=""
 case $target_os in #(
   linux*) :
     EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux" ;; #(
+  solaris*) :
+    EXTRA_LIBS="-lrumpkern_sys_sunos" ;; #(
   *) :
     as_fn_error $? "Conversions for $target_os data types not available" "$LINENO" 5 ;;
 esac
