@@ -31,14 +31,14 @@
 #endif
 
 #include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include <fsu_mount.h>
-#include <fsu_utils.h>
 
-
+#include <rump/rump_syscalls.h>
 
 static void	usage(void);
 int		fsu_write(int, const char *, int);
@@ -81,14 +81,15 @@ fsu_write(int fd, const char *fname, int append)
 	int rd, wr;
 	size_t total;
 	uint8_t buf[8192];
-	FSU_FILE *fdout;
+	int fdout;
 
 	if (fname == NULL)
 		return -1;
 
-	fdout = fsu_fopen(fname, append ? "a" : "w");
-	if (fdout == NULL) {
-		warn("%s", fname);
+	fdout = rump_sys_open(fname,
+	    O_RDWR | O_CREAT | (append ? O_APPEND : 0), 0666);
+	if (fdout == -1) {
+		warn("open %s", fname);
 		return -1;
 	}
 
@@ -97,18 +98,18 @@ fsu_write(int fd, const char *fname, int append)
 		rd = read(fd, buf, sizeof(buf));
 		if (rd == -1) {
 			warn("read");
-			goto out;
+			break;
 		}
-		wr = fsu_fwrite(buf, 1, rd, fdout);
+		wr = rump_sys_write(fdout, buf, rd);
 		if (wr == -1 || wr != rd) {
-			warn("%s", fname);
-			goto out;
+			warn("write %s %d", fname, fdout);
+			break;
 		}
 		total += wr;
 	} while (rd > 0 && errno != ENOSPC);
 
 out:
-	fsu_fclose(fdout);
+	rump_sys_close(fdout);
 	return total;
 }
 
