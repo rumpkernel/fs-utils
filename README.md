@@ -34,33 +34,29 @@ additional tools to preserve normal work patterns:
 - `fsu_write`: write stdin to a file within the image.  This can be used where shell output redirection would normally be used.
 - `fsu_exec`: execute a program from the image.  This is shorthand for `fsu_ecp` + execute + `rm`.
 
-Build & Install Instructions
-----------------------------
-
-Some distributions such as [Void Linux](http://github.com/xtraeme/xbps-packages/blob/master/srcpkgs/fs-utils/template)
-provide fs-utils as a package.  Using a package is recommended for
-non-developers.
-
-When building from source, you must first ensure the prerequisites are
-available.  fs-utils uses file system drivers provided by rump kernels.
-Build and install them in the following manner:
-
-- Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh)
-- Build and install: `./buildrump.sh -d destbase checkout fullbuild`
-
-The destbase directory can be e.g. `/usr/local`.
-
-Then, in the fs-utils directory:
-
-* `./configure`
-* `make`
-
-Note: if you installed rump kernel components to a non-standard directory,
-in the normal autoconf fashion you need to set `CPPFLAGS` and `LDFLAGS`
-before running configure.
-
 Usage examples
 --------------
+
+The example is about modifying an initially empty FFS image:
+
+    $ fsu_ls test.ffs -la
+    total 4
+    drwxrwxr-x  2 0  0  512 Apr  9 12:45 .
+    drwxrwxr-x  2 0  0  512 Apr  9 12:45 ..
+    $ echo just a demo | fsu_write test.ffs a_file.txt
+    $ fsu_ls test.ffs -l
+    total 2
+    -rw-r--r--  1 0  0  12 Apr  9 12:45 a_file.txt
+    $ fsu_ln test.ffs -s a_file.txt a_link.txt
+    $ fsu_ls test.ffs -l
+    total 2
+    -rw-r--r--  1 0  0  12 Apr  9 12:45 a_file.txt
+    lrwxr-xr-x  1 0  0  10 Apr  9 12:49 a_link.txt -> a_file.txt
+    $ fsu_cat test.ffs a_link.txt
+    just a demo
+    $ 
+
+The second example is about examining the contents of a downloaded ISO image:
 
     $ fsu_ls ~/NetBSD-6.1_RC1-amd64.iso -l
     total 12584
@@ -88,7 +84,6 @@ Usage examples
     drwxr-xr-x   2 611  0     2048 Feb 19 19:51 tmp
     drwxr-xr-x   8 611  0     2048 Feb 19 20:29 usr
     drwxr-xr-x   2 611  0     2048 Feb 19 20:29 var
-
     $ fsu_cat ~/NetBSD-6.1_RC1-amd64.iso /boot.cfg
     banner=Welcome to the NetBSD 6.1_RC1 installation CD
     banner================================================================================
@@ -101,4 +96,29 @@ Usage examples
     menu=Install NetBSD (no ACPI, no SMP):boot netbsd -12
     menu=Drop to boot prompt:prompt
     timeout=30
+    $ 
 
+Build & Install Instructions
+----------------------------
+
+Some distributions such as [Void Linux](http://github.com/xtraeme/xbps-packages/blob/master/srcpkgs/fs-utils/template)
+provide fs-utils as a package.  Using a package is recommended for
+non-developers.
+
+When building from source, you must first ensure the prerequisites are
+available.  fs-utils uses file system drivers provided by rump kernels.
+Build and install them in the following manner:
+
+- Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh)
+- Build and install: `./buildrump.sh -d destbase checkout fullbuild`
+
+The destbase directory can be e.g. `/usr/local`.
+
+Then, in the fs-utils directory:
+
+* `./configure`
+* `make`
+
+Note: if you installed rump kernel components to a non-standard directory,
+in the normal autoconf fashion you need to set `CPPFLAGS` and `LDFLAGS`
+before running configure.
