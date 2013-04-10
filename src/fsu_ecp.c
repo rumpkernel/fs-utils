@@ -59,6 +59,7 @@
 #define FSU_ECP_VERBOSE (FSU_ECP_RECURSIVE<<1)
 #define FSU_ECP_GET (FSU_ECP_VERBOSE<<1)
 #define FSU_ECP_PUT (FSU_ECP_GET<<1)
+#define FSU_ECP_DELETE (FSU_ECP_PUT<<1)
 
 
 
@@ -128,8 +129,11 @@ fsu_ecp_parse_arg(int *argc, char ***argv)
 		 strcmp(progname, "fsu_put") == 0)
 		flags |= FSU_ECP_PUT;
 
-	while ((rv = getopt(*argc, *argv, "gLpRv")) != -1) {
+	while ((rv = getopt(*argc, *argv, "dgLpRv")) != -1) {
 		switch (rv) {
+		case 'd':
+			flags |= FSU_ECP_DELETE;
+			break;
 		case 'g':
 			flags |= FSU_ECP_GET;
 			flags &= ~FSU_ECP_PUT;
@@ -201,7 +205,7 @@ copy_dir(const char *from, const char *to, int flags)
 {
 	const char *filename;
 	int rv;
-	struct stat file_stat;
+	struct stat to_stat;
 	char to_p[PATH_MAX + 1];
 	size_t tlen, flen;
 
@@ -213,32 +217,87 @@ copy_dir(const char *from, const char *to, int flags)
 	}
 	if (to_p[tlen - 1] != '/')
 	    	to_p[tlen++] = '/';
+	to_p[tlen] = 0;
 
 	if (flags & FSU_ECP_GET)
-		rv = lstat(to, &file_stat);
+		rv = lstat(to, &to_stat);
 	else
-		rv = rump_sys_lstat(to, &file_stat);
-	if (rv == 0) {
-		if (S_ISDIR(file_stat.st_mode)) {
-			filename = strrchr(from, '/');
-			if (filename == NULL)
-				filename = from;
-			else
-				++filename;
+		rv = rump_sys_lstat(to, &to_stat);
 
-			flen = strlen(filename);
-
-			rv = strlcat(to_p, filename, PATH_MAX + 1);
-			if (rv != (int)(flen + tlen + 1)) {
-				warn("%s/%s", to_p, filename);
-				return -1;
-			}
-		} else {
-			warnx("%s: not a directory", to);
-			return -1;
-		}
+	if (rv == 0 && !S_ISDIR(to_stat.st_mode)) {
+		warnx("%s: not a directory", to);
+		return -1;
 	}
+
+	if (rv == -1) {
+		if (flags & FSU_ECP_GET) {
+			rv = mkdir(to, 0777);
+			if (rv == -1)
+				return -1;
+			rv = lstat(to, &to_stat);
+		} else {
+			rv = rump_sys_mkdir(to, 0777);
+			if (rv == -1)
+				return -1;
+			rv = rump_sys_lstat(to, &to_stat);
+		}
+
+	}
+	if (rv == -1) {
+		warn("%s", to);
+		return -1;
+	}
+	filename = strrchr(from, '/');
+	if (filename == NULL)
+		filename = from;
+	else
+		++filename;
+
+	flen = strlen(filename);
+
+	rv = strlcat(to_p, filename, PATH_MAX + 1);
+	if (rv != (int)(flen + tlen)) {
+		warn("%s/%s", to_p, filename);
+		return -1;
+	}
+	to_p[rv] = 0;
 	return copy_dir_rec(from, to_p, flags);
+}
+static int
+fsu_remove_directory_tree(fsu_flist *list, int flags)
+{
+	fsu_flist directories;
+	FSU_FENT *child, *cur, *next;
+	int (*rmdirf)(const char *pathname);
+	int rv;
+
+	rv = 0;
+	rmdirf = flags & FSU_ECP_GET ? rump_sys_rmdir : rmdir;
+	LIST_INIT(&directories);
+	LIST_FOREACH(cur, list, next) {
+		if (!S_ISDIR(cur->sb.st_mode))
+			continue;
+
+		child = malloc(sizeof(FSU_FENT));
+		if (child == NULL)
+			break;
+		memcpy(child, cur, sizeof(*child));
+		LIST_INSERT_HEAD(&directories, child, next);
+	}
+
+	for (cur = LIST_FIRST(&directories); cur; cur = next) {
+		rv = rmdirf(cur->path);
+		if (rv == -1) {
+			warn("%s", cur->path);
+			break;
+		}
+
+		if (flags & FSU_ECP_VERBOSE)
+			printf("Removing %s\n", cur->path);
+		next = LIST_NEXT(cur, next);
+		free(cur);
+	}
+	return rv;
 }
 
 static int
@@ -386,7 +445,11 @@ copy_dir_rec(const char *from_p, char *to_p, int flags)
 			}
 		}
 		to_p[len + 1] = '\0';
+		cur2 = cur;
 	}
+
+	if (flags & FSU_ECP_DELETE)
+		fsu_remove_directory_tree(flist, flags);
 
 	memcpy(hlfrom, to_p, len + 1);
 	memcpy(hlto, to_p, len + 1);
@@ -483,7 +546,17 @@ copy_to_file(const char *from, struct stat *frstat,
 		/* NOTREACHED */
 	}
 
-	if (rv != 0 || flags & FSU_ECP_GET)
+	if (rv != 0)
+		return rv;
+
+	if (flags & FSU_ECP_DELETE) {
+		if (flags & FSU_ECP_GET)
+			rv = rump_sys_unlink(from);
+		else
+			rv = unlink(from);
+	}
+
+	if (flags & FSU_ECP_GET)
 		return rv;
 
 	if (!(flags & FSU_ECP_NO_COPY_LINK))
