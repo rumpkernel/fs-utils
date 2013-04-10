@@ -10,9 +10,10 @@ image or device.  The advantage of fs-utils over similar projects such
 as mtools is supporting the usage of familiar Unix tools (`ls`, `cp`,
 `mv`, etc.) for a large number of file systems.
 
-Development is still in the early stages, but the codebase is able to
-successfully access and modify a number of different types of file system
-images on Linux and Solaris-derived hosts.
+The project has reached basic stability and are able to modify a number of
+different types of file system images on Linux and Solaris-derived hosts.
+Future work will concentrate on documentation, diagnostic messages,
+increasing platform support, testing, and possibly some new utilities.
 
 Supported File Systems
 ----------------------
@@ -96,6 +97,17 @@ The second example is about examining the contents of a downloaded ISO image:
     menu=Install NetBSD (no ACPI, no SMP):boot netbsd -12
     menu=Drop to boot prompt:prompt
     timeout=30
+    $ fsu_du NetBSD-6.1_RC1-amd64.iso -hc amd64 lib
+    22M     amd64/binary/kernel
+    246M    amd64/binary/sets
+    268M    amd64/binary
+    14M     amd64/installation/floppy
+    1.1M    amd64/installation/miniroot
+    54K     amd64/installation/misc
+    15M     amd64/installation
+    284M    amd64
+    4.9M    lib
+    289M    total
     $ 
 
 Build & Install Instructions
