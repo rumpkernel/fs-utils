@@ -500,6 +500,9 @@ fsu_mount_usage(void)
 static int
 fsu_load_fs(const char *fsname)
 {
+#ifdef NO_COMPONENT_DLOPEN
+	return 0;
+#else
 	char fname[MAXPATHLEN + 1];
 	void *handle;
 	const struct modinfo *const *mi_start, *const *mi_end;
@@ -525,4 +528,5 @@ fsu_load_fs(const char *fsname)
 	dlclose(handle);
 	errno = error;
 	return -1;
+#endif
 }

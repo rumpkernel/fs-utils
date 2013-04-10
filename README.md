@@ -10,10 +10,14 @@ image or device.  The advantage of fs-utils over similar projects such
 as mtools is supporting the usage of familiar Unix tools (`ls`, `cp`,
 `mv`, etc.) for a large number of file systems.
 
-The project has reached basic stability and are able to modify a number of
-different types of file system images on Linux and Solaris-derived hosts.
-Future work will concentrate on documentation, diagnostic messages,
-increasing platform support, testing, and possibly some new utilities.
+The project has reached basic stability and are able to modify a number
+of different types of file system images on Linux and Solaris-derived
+hosts.  Cygwin is also supported, but will not work out-of-the-box due
+to disagreements with libtool.
+
+Future work on fs-utils will concentrate on documentation, diagnostic
+messages, increasing platform support, testing, and possibly some new
+utilities.
 
 Supported File Systems
 ----------------------

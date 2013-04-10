@@ -47,6 +47,14 @@ libfsu_la_SOURCES+= lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
 		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
 endif
 
+# pick a few popular options if dlopen is not there
+# XXX: need to handle -Wl,--whole-archive "assistance" from libtool
+if STATIC_RUMPKERNEL
+AM_CPPFLAGS+= -DNO_COMPONENT_DLOPEN
+component_libs =-lrumpfs_ffs -lrumpfs_ext2fs -lrumpfs_msdos -lrumpfs_cd9660
+else
+component_libs =
+endif
 
 #
 # src/
@@ -64,7 +72,7 @@ bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp		\
 #endif
 
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
-binlibs+= $(EXTRA_LIBS)
+binlibs+= $(EXTRA_LIBS) $(component_libs)
 
 noinst_HEADERS+= src/extern_cp.h src/extern_ls.h src/fsu_flist.h	\
 	src/ls.h src/pack_dev.h

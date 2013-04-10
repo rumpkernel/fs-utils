@@ -637,6 +637,8 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 LINKER_NO_AS_NEEDED
+STATIC_RUMPKERNEL_FALSE
+STATIC_RUMPKERNEL_TRUE
 EXTRA_LIBS
 WRAP_LCHMOD
 ENABLE_NFS_FALSE
@@ -12409,6 +12411,17 @@ _ACEOF
 
 fi
 
+ac_fn_c_check_member "$LINENO" "struct dirent" "d_reclen" "ac_cv_member_struct_dirent_d_reclen" "#include <dirent.h>
+"
+if test "x$ac_cv_member_struct_dirent_d_reclen" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_DIRENT_D_RECLEN 1
+_ACEOF
+
+
+fi
+
 ac_fn_c_check_member "$LINENO" "struct dirent" "d_ino" "ac_cv_member_struct_dirent_d_ino" "#include <dirent.h>
 "
 if test "x$ac_cv_member_struct_dirent_d_ino" = xyes; then :
@@ -12460,9 +12473,19 @@ case $target_os in #(
     EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux" ;; #(
   solaris*) :
     EXTRA_LIBS="-lrumpkern_sys_sunos" ;; #(
+  cygwin*) :
+    EXTRA_LIBS="-lrumpkern_sys_cygwin" ;; #(
   *) :
     as_fn_error $? "Conversions for $target_os data types not available" "$LINENO" 5 ;;
 esac
+
+ if test $target_os = cygwin; then
+  STATIC_RUMPKERNEL_TRUE=
+  STATIC_RUMPKERNEL_FALSE='#'
+else
+  STATIC_RUMPKERNEL_TRUE='#'
+  STATIC_RUMPKERNEL_FALSE=
+fi
 
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether linker requires --no-as-needed" >&5
@@ -12625,6 +12648,10 @@ fi
 
 if test -z "${ENABLE_NFS_TRUE}" && test -z "${ENABLE_NFS_FALSE}"; then
   as_fn_error $? "conditional \"ENABLE_NFS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${STATIC_RUMPKERNEL_TRUE}" && test -z "${STATIC_RUMPKERNEL_FALSE}"; then
+  as_fn_error $? "conditional \"STATIC_RUMPKERNEL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

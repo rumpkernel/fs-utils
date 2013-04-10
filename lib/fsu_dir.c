@@ -28,8 +28,13 @@
 #include "fs-utils.h"
 
 #ifndef _DIRENT_SIZE
+#ifdef HAVE_DIRENT_D_RECLEN
 #define _DIRENT_SIZE(dp) ((dp)->d_reclen)
 #define _DIRENT_NEXT(dp) ((void *)(((char *)(dp)) + (dp)->d_reclen))
+#else
+#define _DIRENT_SIZE(dp) (offsetof(struct dirent,d_name)+strlen(dp->d_name)+1)
+#define _DIRENT_NEXT(dp) ((void *)(((char *)(dp)) + _DIRENT_SIZE(dp)))
+#endif
 #endif
 
 #include <sys/stat.h>

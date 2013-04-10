@@ -77,6 +77,7 @@ AC_CHECK_DECL([optreset],
 
 AC_CHECK_MEMBERS([struct tm.tm_gmtoff],,,[#include <time.h>])
 AC_CHECK_MEMBERS([struct dirent.d_namlen],,,[#include <dirent.h>])
+AC_CHECK_MEMBERS([struct dirent.d_reclen],,,[#include <dirent.h>])
 AC_CHECK_MEMBERS([struct dirent.d_ino],,,[#include <dirent.h>])
 AC_CHECK_MEMBERS([struct stat.st_atimespec],,,[#include <sys/stat.h>])
 AC_CHECK_MEMBERS([struct stat.st_flags],,,[#include <sys/stat.h>])
@@ -86,8 +87,10 @@ EXTRA_LIBS=""
 AS_CASE([$target_os],
 	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"],
 	[solaris*], [EXTRA_LIBS="-lrumpkern_sys_sunos"],
+	[cygwin*], [EXTRA_LIBS="-lrumpkern_sys_cygwin"],
 	[AC_MSG_ERROR([Conversions for $target_os data types not available])])
 AC_SUBST([EXTRA_LIBS])
+AM_CONDITIONAL([STATIC_RUMPKERNEL], [test $target_os = cygwin])
 
 AC_CACHE_CHECK([whether linker requires --no-as-needed],
 	[my_cv_as_needed],

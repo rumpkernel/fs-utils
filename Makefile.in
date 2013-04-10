@@ -59,6 +59,10 @@ target_triplet = @target@
 @ENABLE_NFS_TRUE@am__append_2 = lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
 @ENABLE_NFS_TRUE@		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
 
+
+# pick a few popular options if dlopen is not there
+# XXX: need to handle -Wl,--whole-archive "assistance" from libtool
+@STATIC_RUMPKERNEL_TRUE@am__append_3 = -DNO_COMPONENT_DLOPEN
 bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_diff$(EXEEXT) fsu_ecp$(EXEEXT) fsu_exec$(EXEEXT) \
 	fsu_find$(EXEEXT) fsu_ln$(EXEEXT) fsu_ls$(EXEEXT) \
@@ -155,7 +159,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_fsu_cat_OBJECTS = src/fsu_cat.$(OBJEXT)
 fsu_cat_OBJECTS = $(am_fsu_cat_OBJECTS)
 am__DEPENDENCIES_1 =
-am__DEPENDENCIES_2 = libfsu.la $(am__DEPENDENCIES_1)
+am__DEPENDENCIES_2 = libfsu.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 fsu_cat_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_chflags_OBJECTS = src/chflags.$(OBJEXT)
 fsu_chflags_OBJECTS = $(am_fsu_chflags_OBJECTS)
@@ -453,7 +458,7 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS = -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
-	-D_BSD_SOURCE -DMOUNT_NOMAIN $(am__append_1)
+	-D_BSD_SOURCE -DMOUNT_NOMAIN $(am__append_1) $(am__append_3)
 AM_LDFLAGS = $(LINKER_NO_AS_NEEDED)
 noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fs_args.h \
 	lib/fsu_alias.h lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h \
@@ -484,6 +489,8 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
 	$(am__append_2)
+@STATIC_RUMPKERNEL_FALSE@component_libs = 
+@STATIC_RUMPKERNEL_TRUE@component_libs = -lrumpfs_ffs -lrumpfs_ext2fs -lrumpfs_msdos -lrumpfs_cd9660
 
 #LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
 #OSNAME=	$(shell uname -s)
@@ -491,7 +498,7 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 #LIBS= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
 #endif
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \
-	-lrumpuser $(EXTRA_LIBS)
+	-lrumpuser $(EXTRA_LIBS) $(component_libs)
 fsu_cat_SOURCES = src/fsu_cat.c
 fsu_cat_LDADD = $(binlibs)
 fsu_chflags_SOURCES = src/chflags.c
