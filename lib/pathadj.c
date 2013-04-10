@@ -37,5 +37,6 @@
 void
 pathadj(const char *input, char *adjusted)
 {
-	realpath(input, adjusted);
+
+	strcpy(adjusted, input);
 }
