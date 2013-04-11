@@ -28,7 +28,7 @@ AC_TRY_LINK_FUNC([nanosleep],,
 )
 
 # Checks for header files.
-AC_CHECK_HEADERS([err.h sys/cdefs.h sys/mkdev.h])
+AC_CHECK_HEADERS([err.h sys/cdefs.h sys/mkdev.h sys/sysmacros.h])
 
 # librump depends on librumpuser which has platform specific
 # dependencies.  trust that things are ok if rump.h is found.
