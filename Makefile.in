@@ -160,7 +160,7 @@ am_fsu_cat_OBJECTS = src/fsu_cat.$(OBJEXT)
 fsu_cat_OBJECTS = $(am_fsu_cat_OBJECTS)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 = libfsu.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 fsu_cat_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_chflags_OBJECTS = src/chflags.$(OBJEXT)
 fsu_chflags_OBJECTS = $(am_fsu_chflags_OBJECTS)
@@ -489,16 +489,12 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
 	$(am__append_2)
+@ENABLE_NFS_FALSE@netlibs = 
+@ENABLE_NFS_TRUE@netlibs = -lrumpnet_sockin -lrumpnet_net -lrumpnet
 @STATIC_RUMPKERNEL_FALSE@component_libs = 
 @STATIC_RUMPKERNEL_TRUE@component_libs = -lrumpfs_ffs -lrumpfs_ext2fs -lrumpfs_msdos -lrumpfs_cd9660
-
-#LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
-#OSNAME=	$(shell uname -s)
-#ifeq ($(OSNAME),Linux)
-#LIBS= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
-#endif
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \
-	-lrumpuser $(EXTRA_LIBS) $(component_libs)
+	-lrumpuser $(EXTRA_LIBS) $(component_libs) $(netlibs)
 fsu_cat_SOURCES = src/fsu_cat.c
 fsu_cat_LDADD = $(binlibs)
 fsu_chflags_SOURCES = src/chflags.c

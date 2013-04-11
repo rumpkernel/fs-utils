@@ -45,6 +45,9 @@ if ENABLE_NFS
 AM_CPPFLAGS+=-I${srcdir}/lib/external -DNFS -DWITH_NFS -DNO_PMAP_CACHE
 libfsu_la_SOURCES+= lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
 		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
+netlibs= -lrumpnet_sockin -lrumpnet_net -lrumpnet
+else
+netlibs=
 endif
 
 # pick a few popular options if dlopen is not there
@@ -65,14 +68,8 @@ bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp		\
 	fsu_rmdir fsu_write fsu_mknod fsu_chflags fsu_du	\
 	fsu_mkfifo fsu_touch fsu_chown fsu_stat
 
-#LDFLAGS=-L${TOP}/lib -Wl,-R${TOP}/lib -L${RUMPBASE}/lib -Wl,-R${RUMPBASE}/lib
-#OSNAME=	$(shell uname -s)
-#ifeq ($(OSNAME),Linux)
-#LIBS= -lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux
-#endif
-
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
-binlibs+= $(EXTRA_LIBS) $(component_libs)
+binlibs+= $(EXTRA_LIBS) $(component_libs) $(netlibs)
 
 noinst_HEADERS+= src/extern_cp.h src/extern_ls.h src/fsu_flist.h	\
 	src/ls.h src/pack_dev.h
