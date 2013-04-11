@@ -167,9 +167,8 @@ extern int nfs_niothreads;              /* Number of async_daemons desired */
 #define IO_METASYNC	0
 #endif
 
-#ifdef __linux__
 /* Userland's view of credentials. This should not change */
-struct uucred {
+struct fsu_uucred {
 	unsigned short	cr_unused;		/* not used, compat */
 	uid_t		cr_uid;			/* effective user id */
 	gid_t		cr_gid;			/* effective group id */
@@ -177,7 +176,6 @@ struct uucred {
 	gid_t		cr_groups[NGROUPS_MAX];	/* groups */
 };
 
-#endif
 /*
  * Export arguments for local filesystem mount calls.
  * Keep in mind that changing this structure modifies nfssvc(2)'s ABI (see
@@ -189,7 +187,7 @@ struct uucred {
 struct export_args {
 	int	ex_flags;		/* export related flags */
 	uid_t	ex_root;		/* mapping for root uid */
-	struct	uucred ex_anon;		/* mapping for anonymous user */
+	struct	fsu_uucred ex_anon;	/* mapping for anonymous user */
 	struct	sockaddr *ex_addr;	/* net address to which exported */
 	int	ex_addrlen;		/* and the net address length */
 	struct	sockaddr *ex_mask;	/* mask of valid bits in saddr */
@@ -211,7 +209,7 @@ struct nfsd_srvargs {
 	struct nfsd	*nsd_nfsd;	/* Pointer to in kernel nfsd struct */
 	uid_t		nsd_uid;	/* Effective uid mapped to cred */
 	u_int32_t	nsd_haddr;	/* Ip address of client */
-	struct uucred	nsd_cr;		/* Cred. uid maps to */
+	struct fsu_uucred nsd_cr;	/* Cred. uid maps to */
 	int		nsd_authlen;	/* Length of auth string (ret) */
 	u_char		*nsd_authstr;	/* Auth string (ret) */
 	int		nsd_verflen;	/* and the verfier */
@@ -535,7 +533,7 @@ typedef struct nfsrvfh {
  * Some fields are used only when write request gathering is performed.
  */
 struct nfsrv_descript {
-	u_quad_t		nd_time;	/* Write deadline (usec) */
+	uint64_t		nd_time;	/* Write deadline (usec) */
 	off_t			nd_off;		/* Start byte offset */
 	off_t			nd_eoff;	/* and end byte offset */
 	LIST_ENTRY(nfsrv_descript) nd_hash;	/* Hash list */
