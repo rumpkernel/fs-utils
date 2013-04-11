@@ -168,12 +168,13 @@ extern int nfs_niothreads;              /* Number of async_daemons desired */
 #endif
 
 /* Userland's view of credentials. This should not change */
+#define FSU_NGROUPS 16
 struct fsu_uucred {
 	unsigned short	cr_unused;		/* not used, compat */
 	uid_t		cr_uid;			/* effective user id */
 	gid_t		cr_gid;			/* effective group id */
 	short		cr_ngroups;		/* number of groups */
-	gid_t		cr_groups[NGROUPS_MAX];	/* groups */
+	gid_t		cr_groups[FSU_NGROUPS];	/* groups */
 };
 
 /*
