@@ -445,8 +445,14 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 	if (rv == 0) {
 		rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
 			mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
+#if 0
+		/*
+		 * This will result in a lot of spam for fs type autodetection,
+		 * so need to come up with a better scheme here.
+		 */
 		if (rv == -1)
 			warn("mount failed");
+#endif
 	}
 
 	if (rv == 0) {
