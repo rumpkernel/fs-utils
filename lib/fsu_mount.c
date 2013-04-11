@@ -442,9 +442,12 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 
 	rv = fsu_load_fs(fs->fs_name);
 
-	if (rv == 0)
+	if (rv == 0) {
 		rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
 			mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
+		if (rv == -1)
+			warn("mount failed");
+	}
 
 	if (rv == 0) {
 		/* fork a rump kernel process to chroot() to the mountpoint */
