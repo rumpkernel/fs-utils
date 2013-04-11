@@ -105,6 +105,12 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to 1 if the system has the type `u_int16_t'. */
+#undef HAVE_U_INT16_T
+
+/* Define to 1 if the system has the type `u_int32_t'. */
+#undef HAVE_U_INT32_T
+
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR

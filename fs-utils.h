@@ -60,4 +60,11 @@ void	warnx(const char *, ...);
 char *strsep(char **, const char *);
 #endif
 
+#ifndef HAVE_U_INT16_T
+typedef uint16_t u_int16_t;
+#endif
+#ifndef HAVE_U_INT32_T
+typedef uint32_t u_int32_t;
+#endif
+
 #endif /* FSUTILS_H_ */

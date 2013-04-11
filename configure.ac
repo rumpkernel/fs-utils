@@ -39,23 +39,7 @@ AC_CHECK_HEADERS([rump/rump.h],, AC_MSG_ERROR([rump kernel required]))
 
 AC_C_BIGENDIAN
 
-# Checks for typedefs, structures, and compiler characteristics.
-#AC_HEADER_STDBOOL
-#AC_TYPE_UID_T
-#AC_TYPE_INT16_T
-#AC_TYPE_INT32_T
-#AC_TYPE_INT64_T
-#AC_TYPE_MODE_T
-#AC_TYPE_OFF_T
-#AC_TYPE_PID_T
-#AC_TYPE_SIZE_T
-#AC_TYPE_SSIZE_T
-#AC_CHECK_MEMBERS([struct stat.st_blksize])
-#AC_STRUCT_ST_BLOCKS
-#AC_CHECK_MEMBERS([struct stat.st_rdev])
-#AC_TYPE_UINT32_T
-#AC_TYPE_UINT64_T
-#AC_TYPE_UINT8_T
+AC_CHECK_TYPES([u_int16_t, u_int32_t])
 
 # Checks for library functions.
 AC_CHECK_FUNCS([getprogname humanize_number setmode strmode strlcpy strsep strvis])

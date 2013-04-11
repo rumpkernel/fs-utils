@@ -1874,6 +1874,60 @@ fi
 
 } # ac_fn_c_check_header_mongrel
 
+# ac_fn_c_check_type LINENO TYPE VAR INCLUDES
+# -------------------------------------------
+# Tests whether TYPE exists after having included INCLUDES, setting cache
+# variable VAR accordingly.
+ac_fn_c_check_type ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
+$as_echo_n "checking for $2... " >&6; }
+if eval \${$3+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  eval "$3=no"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$4
+int
+main ()
+{
+if (sizeof ($2))
+	 return 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+$4
+int
+main ()
+{
+if (sizeof (($2)))
+	    return 0;
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+
+else
+  eval "$3=yes"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+eval ac_res=\$$3
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
+
+} # ac_fn_c_check_type
+
 # ac_fn_c_check_decl LINENO SYMBOL VAR INCLUDES
 # ---------------------------------------------
 # Tests whether SYMBOL is declared in INCLUDES, setting cache variable VAR
@@ -12303,23 +12357,25 @@ $as_echo "#define AC_APPLE_UNIVERSAL_BUILD 1" >>confdefs.h
  esac
 
 
-# Checks for typedefs, structures, and compiler characteristics.
-#AC_HEADER_STDBOOL
-#AC_TYPE_UID_T
-#AC_TYPE_INT16_T
-#AC_TYPE_INT32_T
-#AC_TYPE_INT64_T
-#AC_TYPE_MODE_T
-#AC_TYPE_OFF_T
-#AC_TYPE_PID_T
-#AC_TYPE_SIZE_T
-#AC_TYPE_SSIZE_T
-#AC_CHECK_MEMBERS([struct stat.st_blksize])
-#AC_STRUCT_ST_BLOCKS
-#AC_CHECK_MEMBERS([struct stat.st_rdev])
-#AC_TYPE_UINT32_T
-#AC_TYPE_UINT64_T
-#AC_TYPE_UINT8_T
+ac_fn_c_check_type "$LINENO" "u_int16_t" "ac_cv_type_u_int16_t" "$ac_includes_default"
+if test "x$ac_cv_type_u_int16_t" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_U_INT16_T 1
+_ACEOF
+
+
+fi
+ac_fn_c_check_type "$LINENO" "u_int32_t" "ac_cv_type_u_int32_t" "$ac_includes_default"
+if test "x$ac_cv_type_u_int32_t" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_U_INT32_T 1
+_ACEOF
+
+
+fi
+
 
 # Checks for library functions.
 for ac_func in getprogname humanize_number setmode strmode strlcpy strsep strvis
