@@ -128,6 +128,8 @@ fsu_ecp_parse_arg(int *argc, char ***argv)
 	else if (strcmp(progname, "put") == 0 ||
 		 strcmp(progname, "fsu_put") == 0)
 		flags |= FSU_ECP_PUT;
+	else if (strcmp(progname, "fsu_mv") == 0)
+		flags |= FSU_ECP_DELETE;
 
 	while ((rv = getopt(*argc, *argv, "dgLpRv")) != -1) {
 		switch (rv) {
@@ -263,30 +265,35 @@ copy_dir(const char *from, const char *to, int flags)
 	to_p[rv] = 0;
 	return copy_dir_rec(from, to_p, flags);
 }
+
+#ifndef offsetof
+#define offsetof(a, b) ((uintptr_t)(&((a *)NULL)->b))
+#endif
+#define NEXT_OFFSET (offsetof(FSU_FENT, next))
+#define LIST_PREV(elm, field) ((elm)->field.le_prev == NULL ?  NULL :\
+		(void*)((uintptr_t)((elm)->field.le_prev) - NEXT_OFFSET))
+
 static int
-fsu_remove_directory_tree(fsu_flist *list, int flags)
+fsu_remove_directory_tree(fsu_flist *list, FSU_FENT *last, int flags)
 {
-	fsu_flist directories;
-	FSU_FENT *child, *cur, *next;
+	FSU_FENT *cur, *root;
 	int (*rmdirf)(const char *pathname);
+	int (*unlinkf)(const char *pathname);
 	int rv;
 
 	rv = 0;
 	rmdirf = flags & FSU_ECP_GET ? rump_sys_rmdir : rmdir;
-	LIST_INIT(&directories);
-	LIST_FOREACH(cur, list, next) {
-		if (!S_ISDIR(cur->sb.st_mode))
-			continue;
+	unlinkf = flags & FSU_ECP_GET ? rump_sys_unlink : unlink;
+	root = LIST_FIRST(list);
 
-		child = malloc(sizeof(FSU_FENT));
-		if (child == NULL)
-			break;
-		memcpy(child, cur, sizeof(*child));
-		LIST_INSERT_HEAD(&directories, child, next);
-	}
+	for (cur = last;
+	    cur != NULL;
+	    cur = LIST_PREV(cur, next)) {
 
-	for (cur = LIST_FIRST(&directories); cur; cur = next) {
-		rv = rmdirf(cur->path);
+		if (S_ISDIR(cur->sb.st_mode))
+			rv = rmdirf(cur->path);
+		else
+			rv  = unlinkf(cur->path);
 		if (rv == -1) {
 			warn("%s", cur->path);
 			break;
@@ -294,8 +301,8 @@ fsu_remove_directory_tree(fsu_flist *list, int flags)
 
 		if (flags & FSU_ECP_VERBOSE)
 			printf("Removing %s\n", cur->path);
-		next = LIST_NEXT(cur, next);
-		free(cur);
+		if (cur == root)
+			break;
 	}
 	return rv;
 }
@@ -307,12 +314,14 @@ copy_dir_rec(const char *from_p, char *to_p, int flags)
 	fsu_flist *flist;
 	struct stat sb;
 	size_t len;
-	int flist_options, res, rv, off, hl_supported, curlink;
+	int flist_options, res, rv, off, hl_supported, curlink, do_delete;
 	struct hardlink_s *new;
 	char hlfrom[PATH_MAX + 1], hlto[PATH_MAX + 1];
 
 	LIST_HEAD(, hardlink_s) hl_l = LIST_HEAD_INITIALIZER(hl_l);
 
+	do_delete = flags & FSU_ECP_DELETE;
+	flags &= ~FSU_ECP_DELETE;
 	curlink = res = 0;
 	hl_supported = 1;
 
@@ -448,8 +457,8 @@ copy_dir_rec(const char *from_p, char *to_p, int flags)
 		cur2 = cur;
 	}
 
-	if (flags & FSU_ECP_DELETE)
-		fsu_remove_directory_tree(flist, flags);
+	if (do_delete && res == 0)
+		fsu_remove_directory_tree(flist, cur2, flags);
 
 	memcpy(hlfrom, to_p, len + 1);
 	memcpy(hlto, to_p, len + 1);
