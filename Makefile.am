@@ -145,6 +145,7 @@ fsu_stat_LDADD= $(binlibs)
 install-exec-hook:
 	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_get
 	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_put
+	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_emv
 
 #
 # man/

@@ -128,7 +128,7 @@ fsu_ecp_parse_arg(int *argc, char ***argv)
 	else if (strcmp(progname, "put") == 0 ||
 		 strcmp(progname, "fsu_put") == 0)
 		flags |= FSU_ECP_PUT;
-	else if (strcmp(progname, "fsu_mv") == 0)
+	else if (strcmp(progname, "fsu_emv") == 0)
 		flags |= FSU_ECP_DELETE;
 
 	while ((rv = getopt(*argc, *argv, "dgLpRv")) != -1) {
