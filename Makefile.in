@@ -1422,6 +1422,7 @@ uninstall-man: uninstall-man1 uninstall-man3
 install-exec-hook:
 	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_get
 	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_put
+	ln $(DESTDIR)$(bindir)/fsu_ecp $(DESTDIR)$(bindir)/fsu_emv
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
