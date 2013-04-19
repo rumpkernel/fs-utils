@@ -54,10 +54,6 @@ __RCSID("$NetBSD: stat_flags.c,v 1.2 2009/11/06 11:47:41 stacktic Exp $");
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef __linux__
-#include <bsd/string.h>
-#endif
-
 #include "nbsysstat.h"
 #include "fsu_compat.h"
 
