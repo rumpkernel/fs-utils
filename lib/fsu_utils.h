@@ -31,13 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifdef __linux__
 #include <sys/types.h>
-
-#include <bsd/stdlib.h>
-#include <bsd/string.h>
-#include <bsd/unistd.h>
-#endif
 
 #define user_from_uid(a, b) (NULL)
 #define group_from_gid(a, b) (NULL)
