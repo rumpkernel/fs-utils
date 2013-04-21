@@ -71,4 +71,9 @@ typedef uint32_t u_int32_t;
 #include <sys/sysmacros.h>
 #endif
 
+#ifndef HAVE_GETPROGNAME
+const char *getprogname(void);
+void setprogname(const char *);
+#endif
+
 #endif /* FSUTILS_H_ */
