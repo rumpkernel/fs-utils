@@ -83,10 +83,6 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 #define S_ISTXT S_ISVTX
 #endif
 
-#ifdef __linux__
-#define __unused
-#endif
-
 #ifndef MNT_LOCAL
 #define	MNT_LOCAL   0x00001000
 #endif
@@ -412,7 +408,7 @@ c_ctime(char ***argvp, int isok)
  *	Always true.  Makes its best shot and continues on regardless.
  */
 int
-f_delete(PLAN *plan __unused, FTSENT *entry)
+f_delete(PLAN *plan, FTSENT *entry)
 {
 	/* ignore these from fts */
 	if (strcmp(entry->fts_accpath, ".") == 0 ||
@@ -454,7 +450,7 @@ f_delete(PLAN *plan __unused, FTSENT *entry)
 }
 
 PLAN *
-c_delete(char ***argvp __unused, int isok)
+c_delete(char ***argvp, int isok)
 {
 
 	ftsoptions &= ~FTS_NOSTAT;	/* no optimize */
