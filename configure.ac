@@ -42,7 +42,7 @@ AC_C_BIGENDIAN
 AC_CHECK_TYPES([u_int16_t, u_int32_t])
 
 # Checks for library functions.
-AC_CHECK_FUNCS([getprogname humanize_number setmode strmode strlcpy strsep strvis])
+AC_CHECK_FUNCS([emalloc getprogname humanize_number setmode strmode strlcpy strsep strvis])
 
 AC_ARG_ENABLE([nfs],
 	      [  --enable-nfs            Enable Network File System],

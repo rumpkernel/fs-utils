@@ -98,7 +98,7 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 #define FNM_CASEFOLD	 (1 << 4)
 #endif
 
-#ifdef __linux__
+#ifndef HAVE_EMALLOC
 void *
 emalloc(size_t size)
 {
