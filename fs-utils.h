@@ -17,10 +17,6 @@
 # endif
 #endif
 
-#ifndef __dead
-#define __dead __attribute__((noreturn))
-#endif
-
 #include <sys/types.h>
 #include <stdint.h>
 
@@ -74,6 +70,10 @@ typedef uint32_t u_int32_t;
 #ifndef HAVE_GETPROGNAME
 const char *getprogname(void);
 void setprogname(const char *);
+#endif
+
+#ifndef __dead
+#define __dead __attribute__((noreturn))
 #endif
 
 #endif /* FSUTILS_H_ */
