@@ -72,6 +72,7 @@ AS_CASE([$target_os],
 	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"],
 	[solaris*], [EXTRA_LIBS="-lrumpkern_sys_sunos"],
 	[cygwin*], [EXTRA_LIBS="-lrumpkern_sys_cygwin"],
+	[netbsd*], [],
 	[AC_MSG_ERROR([Conversions for $target_os data types not available])])
 AC_SUBST([EXTRA_LIBS])
 AM_CONDITIONAL([STATIC_RUMPKERNEL], [test $target_os = cygwin])
