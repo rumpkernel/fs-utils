@@ -44,7 +44,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#ifdef HAVE_STRNVIS
+#ifdef HAVE_STRVIS
 #include <vis.h>
 #else
 #include "fsu_compat.h"

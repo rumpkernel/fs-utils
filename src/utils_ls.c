@@ -64,7 +64,7 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #include "ls.h"
 #include "extern_ls.h"
 
-#ifdef HAVE_STRNVIS
+#ifdef HAVE_STRVIS
 #include <vis.h>
 #else
 #include "fsu_compat.h"
