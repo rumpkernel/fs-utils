@@ -186,7 +186,6 @@ fsu_mount(int *argc, char **argv[], int mode)
 			break;
 	}
 	idx = optind;
-	opterr = 1;
 	optind = 1;
 #ifdef HAVE_GETOPT_OPTRESET
 	optreset = 1;
@@ -201,6 +200,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 			tmp = malloc(strlen(mntopts) + 4);
 			if (tmp == NULL) {
 				warn(NULL);
+				opterr = 1;
 				return -1;
 			}
 			snprintf(tmp, strlen(mntopts) + 4, "%s,ro", mntopts);
@@ -219,6 +219,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 		if (fst->fs_name == NULL) {
 			fprintf(stderr, "%s: filesystem not supported\n",
 				fstype);
+			opterr = 1;
 			return -1;
 		}
 	}
@@ -230,6 +231,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 				fsdevice = (*argv)[idx++];
 			else {
 				errno = 0;
+				opterr = 1;
 				return -1;
 			}
 		}
@@ -279,6 +281,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 #ifdef HAVE_GETOPT_OPTRESET
 	optreset = 1;
 #endif
+	opterr = 1;
 	return rv;
 }
 
