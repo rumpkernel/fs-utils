@@ -45,13 +45,6 @@ __RCSID("$NetBSD: udp_xfer.c,v 1.1 2009/07/08 15:36:46 stacktic Exp $");
 typedef uint32_t n_long;
 #include <net.h>
 
-#ifndef IP_PORTRANGE_LOW
-#define	IP_PORTRANGE_LOW    2	/* use privileged range */
-#endif
-#ifndef IP_PORTRANGE
-#define	IP_PORTRANGE	 19 /* int; range to use for ephemeral port */
-#endif
-
 void
 set_port(struct sockaddr *sa, int port)
 {
@@ -75,7 +68,9 @@ ssize_t
 sendudp(struct iodesc *d, void *pkt, size_t len)
 {
 	int sock;
+#ifdef IP_PORTRANGE
 	int range = IP_PORTRANGE_LOW;
+#endif
 
 	if (d->socket >= 0) {
 		close(d->socket);
@@ -88,7 +83,9 @@ sendudp(struct iodesc *d, void *pkt, size_t len)
 	d->socket = sock;
 	set_port(d->ai->ai_addr, d->destport);
 
+#ifdef IP_PORTRANGE
 	setsockopt(sock, IPPROTO_IP, IP_PORTRANGE, &range, sizeof(range));
+#endif
 
 	if (connect(sock, d->ai->ai_addr, d->ai->ai_addrlen) != 0)
 		return -1;
