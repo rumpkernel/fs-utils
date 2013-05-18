@@ -92,7 +92,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
-		errx(-1, NULL);
+		usage();
 
 	/* array to hold dir list.  at most (argc - 1) elements. */
 	p = start = malloc(argc * sizeof (char *));

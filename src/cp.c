@@ -125,7 +125,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
-		errx(-1, NULL);
+		usage();
 
 	Hflag = Lflag = Pflag = Rflag = 0;
 	while ((ch = getopt(argc, argv, "HLNPRfiprv")) != -1)

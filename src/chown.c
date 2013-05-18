@@ -116,7 +116,7 @@ main(int argc, char **argv)
 	ischown = (myname[6] == 'o' || myname[2] == 'o');
 
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
-		errx(-1, NULL);
+		usage();
 
 	Hflag = Lflag = Rflag = fflag = hflag = vflag = 0;
 	while ((ch = getopt(argc, argv, "HLPRfhv")) != -1)

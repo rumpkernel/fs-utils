@@ -69,7 +69,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
-		errx(-1, NULL);
+		usage();
 
 	flags = fsu_cat_parse_arg(&argc, &argv);
 	if (argc < 1)

@@ -92,7 +92,7 @@ main(int argc, char *argv[])
 	ttime = rtime = NULL;
 
 	if (fsu_mount(&argc, &argv, MOUNT_READWRITE) != 0)
-		errx(-1, NULL);
+		usage();
 
 	flags = fsu_touch_parse_arg(&argc, &argv, &rtime, &ttime);
 	if (flags == -1 || argc < 1) {

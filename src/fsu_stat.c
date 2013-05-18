@@ -209,9 +209,6 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
-		errx(-1, NULL);
-
 	if (strcmp(getprogname(), "readlink") == 0) {
 		am_readlink = 1;
 		options = "fnqsv";
@@ -223,6 +220,9 @@ main(int argc, char *argv[])
 		options = "f:FlLnqrst:x";
 		synopsis = "[-FlLnqrsx] [-f format] [-t timefmt] [file ...]";
 	}
+
+	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
+		usage(synopsis);
 
 	while ((ch = getopt(argc, argv, options)) != -1)
 		switch (ch) {

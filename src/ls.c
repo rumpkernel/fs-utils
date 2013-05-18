@@ -146,7 +146,7 @@ ls_main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	if (fsu_mount(&argc, &argv, MOUNT_READONLY) != 0)
-		errx(-1, NULL);
+		usage();
 
 	/* Terminal defaults to -Cq, non-terminal defaults to -1. */
 	if (isatty(STDOUT_FILENO)) {
