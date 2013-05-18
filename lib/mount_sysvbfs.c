@@ -96,16 +96,13 @@ mount_sysvbfs_parseargs(int argc, char **argv,
 			break;
 		case '?':
 		default:
-			warn("usage");
 			return 1;
 		}
 	argc -= optind;
 	argv += optind;
 
-	if (argc != 2) {
-		warn("usage");
+	if (argc != 2)
 		return 1;
-	}
 
 	pathadj(argv[0], canon_dev);
 	args->fspec = canon_dev;

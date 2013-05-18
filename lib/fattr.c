@@ -53,10 +53,8 @@ a_num(const char *s, const char *id_type)
 	char *ep;
 
 	id = strtol(s, &ep, 0);
-	if (*ep || s == ep || id < 0) {
-		warn("unknown %s id: %s", id_type, s);
+	if (*ep || s == ep || id < 0)
 		return -1;
-	}
 	return id;
 }
 
@@ -87,9 +85,7 @@ a_mask(const char *s)
 	char *ep;
 
 	rv = strtol(s, &ep, 8);
-	if (s == ep || *ep || rv < 0) {
-		warn("invalid file mode: %s", s);
+	if (s == ep || *ep || rv < 0)
 		return -1;
-	}
 	return rv;
 }
