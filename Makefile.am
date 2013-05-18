@@ -37,7 +37,7 @@ libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 	lib/mount_kernfs.c						\
 	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c	\
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c	\
-	lib/stat_flags.c lib/compat.c lib/humanize_number.c
+	lib/stat_flags.c lib/compat.c lib/humanize_number.c lib/strpct.c
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 
@@ -66,7 +66,7 @@ endif
 bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp		\
 	fsu_exec fsu_find fsu_ln fsu_ls fsu_mkdir fsu_mv fsu_rm		\
 	fsu_rmdir fsu_write fsu_mknod fsu_chflags fsu_du	\
-	fsu_mkfifo fsu_touch fsu_chown fsu_stat
+	fsu_mkfifo fsu_touch fsu_chown fsu_stat fsu_df
 
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
 binlibs+= $(EXTRA_LIBS) $(component_libs) $(netlibs)
@@ -140,6 +140,9 @@ fsu_write_LDADD= $(binlibs)
 
 fsu_stat_SOURCES= src/fsu_stat.c
 fsu_stat_LDADD= $(binlibs)
+
+fsu_df_SOURCES= src/fsu_df.c
+fsu_df_LDADD= $(binlibs)
 
 # hard linked aliases
 install-exec-hook:

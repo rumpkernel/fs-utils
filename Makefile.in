@@ -69,7 +69,8 @@ bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_mkdir$(EXEEXT) fsu_mv$(EXEEXT) fsu_rm$(EXEEXT) \
 	fsu_rmdir$(EXEEXT) fsu_write$(EXEEXT) fsu_mknod$(EXEEXT) \
 	fsu_chflags$(EXEEXT) fsu_du$(EXEEXT) fsu_mkfifo$(EXEEXT) \
-	fsu_touch$(EXEEXT) fsu_chown$(EXEEXT) fsu_stat$(EXEEXT)
+	fsu_touch$(EXEEXT) fsu_chown$(EXEEXT) fsu_stat$(EXEEXT) \
+	fsu_df$(EXEEXT)
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
@@ -134,8 +135,9 @@ am__libfsu_la_SOURCES_DIST = lib/fsu_mount.c lib/fsu_alias.c \
 	lib/mount_kernfs.c lib/pathadj.c lib/fattr.c lib/getmntopts.c \
 	lib/fsu_fts.c lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c \
 	lib/getbsize.c lib/stat_flags.c lib/compat.c \
-	lib/humanize_number.c lib/mount_nfs.c lib/snprintb.c \
-	lib/udp_xfer.c lib/rpc.c lib/net.c lib/getnfsargs_small.c
+	lib/humanize_number.c lib/strpct.c lib/mount_nfs.c \
+	lib/snprintb.c lib/udp_xfer.c lib/rpc.c lib/net.c \
+	lib/getnfsargs_small.c
 am__dirstamp = $(am__leading_dot)dirstamp
 @ENABLE_NFS_TRUE@am__objects_1 = lib/mount_nfs.lo lib/snprintb.lo \
 @ENABLE_NFS_TRUE@	lib/udp_xfer.lo lib/rpc.lo lib/net.lo \
@@ -149,7 +151,7 @@ am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/getmntopts.lo lib/fsu_fts.lo lib/fsu_dir.lo \
 	lib/fsu_file.lo lib/fsu_str2arg.lo lib/getbsize.lo \
 	lib/stat_flags.lo lib/compat.lo lib/humanize_number.lo \
-	$(am__objects_1)
+	lib/strpct.lo $(am__objects_1)
 libfsu_la_OBJECTS = $(am_libfsu_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -180,6 +182,9 @@ fsu_chown_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 am_fsu_cp_OBJECTS = src/cp.$(OBJEXT) src/utils_cp.$(OBJEXT)
 fsu_cp_OBJECTS = $(am_fsu_cp_OBJECTS)
 fsu_cp_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_fsu_df_OBJECTS = src/fsu_df.$(OBJEXT)
+fsu_df_OBJECTS = $(am_fsu_df_OBJECTS)
+fsu_df_DEPENDENCIES = $(am__DEPENDENCIES_2)
 am_fsu_diff_OBJECTS = src/fsu_diff.$(OBJEXT)
 fsu_diff_OBJECTS = $(am_fsu_diff_OBJECTS)
 fsu_diff_DEPENDENCIES = $(am__DEPENDENCIES_2)
@@ -268,19 +273,19 @@ am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
-	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_diff_SOURCES) \
-	$(fsu_du_SOURCES) $(fsu_ecp_SOURCES) $(fsu_exec_SOURCES) \
-	$(fsu_find_SOURCES) $(fsu_ln_SOURCES) $(fsu_ls_SOURCES) \
-	$(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
+	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_df_SOURCES) \
+	$(fsu_diff_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
+	$(fsu_exec_SOURCES) $(fsu_find_SOURCES) $(fsu_ln_SOURCES) \
+	$(fsu_ls_SOURCES) $(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
 DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
-	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_diff_SOURCES) \
-	$(fsu_du_SOURCES) $(fsu_ecp_SOURCES) $(fsu_exec_SOURCES) \
-	$(fsu_find_SOURCES) $(fsu_ln_SOURCES) $(fsu_ls_SOURCES) \
-	$(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
+	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_df_SOURCES) \
+	$(fsu_diff_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
+	$(fsu_exec_SOURCES) $(fsu_find_SOURCES) $(fsu_ln_SOURCES) \
+	$(fsu_ls_SOURCES) $(fsu_mkdir_SOURCES) $(fsu_mkfifo_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
@@ -488,7 +493,7 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
-	$(am__append_2)
+	lib/strpct.c $(am__append_2)
 @ENABLE_NFS_FALSE@netlibs = 
 @ENABLE_NFS_TRUE@netlibs = -lrumpnet_sockin -lrumpnet_net -lrumpnet
 @STATIC_RUMPKERNEL_FALSE@component_libs = 
@@ -542,6 +547,8 @@ fsu_write_SOURCES = src/fsu_write.c
 fsu_write_LDADD = $(binlibs)
 fsu_stat_SOURCES = src/fsu_stat.c
 fsu_stat_LDADD = $(binlibs)
+fsu_df_SOURCES = src/fsu_df.c
+fsu_df_LDADD = $(binlibs)
 
 #
 # man/
@@ -678,6 +685,7 @@ lib/stat_flags.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/compat.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/humanize_number.lo: lib/$(am__dirstamp) \
 	lib/$(DEPDIR)/$(am__dirstamp)
+lib/strpct.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/mount_nfs.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/snprintb.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/udp_xfer.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
@@ -766,6 +774,11 @@ src/utils_cp.$(OBJEXT): src/$(am__dirstamp) \
 fsu_cp$(EXEEXT): $(fsu_cp_OBJECTS) $(fsu_cp_DEPENDENCIES) $(EXTRA_fsu_cp_DEPENDENCIES) 
 	@rm -f fsu_cp$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(fsu_cp_OBJECTS) $(fsu_cp_LDADD) $(LIBS)
+src/fsu_df.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
+fsu_df$(EXEEXT): $(fsu_df_OBJECTS) $(fsu_df_DEPENDENCIES) $(EXTRA_fsu_df_DEPENDENCIES) 
+	@rm -f fsu_df$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(fsu_df_OBJECTS) $(fsu_df_LDADD) $(LIBS)
 src/fsu_diff.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 fsu_diff$(EXEEXT): $(fsu_diff_OBJECTS) $(fsu_diff_DEPENDENCIES) $(EXTRA_fsu_diff_DEPENDENCIES) 
@@ -901,6 +914,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/rpc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/snprintb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/stat_flags.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/strpct.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/udp_xfer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chflags.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chmod.Po@am__quote@
@@ -916,6 +930,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_operator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/find_option.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_cat.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_df.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_diff.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_ecp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/fsu_exec.Po@am__quote@

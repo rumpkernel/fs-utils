@@ -15,6 +15,8 @@ int	string_to_flags(char **, unsigned long *, unsigned long *);
 char    *flags_to_string(unsigned long, const char *);
 int 	humanize_number(char *, size_t, int64_t, const char *, int, int);
 char 	*getbsize(int *, long *);
+char	*strspct(char *, size_t, int64_t, int64_t, size_t);
+char	*strpct(char *, size_t, uint64_t, uint64_t, size_t);
 
 #ifndef HAVE_STRVIS
 #undef VIS_OCTAL
