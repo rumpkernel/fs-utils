@@ -105,8 +105,6 @@ static const struct mntopt mopts[] = {
 	MOPT_NULL,
 };
 
-static void v7fs_usage(void);
-
 #ifndef MOUNT_NOMAIN
 int
 main(int argc, char **argv)
@@ -157,25 +155,16 @@ mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,
 		case '?':
 
 		default:
-			v7fs_usage();
+			return 1;
 		}
 	argc -= optind;
 	argv += optind;
 
 	if (argc != 2)
-		v7fs_usage();
+		return 1;
 
 	pathadj(argv[0], canon_dev);
 	args->endian = endian;
 	args->fspec = canon_dev;
 	pathadj(argv[1], canon_dir);
-}
-
-static void
-v7fs_usage(void)
-{
-
-	fprintf(stderr, "usage: \n %s [-o options] [-B endian] special node\n",
-	    getprogname());
-	exit(EXIT_FAILURE);
 }
