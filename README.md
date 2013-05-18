@@ -117,9 +117,12 @@ The second example is about examining the contents of a downloaded ISO image:
 Build & Install Instructions
 ----------------------------
 
-Some distributions such as [Void Linux](http://github.com/xtraeme/xbps-packages/blob/master/srcpkgs/fs-utils/template)
-provide fs-utils as a package.  Using a package is recommended for
-non-developers.
+Using a package is recommended for non-developers.  Known packages
+are:
+
+* [Arch Linux](https://aur.archlinux.org/packages/netbsd-fs-utils-git/)
+* [Void Linux](http://github.com/xtraeme/xbps-packages/blob/master/srcpkgs/fs-utils/template)
+* [pkgsrc](http://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/filesystems/fs-utils/README.html) (NetBSD, Linux, Solaris)
 
 When building from source, you must first ensure the prerequisites are
 available.  fs-utils uses file system drivers provided by rump kernels.
