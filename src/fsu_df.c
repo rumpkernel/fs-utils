@@ -602,8 +602,8 @@ usage(void)
 	(void)fprintf(stderr,
 	    "Usage: %s %s [-aGgln] [-hkm|-ihkm|-Pk] [-t type] [file | "
 	    "file_system ...]\n",
-	    fsu_mount_usage(),
-	    getprogname());
+	    getprogname(),
+	    fsu_mount_usage());
 	exit(1);
 	/* NOTREACHED */
 }
