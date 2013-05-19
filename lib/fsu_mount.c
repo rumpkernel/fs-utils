@@ -63,6 +63,8 @@
 #define RUMP_LIBDIR "/usr/lib"
 #endif
 
+#define RUMPFSDEV "/dev/rumpfs"
+
 #ifndef __UNCONST
 #define __UNCONST(a) ((char *)(unsigned long)(const char *)(a))
 #endif
@@ -250,10 +252,10 @@ fsu_mount(int *argc, char **argv[], int mode)
 		if (realpath(fsdevice, afsdev) != NULL)
 			fsdevice = afsdev;
 		if (stat(fsdevice, &sb) == 0 && S_ISREG(sb.st_mode)) {
-			rv = rump_pub_etfs_register("/dev/rumptest", fsdevice,
+			rv = rump_pub_etfs_register(RUMPFSDEV, fsdevice,
 					RUMP_ETFS_BLK);
 			mntd.mntd_fsdevice = fsdevice;
-			fsdevice = strdup("/dev/rumptest");
+			fsdevice = strdup(RUMPFSDEV);
 		}
 		rv = mount_fstype(fst, fsdevice, mntopts, puffsexec, specopts,
 				&mntd, verbose);
