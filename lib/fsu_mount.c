@@ -59,10 +59,6 @@
 #define MAXPATHLEN 1024
 #endif
 
-#ifndef RUMP_LIBDIR
-#define RUMP_LIBDIR "/usr/lib"
-#endif
-
 #define RUMPFSDEV "/dev/rumpfs"
 
 #ifndef __UNCONST
