@@ -83,7 +83,7 @@ struct nbstatvfs {
 	uint64_t  	f_asyncreads;
 	uint64_t  	f_asyncwrites;
 
-	uint32_t	f_fsidx;
+	uint32_t	f_notused[2];
 	unsigned long	f_fsid;
 	unsigned long	f_namemax;
 	uint32_t	f_owner;
