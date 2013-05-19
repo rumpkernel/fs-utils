@@ -185,7 +185,7 @@ main(int argc, char *argv[])
 	if (rump_sys_statvfs1("/",
 	    (struct statvfs *)&mntbuf, RUMP_MNT_WAIT) == -1)
 		errx(1, "statvfs failed: %d", errno);
-	prtstat(&mntbuf, maxwidth);
+	prtstat(&mntbuf, strlen(mntbuf.f_mntfromname));
 	return 0;
 }
 
