@@ -30,7 +30,7 @@ Utilities
 The following operate on a file system image like their standard Unix
 counterparts:
 
-- `fsu_cat`, `fsu_chmod`, `fsu_chown`, `fsu_cp`, `fsu_diff`, `fsu_du`, `fsu_find`, `fsu_ln`, `fsu_ls`, `fsu_mkdir`, `fsu_mv`, `fsu_rm`, `fsu_rmdir`, `fsu_mknod`, `fsu_mkfifo`, `fsu_chflags`, `fsu_touch`, `fsu_stat`, `fsu_df`
+- `fsu_cat`, `fsu_chmod`, `fsu_chown`, `fsu_cp`, `fsu_df`, `fsu_diff`, `fsu_du`, `fsu_find`, `fsu_ln`, `fsu_ls`, `fsu_mkdir`, `fsu_mv`, `fsu_rm`, `fsu_rmdir`, `fsu_mknod`, `fsu_mkfifo`, `fsu_chflags`, `fsu_touch`, `fsu_stat`, `fsu_df`
 
 Since the host kernel does not have knowledge of the image, we supply
 additional tools to preserve normal work patterns:
