@@ -34,14 +34,13 @@
  * SUCH DAMAGE.
  */
 
-#include <fs-utils.h>
+#include "fs-utils.h"
 
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/mount.h>
 
 #include <assert.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <locale.h>
@@ -56,27 +55,15 @@
 #include <rump/rump.h>
 #include <rump/rump_syscalls.h>
 
-#ifndef __NetBSD__
 #include "fsu_compat.h"
-#endif
-
-/* from sys/fstypes.h */
-#ifndef MNT_WAIT
-#define	MNT_WAIT	1
-#define	MNT_NOWAIT	2
-#define	MNT_LAZY 	3
-#define	MNT_LOCAL   0x00001000
-#define	MNT_IGNORE  0x00100000
-#endif
 
 /* from sys/mount.h */
 #define	MNAMELEN    90
 
 /* from sys/statvfs.h */
-#define	ST_WAIT	 MNT_WAIT
-#define	_VFS_NAMELEN	32
-#define	_VFS_MNAMELEN	1024
-struct statvfs {
+#define	NB_VFS_NAMELEN	32
+#define	NB_VFS_MNAMELEN	1024
+struct nbstatvfs {
 	unsigned long	f_flag;
 	unsigned long	f_bsize;
 	unsigned long	f_frsize;
@@ -99,26 +86,26 @@ struct statvfs {
 	uint64_t  	f_asyncreads;
 	uint64_t  	f_asyncwrites;
 
-	fsid_t		f_fsidx;
+	uint32_t	f_fsidx;
 	unsigned long	f_fsid;
 	unsigned long	f_namemax;
 	uid_t		f_owner;
 
 	uint32_t	f_spare[4];
 
-	char	f_fstypename[_VFS_NAMELEN];
-	char	f_mntonname[_VFS_MNAMELEN];
-	char	f_mntfromname[_VFS_MNAMELEN];
+	char	f_fstypename[NB_VFS_NAMELEN];
+	char	f_mntonname[NB_VFS_MNAMELEN];
+	char	f_mntfromname[NB_VFS_MNAMELEN];
 };
 
 static char	*getmntpt(const char *);
-static void	 prtstat(struct statvfs *, int);
+static void	 prtstat(struct nbstatvfs *, int);
 static int	 selected(const char *, size_t);
 static void	 maketypelist(char *);
-static size_t	 regetmntinfo(struct statvfs **, size_t);
+static size_t	 regetmntinfo(struct nbstatvfs **, size_t);
 __dead static void usage(void);
 static void	 prthumanval(int64_t, const char *);
-static void	 prthuman(struct statvfs *, int64_t, int64_t);
+static void	 prthuman(struct nbstatvfs *, int64_t, int64_t);
 
 static int	 aflag, gflag, hflag, iflag, lflag, nflag, Pflag;
 static long	 usize;
@@ -127,30 +114,30 @@ extern int rump_i_know_what_i_am_doing_with_sysents;
 
 /* from libc/gen/getmntinfo.c */
 static int
-getmntinfo(struct statvfs **mntbufp, int flags)
+getmntinfo(struct nbstatvfs **mntbufp, int flags)
 {
-	static struct statvfs *mntbuf = NULL;
+	static struct nbstatvfs *mntbuf = NULL;
 	static int mntsize = 0;
 	static size_t bufsize = 0;
 	int rv;
 	//_DIAGASSERT(mntbufp != NULL);
 
-	bufsize = sizeof(struct statvfs);
+	bufsize = sizeof(struct nbstatvfs);
 	mntbuf = malloc(bufsize);
 
 	if (mntsize <= 0 &&
-	    (mntsize = rump_sys_getvfsstat(NULL, (size_t)0, MNT_NOWAIT)) == -1)
+	    (mntsize = rump_sys_getvfsstat(NULL, (size_t)0, RUMP_MNT_NOWAIT)) == -1)
 		return (0);
 	if (bufsize > 0 &&
-	    (mntsize = rump_sys_getvfsstat(mntbuf, bufsize, flags)) == -1)
+	    (mntsize = rump_sys_getvfsstat((struct statvfs *)mntbuf, bufsize, flags)) == -1)
 		return (0);
-	while (bufsize <= mntsize * sizeof(struct statvfs)) {
+	while (bufsize <= mntsize * sizeof(struct nbstatvfs)) {
 		if (mntbuf)
 			free(mntbuf);
-		bufsize = (mntsize + 1) * sizeof(struct statvfs);
+		bufsize = (mntsize + 1) * sizeof(struct nbstatvfs);
 		if ((mntbuf = malloc(bufsize)) == NULL)
 			return (0);
-		if ((mntsize = rump_sys_getvfsstat(mntbuf, bufsize,
+		if ((mntsize = rump_sys_getvfsstat((struct statvfs *)mntbuf, bufsize,
 						flags)) == -1)
 			return (0);
 	}
@@ -162,7 +149,7 @@ int
 main(int argc, char *argv[])
 {
 	struct stat stbuf;
-	struct statvfs *mntbuf;
+	struct nbstatvfs *mntbuf;
 	long mntsize;
 	int ch, i, maxwidth, width;
 	char *mntpt;
@@ -179,7 +166,7 @@ main(int argc, char *argv[])
 	while ((ch = getopt(argc, argv, "aGghiklmnPt:")) != -1)
 		switch (ch) {
 		case 'a':
-			aflag = 1;
+			/* ignored since it doesn't really make sense here */
 			break;
 		case 'g':
 			hflag = 0;
@@ -200,7 +187,7 @@ main(int argc, char *argv[])
 			usize = 1024;
 			break;
 		case 'l':
-			lflag = 1;
+			/* ignored since it doesn't really make sense here */
 			break;
 		case 'm':
 			hflag = 0;
@@ -240,7 +227,7 @@ main(int argc, char *argv[])
 	argc -= optind;
 	argv += optind;
 
-	mntsize = getmntinfo(&mntbuf, MNT_NOWAIT);
+	mntsize = getmntinfo(&mntbuf, RUMP_MNT_NOWAIT);
 	if (mntsize == 0)
 		err(EXIT_FAILURE,
 		    "retrieving information on mounted file systems");
@@ -266,10 +253,10 @@ main(int argc, char *argv[])
 			 * Statfs does not take a `wait' flag, so we cannot
 			 * implement nflag here.
 			 */
-			if (!rump_sys_statvfs1(mntpt, &mntbuf[mntsize],
-						ST_WAIT))
+			if (!rump_sys_statvfs1(mntpt, (struct statvfs *)&mntbuf[mntsize],
+						RUMP_MNT_WAIT))
 				if (lflag &&
-				    (mntbuf[mntsize].f_flag & MNT_LOCAL) == 0)
+				    (mntbuf[mntsize].f_flag & RUMP_MNT_LOCAL) == 0)
 					warnx("Warning: %s is not a local %s",
 					    *argv, "file system");
 				else if
@@ -301,9 +288,9 @@ static char *
 getmntpt(const char *name)
 {
 	size_t mntsize, i;
-	struct statvfs *mntbuf;
+	struct nbstatvfs *mntbuf;
 
-	mntsize = getmntinfo(&mntbuf, MNT_NOWAIT);
+	mntsize = getmntinfo(&mntbuf, RUMP_MNT_NOWAIT);
 	if (mntsize == 0)
 		err(EXIT_FAILURE, "Can't get mount information");
 	for (i = 0; i < mntsize; i++) {
@@ -373,20 +360,20 @@ maketypelist(char *fslist)
  * current (not cached) info.  Returns the new count of valid statvfs bufs.
  */
 static size_t
-regetmntinfo(struct statvfs **mntbufp, size_t mntsize)
+regetmntinfo(struct nbstatvfs **mntbufp, size_t mntsize)
 {
 	size_t i, j;
-	struct statvfs *mntbuf;
+	struct nbstatvfs *mntbuf;
 
 	if (!lflag && typelist == NULL && aflag)
-		return nflag ? mntsize : (size_t)getmntinfo(mntbufp, MNT_WAIT);
+		return nflag ? mntsize : (size_t)getmntinfo(mntbufp, RUMP_MNT_WAIT);
 
 	mntbuf = *mntbufp;
 	j = 0;
 	for (i = 0; i < mntsize; i++) {
-		if (!aflag && (mntbuf[i].f_flag & MNT_IGNORE) != 0)
+		if (!aflag && (mntbuf[i].f_flag & RUMP_MNT_IGNORE) != 0)
 			continue;
-		if (lflag && (mntbuf[i].f_flag & MNT_LOCAL) == 0)
+		if (lflag && (mntbuf[i].f_flag & RUMP_MNT_LOCAL) == 0)
 			continue;
 		if (!selected(mntbuf[i].f_fstypename,
 		    sizeof(mntbuf[i].f_fstypename)))
@@ -394,9 +381,9 @@ regetmntinfo(struct statvfs **mntbufp, size_t mntsize)
 		if (nflag)
 			mntbuf[j] = mntbuf[i];
 		else {
-			struct statvfs layerbuf = mntbuf[i];
+			struct nbstatvfs layerbuf = mntbuf[i];
 			(void)rump_sys_statvfs1(mntbuf[i].f_mntonname,
-					&mntbuf[j], ST_WAIT);
+					(struct statvfs *)&mntbuf[j], RUMP_MNT_WAIT);
 			/*
 			 * If the FS name changed, then new data is for
 			 * a different layer and we don't want it.
@@ -423,7 +410,7 @@ prthumanval(int64_t bytes, const char *pad)
 }
 
 static void
-prthuman(struct statvfs *sfsp, int64_t used, int64_t bavail)
+prthuman(struct nbstatvfs *sfsp, int64_t used, int64_t bavail)
 {
 
 	prthumanval((int64_t)(sfsp->f_blocks * sfsp->f_frsize), "   ");
@@ -444,7 +431,7 @@ prthuman(struct statvfs *sfsp, int64_t used, int64_t bavail)
  * Print out status about a filesystem.
  */
 static void
-prtstat(struct statvfs *sfsp, int maxwidth)
+prtstat(struct nbstatvfs *sfsp, int maxwidth)
 {
 	static long blocksize;
 	static int headerlen, timesthrough;
