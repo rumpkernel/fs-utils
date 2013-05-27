@@ -145,7 +145,7 @@ The links for some of packages are provided by the
 You can download and install the packages manually, but in this case you
 first need to ensure that rump kernel components are installed
 (available as binary packages
-[here](https://github.com/anttikantee/buildrump.sh).
+[here](https://github.com/anttikantee/buildrump.sh)).
 It is recommended to add the OBS repositories for the right distro
 and architecture to the package manager. This way, dependencies will
 be automatically resolved and updates will installed when available.
