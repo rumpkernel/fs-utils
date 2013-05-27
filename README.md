@@ -114,15 +114,43 @@ The second example is about examining the contents of a downloaded ISO image:
     289M    total
     $ 
 
-Build & Install Instructions
-----------------------------
+Installation Instructions
+=========================
 
-Using a package is recommended for non-developers.  Known packages
-are:
+Binary Packages
+---------------
 
-* [Arch Linux](https://aur.archlinux.org/packages/netbsd-fs-utils-git/)
-* [Void Linux](http://github.com/xtraeme/xbps-packages/blob/master/srcpkgs/fs-utils/template)
-* [pkgsrc](http://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/filesystems/fs-utils/README.html) (NetBSD, Linux, Solaris)
+If available, installing a binary package is recommended.
+Known packages are:
+
+* Void Linux: `xbps-install -S fs-utils`
+* Arch Linux: [AUR](https://aur.archlinux.org/packages/netbsd-fs-utils-git/) (via [OBS](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Arch_Core))
+* OpenSUSE Linux:
+12.3 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_12.3) (OBS)
+|| Tumbleweed [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_Factory) (OBS)
+|| Factory [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_Factory) (OBS)
+|| SLE_11_SP2 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=SLE_11_SP2) (OBS)
+* Fedora Linux:
+17 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Fedora_17) (OBS)
+|| 18 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Fedora_18) (OBS)
+|| RHEL 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=RedHat_RHEL-6) (OBS)
+|| CentOS 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=CentOS_CentOS-6) (OBS)
+* Mandriva Linux 2011: [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Mandriva_2011) (OBS)
+* NetBSD: pkgsrc/filesystems/fs-utils
+* DragonFly BSD: pkgsrc/filesystems/fs-utils
+* Solaris: pkgsrc/filesystems/fs-utils
+
+The links for some of packages are provided by the
+[openSUSE Build Service](https://build.opensuse.org/package/show?package=rump&project=home%3Astaal1978).
+You can download and install the packages manually, but it is highly
+recommended to add the OBS repositories for the right distro and
+architecture to the package manager. This way, updates and dependencies
+will be automatically resolved other packages depending on rump kernels.
+Consult your distribution's documentation for further instructions.
+
+
+Building from Source
+--------------------
 
 When building from source, you must first ensure the prerequisites are
 available.  fs-utils uses file system drivers provided by rump kernels.
