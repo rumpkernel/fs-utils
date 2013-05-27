@@ -142,10 +142,13 @@ Known packages are:
 
 The links for some of packages are provided by the
 [openSUSE Build Service](https://build.opensuse.org/package/show?package=rump&project=home%3Astaal1978).
-You can download and install the packages manually, but it is highly
-recommended to add the OBS repositories for the right distro and
-architecture to the package manager. This way, updates and dependencies
-will be automatically resolved other packages depending on rump kernels.
+You can download and install the packages manually, but in this case you
+first need to ensure that rump kernel components are installed
+(available as binary packages
+[here](https://github.com/anttikantee/buildrump.sh).
+It is recommended to add the OBS repositories for the right distro
+and architecture to the package manager. This way, dependencies will
+be automatically resolved and updates will installed when available.
 Consult your distribution's documentation for further instructions.
 
 
