@@ -124,7 +124,7 @@ If available, installing a binary package is recommended.
 Known packages are:
 
 * Void Linux: `xbps-install -S fs-utils`
-* Arch Linux: [AUR](https://aur.archlinux.org/packages/netbsd-fs-utils-git/) (via [OBS](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Arch_Core))
+* Arch Linux: [pacman](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Arch_Core) (OBS), [AUR](https://aur.archlinux.org/packages/netbsd-fs-utils-git/)
 * OpenSUSE Linux:
 12.3 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_12.3) (OBS)
 || Tumbleweed [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_Factory) (OBS)
