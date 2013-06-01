@@ -42,14 +42,10 @@ libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 
-if ENABLE_NFS
 AM_CPPFLAGS+=-I${srcdir}/lib/external -DNFS -DWITH_NFS -DNO_PMAP_CACHE
 libfsu_la_SOURCES+= lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
 		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
 netlibs= -lrumpnet_sockin -lrumpnet_net -lrumpnet
-else
-netlibs=
-endif
 
 # pick a few popular options if dlopen is not there
 # XXX: need to handle -Wl,--whole-archive "assistance" from libtool

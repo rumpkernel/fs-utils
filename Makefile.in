@@ -54,15 +54,9 @@ build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
 
-#libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
-@ENABLE_NFS_TRUE@am__append_1 = -I${srcdir}/lib/external -DNFS -DWITH_NFS -DNO_PMAP_CACHE
-@ENABLE_NFS_TRUE@am__append_2 = lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
-@ENABLE_NFS_TRUE@		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
-
-
 # pick a few popular options if dlopen is not there
 # XXX: need to handle -Wl,--whole-archive "assistance" from libtool
-@STATIC_RUMPKERNEL_TRUE@am__append_3 = -DNO_COMPONENT_DLOPEN
+@STATIC_RUMPKERNEL_TRUE@am__append_1 = -DNO_COMPONENT_DLOPEN
 bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_diff$(EXEEXT) fsu_ecp$(EXEEXT) fsu_exec$(EXEEXT) \
 	fsu_find$(EXEEXT) fsu_ln$(EXEEXT) fsu_ls$(EXEEXT) \
@@ -127,21 +121,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(man1dir)" "$(DESTDIR)$(man3dir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libfsu_la_LIBADD =
-am__libfsu_la_SOURCES_DIST = lib/fsu_mount.c lib/fsu_alias.c \
-	lib/mount_cd9660.c lib/mount_ext2fs.c lib/mount_hfs.c \
-	lib/mount_msdos.c lib/mount_tmpfs.c lib/mount_efs.c \
-	lib/mount_ffs.c lib/mount_lfs.c lib/mount_ntfs.c \
-	lib/mount_udf.c lib/mount_sysvbfs.c lib/mount_v7fs.c \
-	lib/mount_kernfs.c lib/pathadj.c lib/fattr.c lib/getmntopts.c \
-	lib/fsu_fts.c lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c \
-	lib/getbsize.c lib/stat_flags.c lib/compat.c \
-	lib/humanize_number.c lib/strpct.c lib/mount_nfs.c \
-	lib/snprintb.c lib/udp_xfer.c lib/rpc.c lib/net.c \
-	lib/getnfsargs_small.c
 am__dirstamp = $(am__leading_dot)dirstamp
-@ENABLE_NFS_TRUE@am__objects_1 = lib/mount_nfs.lo lib/snprintb.lo \
-@ENABLE_NFS_TRUE@	lib/udp_xfer.lo lib/rpc.lo lib/net.lo \
-@ENABLE_NFS_TRUE@	lib/getnfsargs_small.lo
 am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/mount_cd9660.lo lib/mount_ext2fs.lo lib/mount_hfs.lo \
 	lib/mount_msdos.lo lib/mount_tmpfs.lo lib/mount_efs.lo \
@@ -151,7 +131,8 @@ am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/getmntopts.lo lib/fsu_fts.lo lib/fsu_dir.lo \
 	lib/fsu_file.lo lib/fsu_str2arg.lo lib/getbsize.lo \
 	lib/stat_flags.lo lib/compat.lo lib/humanize_number.lo \
-	lib/strpct.lo $(am__objects_1)
+	lib/strpct.lo lib/mount_nfs.lo lib/snprintb.lo lib/udp_xfer.lo \
+	lib/rpc.lo lib/net.lo lib/getnfsargs_small.lo
 libfsu_la_OBJECTS = $(am_libfsu_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -280,7 +261,7 @@ SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
-DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
+DIST_SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_df_SOURCES) \
 	$(fsu_diff_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
@@ -462,22 +443,23 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
+
+#libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 AM_CPPFLAGS = -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
-	-D_BSD_SOURCE -DMOUNT_NOMAIN -DINET6 $(am__append_1) \
-	$(am__append_3)
+	-D_BSD_SOURCE -DMOUNT_NOMAIN -DINET6 -I${srcdir}/lib/external \
+	-DNFS -DWITH_NFS -DNO_PMAP_CACHE $(am__append_1)
 AM_LDFLAGS = $(LINKER_NO_AS_NEEDED)
-noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fs_args.h \
-	lib/fsu_alias.h lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h \
-	lib/fsu_utils.h lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h \
-	lib/mount_cd9660.h lib/mount_efs.h lib/mount_ext2fs.h \
-	lib/mount_ffs.h lib/mount_hfs.h lib/mount_kernfs.h \
-	lib/mount_lfs.h lib/mount_msdos.h lib/mount_nfs.h \
-	lib/mount_ntfs.h lib/mountprog.h lib/mount_smbfs.h \
-	lib/mount_sysvbfs.h lib/mount_tmpfs.h lib/mount_udf.h \
-	lib/mount_v7fs.h lib/nb_fs.h lib/nbsysstat.h lib/net.h \
-	lib/pathnames.h lib/rpc.h lib/rpcv2.h lib/rump_syspuffs.h \
-	src/extern_cp.h src/extern_ls.h src/fsu_flist.h src/ls.h \
-	src/pack_dev.h
+noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fsu_alias.h \
+	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h \
+	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h \
+	lib/mount_efs.h lib/mount_ext2fs.h lib/mount_ffs.h \
+	lib/mount_hfs.h lib/mount_kernfs.h lib/mount_lfs.h \
+	lib/mount_msdos.h lib/mount_nfs.h lib/mount_ntfs.h \
+	lib/mountprog.h lib/mount_smbfs.h lib/mount_sysvbfs.h \
+	lib/mount_tmpfs.h lib/mount_udf.h lib/mount_v7fs.h lib/nb_fs.h \
+	lib/nbsysstat.h lib/net.h lib/pathnames.h lib/rpc.h \
+	lib/rpcv2.h lib/rump_syspuffs.h src/extern_cp.h \
+	src/extern_ls.h src/fsu_flist.h src/ls.h src/pack_dev.h
 
 #
 # XXX: how do you avoid having to add foo/src.c a billion times?
@@ -494,9 +476,9 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
-	lib/strpct.c $(am__append_2)
-@ENABLE_NFS_FALSE@netlibs = 
-@ENABLE_NFS_TRUE@netlibs = -lrumpnet_sockin -lrumpnet_net -lrumpnet
+	lib/strpct.c lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
+	lib/rpc.c lib/net.c lib/getnfsargs_small.c
+netlibs = -lrumpnet_sockin -lrumpnet_net -lrumpnet
 @STATIC_RUMPKERNEL_FALSE@component_libs = 
 @STATIC_RUMPKERNEL_TRUE@component_libs = -lrumpfs_ffs -lrumpfs_ext2fs -lrumpfs_msdos -lrumpfs_cd9660
 binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \

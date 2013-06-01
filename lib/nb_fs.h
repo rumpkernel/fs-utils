@@ -165,7 +165,6 @@ struct udf_args {
 #define UDFMNT_CLOSESESSION	0x00000001
 #define UDFMNT_BITS "\20\1CLOSESESSION"
 
-#ifdef WITH_NFS
 struct nfs_args {
 	int		version;
 	struct sockaddr	*addr;
@@ -186,7 +185,6 @@ struct nfs_args {
 	int		deadthresh;
 	char		*hostname;
 };
-#endif
 
 /* syspuffs_args */
 /* smbfs_args */

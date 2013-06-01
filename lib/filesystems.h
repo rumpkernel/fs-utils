@@ -47,9 +47,7 @@
 #include <fs/tmpfs/tmpfs_args.h>
 #include <fs/udf/udf_mount.h>
 #include <fs/v7fs/v7fs_args.h>
-#ifdef WITH_NFS
 #include <nfs/nfsmount.h>
-#endif
 #ifdef WITH_SMBFS
 #include <smbfs.h>
 #include <netsmb/smb_lib.h>
@@ -72,9 +70,7 @@
 #include "mount_udf.h"
 #include "mount_kernfs.h"
 #include "mount_v7fs.h"
-#ifdef WITH_NFS
 #include "mount_nfs.h"
-#endif
 #ifdef WITH_SYSPUFFS
 #include "rump_syspuffs.h"
 #endif
@@ -108,9 +104,7 @@ union fsu_args {
 	struct tmpfs_args args_tmpfs;
 	struct udf_args args_udf;
 	struct v7fs_args args_v7fs;
-#ifdef WITH_NFS
 	struct nfs_args args_nfs;
-#endif
 #ifdef WITH_SYSPUFFS
 	struct syspuffs_args args_syspuffs;
 #endif
@@ -138,9 +132,7 @@ fsu_fs_t fslist[] = {
 	FS(SYSVBFS,	sysvbfs, sysvbfs_args,	sysvbfs,	0),
 	FS(V7FS,	v7fs, v7fs_args,	v7fs,		0),
 	FS(TMPFS,	tmpfs,	tmpfs_args,	tmpfs,		FS_NO_AUTO),
-#ifdef WITH_NFS
 	FS(NFS,		nfs,	nfs_args,	nfs,		FS_NO_AUTO),
-#endif
 #ifdef WITH_SYSPUFFS
 	FS(PUFFS,	syspuffs, syspuffs_args, syspuffs,	FS_NO_AUTO),
 #endif

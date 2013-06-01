@@ -44,11 +44,6 @@ AC_CHECK_TYPES([u_int16_t, u_int32_t])
 # Checks for library functions.
 AC_CHECK_FUNCS([emalloc getprogname humanize_number setmode strmode strlcpy strsep strvis])
 
-AC_ARG_ENABLE([nfs],
-	      [  --enable-nfs            Enable Network File System],
-	      [enable_nfs=true],[enable_nfs=false])
-AM_CONDITIONAL([ENABLE_NFS], [test x$enable_nfs = xtrue])
-
 AC_TRY_LINK_FUNC([lchmod],
 	[AC_DEFINE([HAVE_LCHMOD], 1, [define if lchmod() is supported])
 	  WRAP_LCHMOD="-Wl,--wrap=lchmod"]
