@@ -80,6 +80,7 @@ __RCSID("$NetBSD: mount_nfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include <util.h>
 #endif
 
+#include <rump/rumpdefs.h>
 #include <mntopts.h>
 
 #include "mountprog.h"
@@ -201,6 +202,29 @@ mount_nfs_dogetargs(struct nfs_args *nfsargsp, int mntflags, const char *spec)
 	return 0;
 }
 
+struct nb_sockaddr {
+	uint8_t sa_len;
+	uint8_t sa_family;
+	char	    sa_data[14];
+};
+static void
+translate_sockaddr(struct sockaddr *addr, int len)
+{
+	struct nb_sockaddr *nbaddr = (struct nb_sockaddr *)addr;
+
+	switch (addr->sa_family) {
+		case AF_INET6:
+			 nbaddr->sa_family = RUMP_AF_INET6;
+			 break;
+		case AF_INET:
+			 nbaddr->sa_family = RUMP_AF_INET;
+			 break;
+		default:
+			 nbaddr->sa_family = RUMP_AF_UNSPEC;
+			 break;
+	}
+	nbaddr->sa_len = len;
+}
 int
 mount_nfs_parseargs(int argc, char *argv[],
 	struct nfs_args *nfsargsp, int *mntflags,
@@ -208,7 +232,7 @@ mount_nfs_parseargs(int argc, char *argv[],
 {
 	char *p;
 	int altflags, num;
-	int c;
+	int c, rv;
 	mntoptparse_t mp;
 
 	*mntflags = 0;
@@ -441,7 +465,11 @@ mount_nfs_parseargs(int argc, char *argv[],
                 return -1;
 	strlcpy(spec, *argv++, MAXPATHLEN);
 	pathadj(*argv, name);
-	return mount_nfs_dogetargs(nfsargsp, *mntflags, spec);
+	rv = mount_nfs_dogetargs(nfsargsp, *mntflags, spec);
+	if (nfsargsp->addr == NULL)
+		return -1;
+	translate_sockaddr(nfsargsp->addr, nfsargsp->addrlen);
+	return rv;
 }
 
 static void
