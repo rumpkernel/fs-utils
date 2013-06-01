@@ -19,7 +19,7 @@ noinst_HEADERS= fs-utils.h
 
 lib_LTLIBRARIES= libfsu.la
 
-noinst_HEADERS+= lib/filesystems.h lib/fs_args.h lib/fsu_alias.h	\
+noinst_HEADERS+= lib/filesystems.h lib/fsu_alias.h	\
 	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h	\
 	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h	\
 	lib/mount_efs.h lib/mount_ext2fs.h lib/mount_ffs.h		\
