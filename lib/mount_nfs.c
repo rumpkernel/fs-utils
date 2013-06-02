@@ -109,6 +109,7 @@ __RCSID("$NetBSD: mount_nfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #define ALTF_DEADTHRESH	0x00200000
 #define ALTF_TIMEO	0x00400000
 #define ALTF_RETRANS	0x00800000
+#define ALTF_UDP	0x01000000
 
 static const struct mntopt mopts[] = {
 	MOPT_STDOPTS,
@@ -129,6 +130,7 @@ static const struct mntopt mopts[] = {
 	{ "nqnfs", 0, ALTF_NQNFS, 1 },
 	{ "soft", 0, ALTF_SOFT, 1 },
 	{ "tcp", 0, ALTF_TCP, 1 },
+	{ "udp", 0, ALTF_UDP, 1 },
 	{ "nfsv2", 0, ALTF_NFSV2, 1 },
 	{ "port", 0, ALTF_PORT, 1 },
 	{ "rsize", 0, ALTF_RSIZE, 1 },
@@ -147,7 +149,7 @@ struct nfs_args nfsdefargs = {
 	.version = NFS_ARGSVERSION,
 	.addr = NULL,
 	.addrlen = sizeof(struct sockaddr_in),
-	.sotype = SOCK_DGRAM,
+	.sotype = SOCK_STREAM,
 	.proto = 0,
 	.fh = NULL,
 	.fhsize = 0,
@@ -344,6 +346,8 @@ mount_nfs_parseargs(int argc, char *argv[],
 			if (altflags & ALTF_TCP) {
 				nfsargsp->sotype = SOCK_STREAM;
 			}
+			if (altflags & ALTF_UDP)
+				nfsargsp->sotype = SOCK_DGRAM;
 			if (altflags & ALTF_PORT) {
 				port = getmntoptnum(mp, "port");
 			}
