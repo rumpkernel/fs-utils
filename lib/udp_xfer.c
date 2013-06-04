@@ -85,6 +85,8 @@ sendudp(struct iodesc *d, void *pkt, size_t len)
 
 #ifdef IP_PORTRANGE
 	setsockopt(sock, IPPROTO_IP, IP_PORTRANGE, &range, sizeof(range));
+#else
+	bindresvport(sock, NULL);
 #endif
 
 	if (connect(sock, d->ai->ai_addr, d->ai->ai_addrlen) != 0)
