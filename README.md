@@ -137,7 +137,6 @@ Known packages are:
 || CentOS 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=CentOS_CentOS-6) (OBS)
 * Mandriva Linux 2011: [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Mandriva_2011) (OBS)
 * NetBSD: pkgsrc/filesystems/fs-utils
-* DragonFly BSD: pkgsrc/filesystems/fs-utils
 * Solaris: pkgsrc/filesystems/fs-utils
 
 The links for some of packages are provided by the
