@@ -136,6 +136,10 @@ Known packages are:
 || RHEL 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=RedHat_RHEL-6) (OBS)
 || CentOS 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=CentOS_CentOS-6) (OBS)
 * Mandriva Linux 2011: [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Mandriva_2011) (OBS)
+* Debian Linux:
+7 [DEB](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Debian_7.0) (OBS)
+* Ubuntu Linux:
+13.04 [DEB](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=xUbuntu_13.04) (OBS)
 * NetBSD: pkgsrc/filesystems/fs-utils
 * Solaris: pkgsrc/filesystems/fs-utils
 
