@@ -36,12 +36,21 @@
 
 #include "fs-utils.h"
 
+#if defined(__NetBSD__) || defined(__FreeBSD__)
 __RCSID("$NetBSD: mount_smbfs.c,v 1.1 2009/11/05 14:02:42 stacktic Exp $");
+#endif
 
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
+
+#ifdef __NetBSD__
 #include <sys/mount.h>
+
+#include <fs/smbfs/smbfs.h>
+#else
+#include "nb_fs.h"
+#endif
 
 #include <stdio.h>
 #include <string.h>
@@ -53,14 +62,11 @@ __RCSID("$NetBSD: mount_smbfs.c,v 1.1 2009/11/05 14:02:42 stacktic Exp $");
 #include <sysexits.h>
 #include <errno.h>
 
-#include <cflib.h>
 
 #include <netsmb/smb.h>
 #include <netsmb/smb_conn.h>
 #include <netsmb/smb_lib.h>
 
-/*#include <fs/smbfs/smbfs.h>*/
-#include <smbfs.h>
 #include "mount_smbfs.h"
 
 #include <mntopts.h>
@@ -188,16 +194,6 @@ mount_smbfs_parseargs(int argc, char *argv[], struct smbfs_args *mdatap,
 		return -1;
 	realpath(argv[optind], mount_point);
 
-	if (stat(mount_point, &st) == -1)
-		return -1;
-	if (!S_ISDIR(st.st_mode)) {
-		errno = ENOTDIR;
-		return -1;
-	}
-/*
-	if (smb_getextattr(mount_point, &einfo) == 0)
-		errx(EX_OSERR, "can't mount on %s twice", mount_point);
-*/
 	if (mdatap->uid == (uid_t)-1)
 		mdatap->uid = st.st_uid;
 	if (mdatap->gid == (gid_t)-1)
