@@ -62,6 +62,11 @@ AC_CHECK_MEMBERS([struct stat.st_atimespec],,,[#include <sys/stat.h>])
 AC_CHECK_MEMBERS([struct stat.st_flags],,,[#include <sys/stat.h>])
 AC_CHECK_MEMBERS([struct stat.st_gen],,,[#include <sys/stat.h>])
 
+AC_ARG_ENABLE([smbfs],
+	      [  --enable-smbfs          Enable SMB File System],
+	      [enable_smbfs=true],[enable_smbfs=false])
+AM_CONDITIONAL([ENABLE_SMBFS], [test x$enable_smbfs = xtrue])
+
 EXTRA_LIBS=""
 AS_CASE([$target_os],
 	[linux*], [EXTRA_LIBS="-lrumpnet_sockin -lrumpnet_net -lrumpnet -lrumpkern_sys_linux"],
