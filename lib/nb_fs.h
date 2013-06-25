@@ -186,8 +186,32 @@ struct nfs_args {
 	char		*hostname;
 };
 
-/* syspuffs_args */
 /* smbfs_args */
+#define SMBFS_VERMAJ	1
+#define SMBFS_VERMIN	1013
+#define SMBFS_VERSION	(SMBFS_VERMAJ*100000 + SMBFS_VERMIN)
+#define	SMBFS_VFSNAME	"smbfs"
+
+/* Values for flags */
+#define SMBFS_MOUNT_SOFT	0x0001
+#define SMBFS_MOUNT_INTR	0x0002
+#define SMBFS_MOUNT_STRONG	0x0004
+#define	SMBFS_MOUNT_HAVE_NLS	0x0008
+#define	SMBFS_MOUNT_NO_LONG	0x0010
+
+#define	SMBFS_MAXPATHCOMP	256	/* maximum number of path components */
+
+/* Layout of the mount control block for a netware file system. */
+struct smbfs_args {
+	int		version;
+	int		dev_fd;		/* descriptor of open nsmb device */
+	u_int		flags;
+	uid_t		uid;
+	gid_t 		gid;
+	mode_t 		file_mode;
+	mode_t 		dir_mode;
+	int		caseopt;
+};
 
 struct v7fs_args {
 	char    *fspec;	/* blocks special holding the fs to mount */
