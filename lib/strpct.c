@@ -82,7 +82,7 @@ strpct(char *buf, size_t bufsiz, uintmax_t numerator, uintmax_t denominator,
 		(void)snprintf(buf, bufsiz, "%ju%s%0*ju",
 		    result / factor, localeconv()->decimal_point, (int)u,
 		    result % factor);
-	}       
+	}
 
 	return buf;
 }

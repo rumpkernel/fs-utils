@@ -268,10 +268,15 @@ copy_special(struct stat *from_stat, int exists)
 int
 setfile(struct stat *fs, int fd)
 {
-	int rval, islink;
+	int rval;
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
+	int islink;
+#endif
 
 	rval = 0;
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	islink = S_ISLNK(fs->st_mode);
+#endif
 	fs->st_mode &= S_ISUID | S_ISGID | S_IRWXU | S_IRWXG | S_IRWXO;
 	fd = 0;
 	/*

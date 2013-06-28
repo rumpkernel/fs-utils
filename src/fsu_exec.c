@@ -98,7 +98,6 @@ main(int argc, char **argv)
 	switch (child) {
 	case -1:
 		warn("fork");
-		rv = -1;
 		goto out;
 	case 0:
 		execvp(argv[0], argv);
@@ -128,8 +127,6 @@ copy_file(const char *from, const char *to, bool get)
 	off_t off;
 	int fd, fd2, rv;
 	struct stat from_stat;
-
-	fd = -1;
 
 	if (!get)
 		rv = stat(from, &from_stat);

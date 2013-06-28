@@ -65,7 +65,7 @@ FSU_DIR
 	dir = malloc(sizeof(FSU_DIR));
 	if (dir == NULL)
 		return NULL;
-        memset(dir, 0, sizeof(FSU_DIR));
+	memset(dir, 0, sizeof(FSU_DIR));
 
 	dir->dd_fd = rump_sys_open(path, RUMP_O_RDONLY|RUMP_O_DIRECTORY);
 
@@ -192,8 +192,8 @@ char
 		if (names[i] == NULL)
 			goto err;
 
-                if (names[i][0] == '/' && names[i][1] == '\0') {
-                        len += 1;
+		if (names[i][0] == '/' && names[i][1] == '\0') {
+			len += 1;
 			break;
 		}
 
@@ -213,15 +213,15 @@ char
 	}
 
 	if (i == 0) {
-                dirname = names[0];
-                free(names);
+		dirname = names[0];
+		free(names);
 		return dirname;
-        }
+	}
 	dirname = malloc(len);
 	if (dirname == NULL)
 		goto err;
 
-        dirname[0] = '/';
+	dirname[0] = '/';
 	dirname[1] = '\0';
 	free(names[i]);
 	for (--i; i >= 0; --i) {
@@ -254,9 +254,6 @@ static char
 	struct dirent *dent;
 	int fd, rv, size;
 	uint8_t buf[8192];
-	off_t off;
-
-	off = 0;
 
 	if (root_ino == 0) {
 		rv = rump_sys_stat("/", &dot);

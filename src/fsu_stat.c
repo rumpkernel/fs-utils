@@ -585,8 +585,6 @@ format1(const struct stat *st,
 	int shift;	/* powers of 2 to scale numbers before printing */
 	size_t prefixlen; /* length of constant prefix for string data */
 
-	formats = 0;
-	small = 0;
 	gottime = 0;
 	secs = 0;
 	nsecs = 0;
@@ -723,7 +721,6 @@ format1(const struct stat *st,
 		/* FALLTHROUGH */
 	case SHOW_st_ctime:
 		if (!gottime) {
-			gottime = 1;
 			secs = st->st_ctime;
 #if HAVE_STRUCT_STAT_ST_MTIMENSEC
 			nsecs = st->st_ctimensec;
@@ -824,7 +821,6 @@ format1(const struct stat *st,
 				if (!quiet)
 					warn("realpath `%s'", file);
 				linkfail = 1;
-				l = 0;
 				path[0] = '\0';
 			}
 			sdata = path + (ofmt == FMTF_STRING ? 0 : 4);

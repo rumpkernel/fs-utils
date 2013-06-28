@@ -32,6 +32,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifndef __NetBSD__
 #ifndef lint
 #if 0
@@ -73,11 +75,7 @@ __RCSID("$NetBSD: function.c,v 1.71 2012/08/26 14:26:37 wiz Exp $");
 
 #include <rump/rump_syscalls.h>
 
-#ifdef __NetBSD__
-#define STAT_HAS_FLAGS 1
-#else
-#define STAT_HAS_FLAGS 0
-#endif
+#include "fsu_compat.h"
 
 #ifndef S_ISTXT
 #define S_ISTXT S_ISVTX
@@ -428,7 +426,7 @@ f_delete(PLAN *plan, FTSENT *entry)
 			entry->fts_accpath);
 
 	/* Turn off user immutable bits if running as root */
-#if STAT_HAS_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if ((entry->fts_statp->st_flags & (UF_APPEND|UF_IMMUTABLE)) &&
 	    !(entry->fts_statp->st_flags & (SF_APPEND|SF_IMMUTABLE)) &&
 	    geteuid() == 0)
@@ -922,7 +920,7 @@ f_flags(PLAN *plan, FTSENT *entry)
 {
 	uint32_t flags;
 
-#if STAT_HAS_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	flags = entry->fts_statp->st_flags;
 #else
 	flags = 0;

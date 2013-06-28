@@ -100,7 +100,6 @@ main(int argc, char **argv)
 	gid_t	 gid = -1;
 	int	 rval;
 
-	dev = 0;
 	fifo = hasformat = 0;
 	pack = pack_native;
 

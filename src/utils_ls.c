@@ -55,6 +55,7 @@ __RCSID("$NetBSD: util.c,v 1.2 2009/11/05 14:39:16 stacktic Exp $");
 #define SIZE_T_MAX UINT_MAX /*(0xffffffff)*/
 #endif
 
+#define __USE_XOPEN
 #include <wchar.h>
 #include <wctype.h>
 

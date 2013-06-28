@@ -92,11 +92,9 @@ mount_lfs_parseargs(int argc, char *argv[],
 	char *canon_dev, char *canon_dir)
 {
 	int ch;
-	char *options;
 	mntoptparse_t mp;
 
 	memset(args, 0, sizeof(*args));
-	options = NULL;
 	nsegs = "4";
 	*mntflags = noclean = 0;
 	cleaner_bytes = 1;
