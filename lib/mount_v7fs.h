@@ -30,6 +30,6 @@
 
 struct v7fs_args;
 
-void    mount_v7fs_parseargs(int, char **, struct v7fs_args *, int *,
+int    mount_v7fs_parseargs(int, char **, struct v7fs_args *, int *,
     char *, char *);
 #endif /* _SBIN_MOUNT_V7FS_MOUNT_V7FS_H_ */

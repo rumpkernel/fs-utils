@@ -114,7 +114,7 @@ main(int argc, char **argv)
 }
 #endif
 
-void
+int
 mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,
     int *mntflags, char *canon_dev, char *canon_dir)
 {
@@ -167,4 +167,6 @@ mount_v7fs_parseargs(int argc, char **argv, struct v7fs_args *args,
 	args->endian = endian;
 	args->fspec = canon_dev;
 	pathadj(argv[1], canon_dir);
+
+	return 0;
 }
