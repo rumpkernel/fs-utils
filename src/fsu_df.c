@@ -100,17 +100,15 @@ __dead static void usage(void);
 static void	 prthumanval(int64_t, const char *);
 static void	 prthuman(struct nbstatvfs *, int64_t, int64_t);
 
-static int	 aflag, gflag, hflag, iflag, lflag, nflag, Pflag;
+static int	 gflag, hflag, iflag, nflag, Pflag;
 static long	 usize;
-static char	**typelist;
 extern int rump_i_know_what_i_am_doing_with_sysents;
 
 int
 main(int argc, char *argv[])
 {
 	struct nbstatvfs mntbuf;
-	int ch, i, maxwidth, width;
-	char *mntpt;
+	int ch;
 
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");

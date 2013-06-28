@@ -143,7 +143,6 @@ mount_msdos_parseargs(int argc, char **argv,
 
 	if (set_mask && !set_dirmask) {
 		args->dirmask = args->mask;
-		set_dirmask = 1;
 	} else if (set_dirmask && !set_mask) {
 		args->mask = args->dirmask;
 		set_mask = 1;

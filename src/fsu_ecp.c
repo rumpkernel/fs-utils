@@ -322,7 +322,7 @@ copy_dir_rec(const char *from_p, char *to_p, int flags)
 
 	do_delete = flags & FSU_ECP_DELETE;
 	flags &= ~FSU_ECP_DELETE;
-	curlink = res = 0;
+	res = 0;
 	hl_supported = 1;
 
 	if (flags & FSU_ECP_NO_COPY_LINK)

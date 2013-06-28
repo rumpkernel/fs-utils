@@ -65,6 +65,7 @@
 #else
 #include <errno.h>
 #include <stdio.h>
+#include <time.h>
 #include <unistd.h>
 #define panic printf
 #define delay() usleep(100000)

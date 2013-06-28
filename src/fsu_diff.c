@@ -102,7 +102,6 @@ fsu_diff(const char *p1, const char *p2)
 	}
 	rv = 0;
 	for (;;) {
-		diff = 0;
 		e1 = fsu_fts_read(r1);
 		e2 = fsu_fts_read(r2);
 	again:

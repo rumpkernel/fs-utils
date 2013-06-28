@@ -76,7 +76,7 @@ build_alias_list(void)
 	if (fp == NULL)
 		return -1;
 
-	len = strlcpy(file, fp, PATH_MAX + 1);
+	strlcpy(file, fp, PATH_MAX + 1);
 	strlcat(file, "/.fsurc", PATH_MAX + 1);
 
 	/* no file no alias loaded */

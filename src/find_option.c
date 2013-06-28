@@ -32,6 +32,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "from: @(#)option.c	8.2 (Berkeley) 4/16/94";

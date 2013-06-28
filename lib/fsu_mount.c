@@ -246,7 +246,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 		if (realpath(fsdevice, afsdev) != NULL)
 			fsdevice = afsdev;
 		if (stat(fsdevice, &sb) == 0 && S_ISREG(sb.st_mode)) {
-			rv = rump_pub_etfs_register(RUMPFSDEV, fsdevice,
+			rump_pub_etfs_register(RUMPFSDEV, fsdevice,
 			    RUMP_ETFS_BLK);
 			mntd.mntd_fsdevice = fsdevice;
 			fsdevice = strdup(RUMPFSDEV);

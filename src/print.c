@@ -283,12 +283,12 @@ printacol(DISPLAY *dp)
 
 	printtotal(dp);				/* "total: %u\n" */
 
-	chcnt = col = 0;
+	col = 0;
 	for (p = dp->list; p; p = p->fts_link) {
 		if (IS_NOPRINT(p))
 			continue;
 		if (col >= numcols) {
-			chcnt = col = 0;
+			col = 0;
 			(void)putchar('\n');
 		}
 		chcnt = printaname(p, dp->s_inode,

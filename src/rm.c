@@ -247,7 +247,6 @@ rm_tree(char **argv)
 				continue;
 		}
 
-		rval = 0;
 		/*
 		 * If we can't read or search the directory, may still be
 		 * able to remove it.  Don't print out the un{read,search}able

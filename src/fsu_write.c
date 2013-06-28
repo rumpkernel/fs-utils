@@ -108,7 +108,6 @@ fsu_write(int fd, const char *fname, int append)
 		total += wr;
 	} while (rd > 0 && errno != ENOSPC);
 
-out:
 	rump_sys_close(fdout);
 	return total;
 }

@@ -32,6 +32,8 @@
  * SUCH DAMAGE.
  */
 
+#include "fs-utils.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "from: @(#)find.c	8.5 (Berkeley) 8/5/94";
@@ -102,7 +104,7 @@ find_formplan(char **argv)
 	if (!isoutput) {
 		if (plan == NULL) {
 			new = c_print(NULL, 0);
-			tail = plan = new;
+			plan = new;
 		} else {
 			new = c_openparen(NULL, 0);
 			new->next = plan;
@@ -112,7 +114,6 @@ find_formplan(char **argv)
 			tail = new;
 			new = c_print(NULL, 0);
 			tail->next = new;
-			tail = new;
 		}
 	}
 

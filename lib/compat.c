@@ -87,7 +87,7 @@ getmode(const void *bbox, mode_t omode)
 
 	set = (const BITCMD *)bbox;
 	newmode = omode;
-	for (value = 0;; set++)
+	for (;; set++)
 		switch(set->cmd) {
 		/*
 		 * When copying the user, group or other bits around, we "know"
@@ -304,11 +304,9 @@ getop:		if ((op = *p++) != '+' && op != '-' && op != '=') {
 					if (op == '=')
 						equalopdone = 1;
 					ADDCMD(op, who, perm, mask);
-					perm = 0;
 				}
 				if (permXbits) {
 					ADDCMD('X', who, permXbits, mask);
-					permXbits = 0;
 				}
 				goto apply;
 			}

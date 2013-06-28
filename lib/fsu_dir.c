@@ -254,9 +254,6 @@ static char
 	struct dirent *dent;
 	int fd, rv, size;
 	uint8_t buf[8192];
-	off_t off;
-
-	off = 0;
 
 	if (root_ino == 0) {
 		rv = rump_sys_stat("/", &dot);

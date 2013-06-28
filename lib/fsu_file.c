@@ -95,14 +95,12 @@ FSU_FILE
 	FSU_FILE *file;
 	struct stat sb;
 	int rv, flags;
-	bool exists;
 	mode_t mask;
 
 	umask((mask = umask(0)));
 	mask = ~mask;
 	flags = 0;
 
-	exists = (rump_sys_stat(fname, &sb) == 0);
 #ifdef EFTYPE
 	if (strchr(mode, 'f') != NULL && !S_ISREG(sb.st_mode)) {
 		errno = EFTYPE;

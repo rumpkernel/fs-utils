@@ -175,7 +175,10 @@ int force3 = 0;
 int mnttcp_ok = 1;
 int port = 0;
 
+int snprintb(char *, size_t, const char *, uint64_t);
+#if 0
 static void	shownfsargs(const struct nfs_args *);
+#endif
 #ifdef ISO
 static struct	iso_addr *iso_addr(const char *);
 #endif
@@ -476,6 +479,7 @@ mount_nfs_parseargs(int argc, char *argv[],
 	return rv;
 }
 
+#if 0
 static void
 shownfsargs(const struct nfs_args *nfsargsp)
 {
@@ -514,3 +518,4 @@ shownfsargs(const struct nfs_args *nfsargsp)
 	    nfsargsp->leaseterm,
 	    nfsargsp->deadthresh);
 }
+#endif
