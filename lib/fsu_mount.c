@@ -55,10 +55,6 @@
 
 #define MOUNT_DIRECTORY "/mnt"
 
-#ifndef MAXPATHLEN
-#define MAXPATHLEN 1024
-#endif
-
 #define RUMPFSDEV "/dev/rumpfs"
 
 #ifndef __UNCONST
@@ -82,8 +78,8 @@
     } while (0/*CONSTCOND*/)
 struct mount_data_s {
 	fsu_fs_t *mntd_fs;
-	char mntd_canon_dev[MAXPATHLEN];
-	char mntd_canon_dir[MAXPATHLEN];
+	char mntd_canon_dev[PATH_MAX];
+	char mntd_canon_dir[PATH_MAX];
 	char *mntd_fsdevice;
 	int mntd_flags;
 	int mntd_argc;
@@ -112,7 +108,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 	struct mount_data_s mntd;
 	int idx, fflag, rv, verbose;
 	int ch, stopopts;
-	char *mntopts, afsdev[MAXPATHLEN], *puffsexec, *specopts;
+	char *mntopts, afsdev[PATH_MAX], *puffsexec, *specopts;
 	char *tmp;
 	char *fsdevice, *fstype;
 	struct stat sb;
@@ -513,7 +509,7 @@ fsu_load_fs(const char *fsname)
 #ifdef NO_COMPONENT_DLOPEN
 	return 0;
 #else
-	char fname[MAXPATHLEN + 1];
+	char fname[PATH_MAX + 1];
 	void *handle;
 	const struct modinfo *const *mi_start, *const *mi_end;
 	int error;
