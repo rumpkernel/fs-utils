@@ -68,11 +68,11 @@
 #define GETOPT_PREFIX
 #endif
 
-#define ADD_ARG(m, a) 					\
-    do { 						\
+#define ADD_ARG(m, a)					\
+    do {						\
 	char *_tmp = (a);				\
-	if ((_tmp) == NULL) { 				\
-	    	warn(NULL);				\
+	if ((_tmp) == NULL) {				\
+		warn(NULL);				\
 		return -1;				\
 	}						\
 	(m)->mntd_argv[(m)->mntd_argc++] = (_tmp);	\
@@ -160,10 +160,10 @@ fsu_mount(int *argc, char **argv[], int mode)
 			}
 			break;
 #endif
-                case 's':
-                        if (specopts == NULL)
-                                specopts = optarg;
-                        break;
+		case 's':
+			if (specopts == NULL)
+				specopts = optarg;
+			break;
 		case 't':
 			if (fstype == NULL)
 				fstype = optarg;
@@ -204,7 +204,7 @@ fsu_mount(int *argc, char **argv[], int mode)
 	}
 
 	if (fstype == NULL)
-	    	fstype = getenv("FSU_TYPE");
+		fstype = getenv("FSU_TYPE");
 
 	if (fstype != NULL && fst == NULL) {
 		for (fst = fslist; fst->fs_name != NULL; ++fst)
@@ -213,13 +213,13 @@ fsu_mount(int *argc, char **argv[], int mode)
 
 		if (fst->fs_name == NULL) {
 			fprintf(stderr, "%s: filesystem not supported\n",
-				fstype);
+			    fstype);
 			opterr = 1;
 			return -1;
 		}
 	}
 
-       	if (fsdevice == NULL) {
+	if (fsdevice == NULL) {
 		fsdevice = getenv("FSU_DEVICE");
 		if (fsdevice == NULL) {
 			if (idx < *argc && strcmp((*argv)[idx], "--") != 0)
@@ -238,7 +238,8 @@ fsu_mount(int *argc, char **argv[], int mode)
 		build_alias_list();
 		alias = get_alias(fsdevice);
 		if (alias != NULL)
-			rv = mount_alias(alias, mntopts, specopts, &mntd, verbose);
+			rv = mount_alias(alias, mntopts, specopts, &mntd,
+			    verbose);
 		free_alias_list();
 	}
 	if (fflag || alias == NULL) {
@@ -246,12 +247,12 @@ fsu_mount(int *argc, char **argv[], int mode)
 			fsdevice = afsdev;
 		if (stat(fsdevice, &sb) == 0 && S_ISREG(sb.st_mode)) {
 			rv = rump_pub_etfs_register(RUMPFSDEV, fsdevice,
-					RUMP_ETFS_BLK);
+			    RUMP_ETFS_BLK);
 			mntd.mntd_fsdevice = fsdevice;
 			fsdevice = strdup(RUMPFSDEV);
 		}
 		rv = mount_fstype(fst, fsdevice, mntopts, puffsexec, specopts,
-				&mntd, verbose);
+		    &mntd, verbose);
 	}
 
 	free(mntd.mntd_argv);
@@ -289,16 +290,16 @@ mount_fstype(fsu_fs_t *fs, const char *fsdev, char *mntopts, char *puffsexec,
 	mntdp->mntd_fs = fs;
 	mntdp->mntd_argc = mntdp->mntd_flags = 0;
 
-        argvlen = 7;
-        if (specopts != NULL)
-                argvlen += fsu_str2argc(specopts);
+	argvlen = 7;
+	if (specopts != NULL)
+		argvlen += fsu_str2argc(specopts);
 
 	if (argvlen > mntdp->mntd_argv_size) {
-	    	char **tmp;
+		char **tmp;
 
 		tmp = realloc(mntdp->mntd_argv, argvlen * sizeof(char *));
 		if (tmp == NULL) {
-		    	if (mntdp->mntd_argv != NULL)
+			if (mntdp->mntd_argv != NULL)
 				free(mntdp->mntd_argv);
 			return -1;
 		}
@@ -311,27 +312,27 @@ mount_fstype(fsu_fs_t *fs, const char *fsdev, char *mntopts, char *puffsexec,
 
 #ifdef WITH_SYSPUFFS
 	if (puffsexec != NULL && fs->fs_name == MOUNT_PUFFS)
-                ADD_ARG(mntdp, puffsexec);
+		ADD_ARG(mntdp, puffsexec);
 #endif
 
 	if (mntopts != NULL) {
 		ADD_ARG(mntdp, __UNCONST("-o"));
 		ADD_ARG(mntdp, mntopts);
 	}
-        if (specopts != NULL) {
-                int tmpargc;
+	if (specopts != NULL) {
+		int tmpargc;
 
-                fsu_str2arg(specopts, &tmpargc,
-                    mntdp->mntd_argv + mntdp->mntd_argc, argvlen - 6);
-                mntdp->mntd_argc += tmpargc;
-        }
+		fsu_str2arg(specopts, &tmpargc,
+		    mntdp->mntd_argv + mntdp->mntd_argc, argvlen - 6);
+		mntdp->mntd_argc += tmpargc;
+	}
 	ADD_ARG(mntdp, __UNCONST(fsdev));
 	ADD_ARG(mntdp, __UNCONST("/"));
 	mntdp->mntd_argv[mntdp->mntd_argc] = NULL;
 
 	/* filesystem given */
 	if (fs != NULL)
-                return mount_struct(verbose, mntdp);
+		return mount_struct(verbose, mntdp);
 
 	/* filesystem not given (auto detection) */
 	for (fs = fslist; fs->fs_name != NULL; ++fs) {
@@ -340,8 +341,8 @@ mount_fstype(fsu_fs_t *fs, const char *fsdev, char *mntopts, char *puffsexec,
 		if (fs->fs_flags & FS_NO_AUTO)
 			continue;
 		mntdp->mntd_flags = 0;
-                mntdp->mntd_fs = fs;
-                if (mount_struct(verbose > 1, mntdp) == 0)
+		mntdp->mntd_fs = fs;
+		if (mount_struct(verbose > 1, mntdp) == 0)
 			return 0;
 	}
 	return -1;
@@ -356,16 +357,16 @@ mount_alias(struct fsu_fsalias_s *al, char *mntopts, char *specopts,
 
 	mntdp->mntd_argc = mntdp->mntd_flags = 0;
 
-        argvlen = 9;
-        if (specopts != NULL)
-                argvlen += fsu_str2argc(specopts);
+	argvlen = 9;
+	if (specopts != NULL)
+		argvlen += fsu_str2argc(specopts);
 
 	if (argvlen > mntdp->mntd_argv_size) {
-	    	char **tmp;
+		char **tmp;
 
 		tmp = realloc(mntdp->mntd_argv, argvlen * sizeof(char *));
 		if (tmp == NULL) {
-		    	free(mntdp->mntd_argv);
+			free(mntdp->mntd_argv);
 			return -1;
 		}
 		mntdp->mntd_argv = tmp;
@@ -389,13 +390,13 @@ mount_alias(struct fsu_fsalias_s *al, char *mntopts, char *specopts,
 		ADD_ARG(mntdp, mntopts);
 		setenv("FSU_MNTOPTS", mntopts, 1);
 	}
-        if (specopts != NULL) {
-                int tmpargc;
+	if (specopts != NULL) {
+		int tmpargc;
 
-                fsu_str2arg(specopts, &tmpargc,
-                    mntdp->mntd_argv + mntdp->mntd_argc, argvlen - 8);
-                mntdp->mntd_argc += tmpargc;
-        }
+		fsu_str2arg(specopts, &tmpargc,
+		    mntdp->mntd_argv + mntdp->mntd_argc, argvlen - 8);
+		mntdp->mntd_argc += tmpargc;
+	}
 	ADD_ARG(mntdp, al->fsa_path);
 	ADD_ARG(mntdp, __UNCONST("/"));
 	mntdp->mntd_argv[mntdp->mntd_argc] = NULL;
@@ -405,9 +406,9 @@ mount_alias(struct fsu_fsalias_s *al, char *mntopts, char *specopts,
 			break;
 
 	if (cur->fs_name == NULL)
-                return -1;
+		return -1;
 
-        mntdp->mntd_fs = cur;
+	mntdp->mntd_fs = cur;
 
 	return mount_struct(verbose, mntdp);
 }
@@ -415,13 +416,13 @@ mount_alias(struct fsu_fsalias_s *al, char *mntopts, char *specopts,
 static int
 mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 {
-        fsu_fs_t *fs;
-        int rv;
+	fsu_fs_t *fs;
+	int rv;
 
-        fs = mntdp->mntd_fs;
+	fs = mntdp->mntd_fs;
 
-        rv = fs->fs_parseargs(mntdp->mntd_argc, mntdp->mntd_argv, fs->fs_args,
-            &(mntdp->mntd_flags), mntdp->mntd_canon_dev, mntdp->mntd_canon_dir);
+	rv = fs->fs_parseargs(mntdp->mntd_argc, mntdp->mntd_argv, fs->fs_args,
+	    &(mntdp->mntd_flags), mntdp->mntd_canon_dev, mntdp->mntd_canon_dir);
 	if (rv != 0)
 		return -1;
 
@@ -442,7 +443,7 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 
 	if (rv == 0) {
 		rv = rump_sys_mount(fs->fs_name, mntdp->mntd_canon_dir,
-			mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
+		    mntdp->mntd_flags, fs->fs_args, fs->fs_args_size);
 #if 0
 		/*
 		 * This will result in a lot of spam for fs type autodetection,
@@ -464,19 +465,19 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 		}
 	}
 #ifdef WITH_SMBFS
-        if (strcmp(fs->fs_name, MOUNT_SMBFS) == 0) {
-                extern struct smb_ctx sctx;
+	if (strcmp(fs->fs_name, MOUNT_SMBFS) == 0) {
+		extern struct smb_ctx sctx;
 
-                smb_ctx_done(&sctx);
-        }
+		smb_ctx_done(&sctx);
+	}
 #endif
-        if (rv != 0 && verbose) {
+	if (rv != 0 && verbose) {
 		warn(NULL);
 		fprintf(stderr, "%s is not a valid %s image\n",
 		    mntdp->mntd_fsdevice, fs->fs_name);
 	}
 
-        return rv;
+	return rv;
 }
 
 void
