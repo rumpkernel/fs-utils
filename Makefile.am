@@ -6,8 +6,6 @@ AM_CPPFLAGS+=-D_BSD_SOURCE
 AM_CPPFLAGS+=-DMOUNT_NOMAIN
 AM_CPPFLAGS+=-DINET6
 
-AM_LDFLAGS= $(LINKER_NO_AS_NEEDED)
-
 noinst_HEADERS= fs-utils.h
 
 #
@@ -72,74 +70,74 @@ noinst_HEADERS+= src/extern_cp.h src/extern_ls.h src/fsu_flist.h	\
 	src/ls.h src/pack_dev.h
 
 fsu_cat_SOURCES= src/fsu_cat.c
-fsu_cat_LDADD= $(binlibs)
+fsu_cat_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_chflags_SOURCES= src/chflags.c
-fsu_chflags_LDADD= $(binlibs)
+fsu_chflags_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_chmod_SOURCES= src/chmod.c
 fsu_chmod_LDFLAGS= -Wl,--wrap=chmod $(WRAP_LCHMOD)
-fsu_chmod_LDADD= $(binlibs)
+fsu_chmod_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_chown_SOURCES= src/chown.c
 fsu_chown_LDFLAGS= -Wl,--wrap=chown $(WRAP_LCHMOD)
-fsu_chown_LDADD= $(binlibs)
+fsu_chown_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_cp_SOURCES= src/cp.c src/utils_cp.c
-fsu_cp_LDADD= $(binlibs)
+fsu_cp_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_diff_SOURCES= src/fsu_diff.c
-fsu_diff_LDADD= $(binlibs)
+fsu_diff_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_du_SOURCES= src/du.c
-fsu_du_LDADD= $(binlibs)
+fsu_du_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_ecp_SOURCES= src/fsu_ecp.c src/fsu_flist.c
-fsu_ecp_LDADD= $(binlibs)
+fsu_ecp_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_exec_SOURCES= src/fsu_exec.c
-fsu_exec_LDADD= $(binlibs)
+fsu_exec_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_find_SOURCES= src/find_extern.h src/find_find.c src/find_find.h \
 		  src/find_function.c src/find_ls.c src/find_main.c \
 		  src/find_misc.c src/find_operator.c src/find_option.c
-fsu_find_LDADD= $(binlibs)
+fsu_find_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_ln_SOURCES= src/ln.c
-fsu_ln_LDADD= $(binlibs)
+fsu_ln_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_ls_SOURCES= src/cmp.c src/ls.c src/main.c src/print.c src/utils_ls.c
-fsu_ls_LDADD= $(binlibs)
+fsu_ls_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_mkdir_SOURCES= src/mkdir.c
-fsu_mkdir_LDADD= $(binlibs)
+fsu_mkdir_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_mkfifo_SOURCES= src/mkfifo.c
-fsu_mkfifo_LDADD= $(binlibs)
+fsu_mkfifo_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_mknod_SOURCES= src/mknod.c src/pack_dev.c
-fsu_mknod_LDADD= $(binlibs)
+fsu_mknod_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_mv_SOURCES= src/fsu_mv.c
-fsu_mv_LDADD= $(binlibs)
+fsu_mv_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_rm_SOURCES= src/rm.c
-fsu_rm_LDADD= $(binlibs)
+fsu_rm_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_rmdir_SOURCES= src/rmdir.c
-fsu_rmdir_LDADD= $(binlibs)
+fsu_rmdir_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_touch_SOURCES= src/fsu_touch.c
-fsu_touch_LDADD= $(binlibs)
+fsu_touch_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_write_SOURCES= src/fsu_write.c
-fsu_write_LDADD= $(binlibs)
+fsu_write_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_stat_SOURCES= src/fsu_stat.c
-fsu_stat_LDADD= $(binlibs)
+fsu_stat_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 fsu_df_SOURCES= src/fsu_df.c
-fsu_df_LDADD= $(binlibs)
+fsu_df_LDADD= $(LINKER_NO_AS_NEEDED) $(binlibs)
 
 # hard linked aliases
 install-exec-hook:
