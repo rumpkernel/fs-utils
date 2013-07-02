@@ -51,6 +51,22 @@
 #include <netsmb/smb_lib.h>
 #include <netsmb/nb_lib.h>
 
+struct nb_sockaddr {
+	uint8_t	sa_len;
+	uint8_t sa_family;
+	char	sa_data[14];
+};
+
+void
+nb_translate_sockaddr(struct sockaddr *addr, int len)
+{
+	struct nb_sockaddr *nbaddr;
+
+	nbaddr = (struct nb_sockaddr *)addr;
+	nbaddr->sa_family = addr->sa_family;
+	nbaddr->sa_len = len;
+}
+
 int
 nb_getlocalname(char *name)
 {
@@ -72,7 +88,6 @@ nb_resolvehost_in(const char *name, struct sockaddr **dest)
 	struct sockaddr_in *sinp;
 	int error;
 	char port[6];
-	unsigned char *sahdr;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = PF_INET;
@@ -92,11 +107,6 @@ nb_resolvehost_in(const char *name, struct sockaddr **dest)
 	memcpy(sinp, res[0].ai_addr, res[0].ai_addrlen);
 
 	freeaddrinfo(res);
-
-	sahdr = (uint8_t *)sinp;
-	sahdr[0] = sizeof(struct sockaddr_in);
-	sahdr[1] = PF_INET;
-
 	*dest = (struct sockaddr*)sinp;
 	return 0;
 }

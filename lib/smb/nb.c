@@ -119,14 +119,9 @@ nb_ctx_resolve(struct nb_ctx *ctx)
 			smb_error("can't resolve %s", error, ctx->nb_nsname);
 			return error;
 		}
-#if HAVE_STRUCT_SOCKADDR_SA_LEN
 		if (sap->sa_family != AF_INET) {
-#else
-		if (((unsigned char *)sap)[1] != AF_INET) {
-
-#endif
 			smb_error("unsupported address family %d", 0,
-			    ((unsigned char *)sap)[1]);
+			    sap->sa_family);
 			free(sap);
 			return EINVAL;
 		}
@@ -134,15 +129,12 @@ nb_ctx_resolve(struct nb_ctx *ctx)
 		free(sap);
 	}
 	ctx->nb_ns.sin_port = htons(137);
-#if HAVE_STRUCT_SOCKADDR_SA_LEN
-	ctx->nb_ns.sin_len = sizeof(ctx->nb_ns);
 	ctx->nb_ns.sin_family = AF_INET;
+#if HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+	ctx->nb_ns.sin_len = sizeof(ctx->nb_ns);
 #else
-	unsigned char *sa_hdr;
-
-	sa_hdr = &ctx->nb_ns;
-	sa_hdr[0] = sizeof(ctx->nb_ns);
-	sa_hdr[1] = AF_INET;
+	nb_translate_sockaddr((struct sockaddr *)&ctx->nb_ns,
+	    sizeof(ctx->nb_ns));
 #endif
 
 	ctx->nb_flags |= NBCF_RESOLVED;

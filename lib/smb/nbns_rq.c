@@ -87,17 +87,12 @@ nbns_resolvename(const char *name, struct nb_ctx *ctx, struct sockaddr **adpp)
 	rqp->nr_qdcount = 1;
 	dest = &rqp->nr_dest;
 	*dest = ctx->nb_ns;
-#if HAVE_STRUCT_SOCKADDR_SA_LEN
-	dest->sin_len = sizeof(*dest);
 	dest->sin_family = AF_INET;
+#if HAVE_STRUCT_SOCKADDR_SA_LEN
+	dest->sa_len = sizeof(*dest);
 #else
-	unsigned char *sa_hdr;
-
-	sa_hdr = dest;
-	sa_hdr[0] = sizeof(*dest);
-	sa_hdr[1] = AF_INET;
+	nb_translate_sockaddr((struct sockaddr *)dest, sizeof(*dest));
 #endif
-
 	if (dest->sin_port == 0)
 		dest->sin_port = htons(137);
 	if (dest->sin_addr.s_addr == INADDR_ANY)
@@ -141,15 +136,11 @@ nbns_resolvename(const char *name, struct nb_ctx *ctx, struct sockaddr **adpp)
 		if (dest == NULL)
 			return ENOMEM;
 		bzero(dest, len);
-#if HAVE_STRUCT_SOCKADDR_SA_LEN
-		dest->sin_len = len;
 		dest->sin_family = AF_INET;
+#if HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+		dest->sin_len = len;
 #else
-		unsigned char *sa_hdr;
-
-		sa_hdr = dest;
-		sa_hdr[0] = len;
-		sa_hdr[1] = AF_INET;
+		nb_translate_sockaddr((struct sockaddr *)dest, len);
 #endif
 		bcopy(rr.rr_data + 2, &dest->sin_addr.s_addr, 4);
 		dest->sin_port = htons(SMB_TCP_PORT);
@@ -316,15 +307,12 @@ nbns_rq_opensocket(struct nbns_rq *rqp)
 		if (rqp->nr_if == NULL)
 			return NBERROR(NBERR_NOBCASTIFS);
 		bzero(&locaddr, sizeof(locaddr));
-#if HAVE_STRUCT_SOCKADDR_SA_LEN
-		locaddr.sin_len = sizeof(locaddr);
-		locaddr.sin_family = AF_INET;
-#else
-		unsigned char *sa_hdr;
 
-		sa_hdr = &locaddr;
-		sa_hdr[0] = sizeof(locaddr);
-		sa_hdr[1] = AF_INET;
+		locaddr.sin_family = AF_INET;
+#if HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+		locaddr.sin_len = sizeof(locaddr);
+#else
+		nb_translate_sockaddr((struct sockaddr *)&locaddr, sizeof(locaddr));
 #endif
 		locaddr.sin_addr = rqp->nr_if->id_addr;
 		rqp->nr_dest.sin_addr.s_addr = rqp->nr_if->id_addr.s_addr | ~rqp->nr_if->id_mask.s_addr;

@@ -57,11 +57,7 @@ nb_snballoc(int namelen, struct sockaddr_nb **dst)
 	if (snb == NULL)
 		return ENOMEM;
 	bzero(snb, slen);
-#ifdef AF_NETBIOS
 	snb->snb_family = 6/*AF_NETBIOS*/;
-#else
-	snb->snb_family = 6;
-#endif
 	snb->snb_len = slen;
 	*dst = snb;
 	return 0;
@@ -84,13 +80,9 @@ nb_sockaddr(struct sockaddr *peer, struct nb_name *np,
 	struct sockaddr_nb *snb;
 	int nmlen, error;
 
-	if (peer) {
-		uint8_t family;
+	if (peer && (peer->sa_family != AF_INET && peer->sa_family != AF_IPX))
+		return EPROTONOSUPPORT;
 
-		family = ((uint8_t *)peer)[1];
-		if ((family != AF_INET && family != AF_IPX))
-			return EPROTONOSUPPORT;
-	}
 	nmlen = nb_name_len(np);
 	if (nmlen < NB_ENCNAMELEN)
 		return EINVAL;
@@ -99,8 +91,10 @@ nb_sockaddr(struct sockaddr *peer, struct nb_name *np,
 		return error;
 	if (nmlen != nb_name_encode(np, snb->snb_name))
 		printf("a bug somewhere in the nb_name* code\n");
-	if (peer)
+	if (peer) {
 		memcpy(&snb->snb_tran, peer, sizeof(snb->snb_tran));
+		nb_translate_sockaddr((struct sockaddr *)&snb->snb_tran, sizeof(snb->snb_tran));
+	}
 	*dst = snb;
 	return 0;
 }
