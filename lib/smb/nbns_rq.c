@@ -328,7 +328,6 @@ nbns_rq_opensocket(struct nbns_rq *rqp)
 #endif
 		locaddr.sin_addr = rqp->nr_if->id_addr;
 		rqp->nr_dest.sin_addr.s_addr = rqp->nr_if->id_addr.s_addr | ~rqp->nr_if->id_mask.s_addr;
-		printf("Bind here\n");
 		if (smb_kops.ko_bind(s, (struct sockaddr*)&locaddr, sizeof(locaddr)) < 0)
 			return errno;
 	}

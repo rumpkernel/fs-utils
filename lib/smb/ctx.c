@@ -651,7 +651,6 @@ smb_ctx_lookup(struct smb_ctx *ctx, int level, int flags)
 	rq.ioc_level = level;
 	if (smb_kops.ko_ioctl(ctx->ct_fd, SMBIOC_LOOKUP, &rq) == -1) {
 		error = errno;
-		printf("errno=%d\n", error);
 
 		smb_kops.ko_close(ctx->ct_fd);
 		ctx->ct_fd = -1;
