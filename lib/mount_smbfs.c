@@ -62,6 +62,7 @@ __RCSID("$NetBSD: mount_smbfs.c,v 1.1 2009/11/05 14:02:42 stacktic Exp $");
 #include <sysexits.h>
 #include <errno.h>
 
+#include <cflib.h>
 
 #include <netsmb/smb.h>
 #include <netsmb/smb_conn.h>
