@@ -12506,6 +12506,28 @@ _ACEOF
 
 fi
 
+ac_fn_c_check_member "$LINENO" "struct sockaddr" "sa_len" "ac_cv_member_struct_sockaddr_sa_len" "#include <sys/socket.h>
+"
+if test "x$ac_cv_member_struct_sockaddr_sa_len" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_SOCKADDR_SA_LEN 1
+_ACEOF
+
+
+fi
+
+ac_fn_c_check_member "$LINENO" "struct sockaddr_in" "sin_len" "ac_cv_member_struct_sockaddr_in_sin_len" "#include <netinet/in.h>
+"
+if test "x$ac_cv_member_struct_sockaddr_in_sin_len" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_SOCKADDR_IN_SIN_LEN 1
+_ACEOF
+
+
+fi
+
 
 # Check whether --enable-smbfs was given.
 if test "${enable_smbfs+set}" = set; then :

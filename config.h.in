@@ -78,6 +78,12 @@
 /* Define to 1 if `d_reclen' is a member of `struct dirent'. */
 #undef HAVE_STRUCT_DIRENT_D_RECLEN
 
+/* Define to 1 if `sin_len' is a member of `struct sockaddr_in'. */
+#undef HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+
+/* Define to 1 if `sa_len' is a member of `struct sockaddr'. */
+#undef HAVE_STRUCT_SOCKADDR_SA_LEN
+
 /* Define to 1 if `st_atimespec' is a member of `struct stat'. */
 #undef HAVE_STRUCT_STAT_ST_ATIMESPEC
 
