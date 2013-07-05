@@ -124,22 +124,22 @@ If available, installing a binary package is recommended.
 Known packages are:
 
 * Void Linux: `xbps-install -S fs-utils`
-* Arch Linux: [pacman](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Arch_Core) (OBS), [AUR](https://aur.archlinux.org/packages/netbsd-fs-utils-git/)
+* Arch Linux: [pacman](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=Arch_Core) (OBS), [AUR](https://aur.archlinux.org/packages/netbsd-fs-utils-git/)
 * OpenSUSE Linux:
-12.3 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_12.3) (OBS)
-|| Tumbleweed [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_Factory) (OBS)
-|| Factory [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=openSUSE_Factory) (OBS)
-|| SLE_11_SP2 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=SLE_11_SP2) (OBS)
+12.3 [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=openSUSE_12.3) (OBS)
+|| Tumbleweed [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=openSUSE_Factory) (OBS)
+|| Factory [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=openSUSE_Factory) (OBS)
+|| SLE_11_SP2 [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=SLE_11_SP2) (OBS)
 * Fedora Linux:
-17 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Fedora_17) (OBS)
-|| 18 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Fedora_18) (OBS)
-|| RHEL 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=RedHat_RHEL-6) (OBS)
-|| CentOS 6 [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=CentOS_CentOS-6) (OBS)
-* Mandriva Linux 2011: [RPM](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Mandriva_2011) (OBS)
+17 [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=Fedora_17) (OBS)
+|| 18 [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=Fedora_18) (OBS)
+|| RHEL 6 [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=RedHat_RHEL-6) (OBS)
+|| CentOS 6 [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=CentOS_CentOS-6) (OBS)
+* Mandriva Linux 2011: [RPM](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=Mandriva_2011) (OBS)
 * Debian Linux:
-7 [DEB](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=Debian_7.0) (OBS)
+7 [DEB](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=Debian_7.0) (OBS)
 * Ubuntu Linux:
-13.04 [DEB](https://build.opensuse.org/package/binaries?package=fs-utils&project=home%3Astaal1978&repository=xUbuntu_13.04) (OBS)
+13.04 [DEB](https://build.opensuse.org/package/binaries/home:staal1978/fs-utils?repository=xUbuntu_13.04) (OBS)
 * NetBSD: pkgsrc/filesystems/fs-utils
 * Solaris: pkgsrc/filesystems/fs-utils
 
