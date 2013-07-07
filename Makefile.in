@@ -447,7 +447,7 @@ ACLOCAL_AMFLAGS = -I m4
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 AM_CPPFLAGS = -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
 	-D_BSD_SOURCE -DMOUNT_NOMAIN -DINET6 -I${srcdir}/lib/external \
-	-DNFS -DWITH_NFS -DNO_PMAP_CACHE $(am__append_1)
+	-DNO_PMAP_CACHE $(am__append_1)
 noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fsu_alias.h \
 	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h \
 	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h \

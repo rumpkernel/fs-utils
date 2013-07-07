@@ -40,7 +40,7 @@ libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 
-AM_CPPFLAGS+=-I${srcdir}/lib/external -DNFS -DWITH_NFS -DNO_PMAP_CACHE
+AM_CPPFLAGS+=-I${srcdir}/lib/external -DNO_PMAP_CACHE
 libfsu_la_SOURCES+= lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
 		    lib/rpc.c lib/net.c lib/getnfsargs_small.c
 netlibs= -lrumpnet_sockin -lrumpnet_net -lrumpnet
