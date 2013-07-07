@@ -46,10 +46,6 @@ __RCSID("$NetBSD: getbsize.c,v 1.2 2009/11/06 11:47:41 stacktic Exp $");
 
 #include "fsu_compat.h"
 
-#ifdef __weak_alias
-__weak_alias(getbsize,_getbsize)
-#endif
-
 char *
 getbsize(headerlenp, blocksizep)
 	int *headerlenp;
