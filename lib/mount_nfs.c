@@ -57,10 +57,6 @@ __RCSID("$NetBSD: mount_nfs.c,v 1.2 2009/11/05 14:02:42 stacktic Exp $");
 #include <sys/stat.h>
 #include <syslog.h>
 
-#ifdef ISO
-#include <netiso/iso.h>
-#endif
-
 #include <nfs/rpcv2.h>
 #include <nfs/nfsproto.h>
 #include <nfs/nfs.h>
@@ -124,9 +120,6 @@ static const struct mntopt mopts[] = {
 	{ "rdirplus", 0, ALTF_RDIRPLUS, 1 },
 	{ "mntudp", 0, ALTF_MNTUDP, 1 },
 	{ "resport", 1, ALTF_NORESPORT, 1 },
-#ifdef ISO
-	{ "seqpacket", 0, ALTF_SEQPACKET, 1 },
-#endif
 	{ "nqnfs", 0, ALTF_NQNFS, 1 },
 	{ "soft", 0, ALTF_SOFT, 1 },
 	{ "tcp", 0, ALTF_TCP, 1 },
@@ -178,9 +171,6 @@ int port = 0;
 int snprintb(char *, size_t, const char *, uint64_t);
 #if 0
 static void	shownfsargs(const struct nfs_args *);
-#endif
-#ifdef ISO
-static struct	iso_addr *iso_addr(const char *);
 #endif
 int	mount_nfs(int argc, char **argv);
 /* void	set_rpc_maxgrouplist(int); */
@@ -340,10 +330,6 @@ mount_nfs_parseargs(int argc, char *argv[],
 				mnttcp_ok = 0;
 			if (altflags & ALTF_NORESPORT)
 				nfsargsp->flags &= ~NFSMNT_RESVPORT;
-#ifdef ISO
-			if (altflags & ALTF_SEQPACKET)
-				nfsargsp->sotype = SOCK_SEQPACKET;
-#endif
 			if (altflags & ALTF_SOFT)
 				nfsargsp->flags |= NFSMNT_SOFT;
 			if (altflags & ALTF_TCP) {
@@ -424,11 +410,6 @@ mount_nfs_parseargs(int argc, char *argv[],
 			nfsargsp->rsize = num;
 			nfsargsp->flags |= NFSMNT_RSIZE;
 			break;
-#ifdef ISO
-		case 'S':
-			nfsargsp->sotype = SOCK_SEQPACKET;
-			break;
-#endif
 		case 's':
 			nfsargsp->flags |= NFSMNT_SOFT;
 			break;
