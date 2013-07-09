@@ -640,6 +640,8 @@ LINKER_NO_AS_NEEDED
 STATIC_RUMPKERNEL_FALSE
 STATIC_RUMPKERNEL_TRUE
 EXTRA_LIBS
+ENABLE_SMBFS_FALSE
+ENABLE_SMBFS_TRUE
 WRAP_LCHMOD
 CPP
 OTOOL64
@@ -774,6 +776,7 @@ with_gnu_ld
 with_libtool_sysroot
 enable_libtool_lock
 enable_largefile
+enable_smbfs
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1418,6 +1421,7 @@ Optional Features:
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --disable-largefile     omit support for large files
+  --enable-smbfs          Enable SMB File System
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -12502,6 +12506,44 @@ _ACEOF
 
 fi
 
+ac_fn_c_check_member "$LINENO" "struct sockaddr" "sa_len" "ac_cv_member_struct_sockaddr_sa_len" "#include <sys/socket.h>
+"
+if test "x$ac_cv_member_struct_sockaddr_sa_len" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_SOCKADDR_SA_LEN 1
+_ACEOF
+
+
+fi
+
+ac_fn_c_check_member "$LINENO" "struct sockaddr_in" "sin_len" "ac_cv_member_struct_sockaddr_in_sin_len" "#include <netinet/in.h>
+"
+if test "x$ac_cv_member_struct_sockaddr_in_sin_len" = xyes; then :
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_STRUCT_SOCKADDR_IN_SIN_LEN 1
+_ACEOF
+
+
+fi
+
+
+# Check whether --enable-smbfs was given.
+if test "${enable_smbfs+set}" = set; then :
+  enableval=$enable_smbfs; enable_smbfs=true
+else
+  enable_smbfs=false
+fi
+
+ if test x$enable_smbfs = xtrue; then
+  ENABLE_SMBFS_TRUE=
+  ENABLE_SMBFS_FALSE='#'
+else
+  ENABLE_SMBFS_TRUE='#'
+  ENABLE_SMBFS_FALSE=
+fi
+
 
 EXTRA_LIBS=""
 case $target_os in #(
@@ -12684,6 +12726,10 @@ if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
+if test -z "${ENABLE_SMBFS_TRUE}" && test -z "${ENABLE_SMBFS_FALSE}"; then
+  as_fn_error $? "conditional \"ENABLE_SMBFS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${STATIC_RUMPKERNEL_TRUE}" && test -z "${STATIC_RUMPKERNEL_FALSE}"; then
   as_fn_error $? "conditional \"STATIC_RUMPKERNEL\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5

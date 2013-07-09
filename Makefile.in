@@ -53,10 +53,13 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+@ENABLE_SMBFS_TRUE@am__append_1 = -DWITH_SMBFS
+@ENABLE_SMBFS_TRUE@am__append_2 = lib/mount_smbfs.c
+@ENABLE_SMBFS_TRUE@am__append_3 = libnetsmb.la
 
 # pick a few popular options if dlopen is not there
 # XXX: need to handle -Wl,--whole-archive "assistance" from libtool
-@STATIC_RUMPKERNEL_TRUE@am__append_1 = -DNO_COMPONENT_DLOPEN
+@STATIC_RUMPKERNEL_TRUE@am__append_4 = -DNO_COMPONENT_DLOPEN
 bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_diff$(EXEEXT) fsu_ecp$(EXEEXT) fsu_exec$(EXEEXT) \
 	fsu_find$(EXEEXT) fsu_ln$(EXEEXT) fsu_ls$(EXEEXT) \
@@ -65,6 +68,7 @@ bin_PROGRAMS = fsu_cat$(EXEEXT) fsu_chmod$(EXEEXT) fsu_cp$(EXEEXT) \
 	fsu_chflags$(EXEEXT) fsu_du$(EXEEXT) fsu_mkfifo$(EXEEXT) \
 	fsu_touch$(EXEEXT) fsu_chown$(EXEEXT) fsu_stat$(EXEEXT) \
 	fsu_df$(EXEEXT)
+@ENABLE_SMBFS_TRUE@am__append_5 = libnetsmb.la
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
@@ -121,7 +125,19 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
 	"$(DESTDIR)$(man1dir)" "$(DESTDIR)$(man3dir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libfsu_la_LIBADD =
+am__libfsu_la_SOURCES_DIST = lib/fsu_mount.c lib/fsu_alias.c \
+	lib/mount_cd9660.c lib/mount_ext2fs.c lib/mount_hfs.c \
+	lib/mount_msdos.c lib/mount_tmpfs.c lib/mount_efs.c \
+	lib/mount_ffs.c lib/mount_lfs.c lib/mount_ntfs.c \
+	lib/mount_udf.c lib/mount_sysvbfs.c lib/mount_v7fs.c \
+	lib/mount_kernfs.c lib/pathadj.c lib/fattr.c lib/getmntopts.c \
+	lib/fsu_fts.c lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c \
+	lib/getbsize.c lib/stat_flags.c lib/compat.c \
+	lib/humanize_number.c lib/strpct.c lib/mount_smbfs.c \
+	lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c lib/rpc.c \
+	lib/net.c lib/getnfsargs_small.c
 am__dirstamp = $(am__leading_dot)dirstamp
+@ENABLE_SMBFS_TRUE@am__objects_1 = lib/mount_smbfs.lo
 am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/mount_cd9660.lo lib/mount_ext2fs.lo lib/mount_hfs.lo \
 	lib/mount_msdos.lo lib/mount_tmpfs.lo lib/mount_efs.lo \
@@ -131,18 +147,36 @@ am_libfsu_la_OBJECTS = lib/fsu_mount.lo lib/fsu_alias.lo \
 	lib/getmntopts.lo lib/fsu_fts.lo lib/fsu_dir.lo \
 	lib/fsu_file.lo lib/fsu_str2arg.lo lib/getbsize.lo \
 	lib/stat_flags.lo lib/compat.lo lib/humanize_number.lo \
-	lib/strpct.lo lib/mount_nfs.lo lib/snprintb.lo lib/udp_xfer.lo \
-	lib/rpc.lo lib/net.lo lib/getnfsargs_small.lo
+	lib/strpct.lo $(am__objects_1) lib/mount_nfs.lo \
+	lib/snprintb.lo lib/udp_xfer.lo lib/rpc.lo lib/net.lo \
+	lib/getnfsargs_small.lo
 libfsu_la_OBJECTS = $(am_libfsu_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libnetsmb_la_LIBADD =
+am__libnetsmb_la_SOURCES_DIST = lib/smb/cfopt.c lib/smb/file.c \
+	lib/smb/mbuf.c lib/smb/nb_name.c lib/smb/nbns_rq.c \
+	lib/smb/print.c lib/smb/rcfile.c lib/smb/smb_kernelops.c \
+	lib/smb/ctx.c lib/smb/kiconv.c lib/smb/nb.c lib/smb/nb_net.c \
+	lib/smb/nls.c lib/smb/rap.c lib/smb/rq.c lib/smb/subr.c
+@ENABLE_SMBFS_TRUE@am_libnetsmb_la_OBJECTS = lib/smb/cfopt.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/file.lo lib/smb/mbuf.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/nb_name.lo lib/smb/nbns_rq.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/print.lo lib/smb/rcfile.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/smb_kernelops.lo lib/smb/ctx.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/kiconv.lo lib/smb/nb.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/nb_net.lo lib/smb/nls.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/rap.lo lib/smb/rq.lo \
+@ENABLE_SMBFS_TRUE@	lib/smb/subr.lo
+libnetsmb_la_OBJECTS = $(am_libnetsmb_la_OBJECTS)
+@ENABLE_SMBFS_TRUE@am_libnetsmb_la_rpath = -rpath $(libdir)
 PROGRAMS = $(bin_PROGRAMS)
 am_fsu_cat_OBJECTS = src/fsu_cat.$(OBJEXT)
 fsu_cat_OBJECTS = $(am_fsu_cat_OBJECTS)
 am__DEPENDENCIES_1 =
-am__DEPENDENCIES_2 = libfsu.la $(am__DEPENDENCIES_1) \
+am__DEPENDENCIES_2 = libfsu.la $(am__append_5) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 fsu_cat_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2)
 am_fsu_chflags_OBJECTS = src/chflags.$(OBJEXT)
@@ -252,8 +286,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
-	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
+SOURCES = $(libfsu_la_SOURCES) $(libnetsmb_la_SOURCES) \
+	$(fsu_cat_SOURCES) $(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_df_SOURCES) \
 	$(fsu_diff_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
 	$(fsu_exec_SOURCES) $(fsu_find_SOURCES) $(fsu_ln_SOURCES) \
@@ -261,7 +295,8 @@ SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
 	$(fsu_mknod_SOURCES) $(fsu_mv_SOURCES) $(fsu_rm_SOURCES) \
 	$(fsu_rmdir_SOURCES) $(fsu_stat_SOURCES) $(fsu_touch_SOURCES) \
 	$(fsu_write_SOURCES)
-DIST_SOURCES = $(libfsu_la_SOURCES) $(fsu_cat_SOURCES) \
+DIST_SOURCES = $(am__libfsu_la_SOURCES_DIST) \
+	$(am__libnetsmb_la_SOURCES_DIST) $(fsu_cat_SOURCES) \
 	$(fsu_chflags_SOURCES) $(fsu_chmod_SOURCES) \
 	$(fsu_chown_SOURCES) $(fsu_cp_SOURCES) $(fsu_df_SOURCES) \
 	$(fsu_diff_SOURCES) $(fsu_du_SOURCES) $(fsu_ecp_SOURCES) \
@@ -443,11 +478,9 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
-
-#libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
 AM_CPPFLAGS = -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)=' \
-	-D_BSD_SOURCE -DMOUNT_NOMAIN -DINET6 -I${srcdir}/lib/external \
-	-DNO_PMAP_CACHE $(am__append_1)
+	-D_BSD_SOURCE -DMOUNT_NOMAIN -DINET6 $(am__append_1) \
+	-I${srcdir}/lib/external -DNO_PMAP_CACHE $(am__append_4)
 noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fsu_alias.h \
 	lib/fsu_compat.h lib/fsu_fts.h lib/fsu_mount.h lib/fsu_utils.h \
 	lib/fts2fsufts.h lib/iodesc.h lib/mntopts.h lib/mount_cd9660.h \
@@ -466,7 +499,7 @@ noinst_HEADERS = fs-utils.h lib/filesystems.h lib/fsu_alias.h \
 #
 # lib/
 #
-lib_LTLIBRARIES = libfsu.la
+lib_LTLIBRARIES = libfsu.la $(am__append_3)
 libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/mount_ext2fs.c lib/mount_hfs.c lib/mount_msdos.c \
 	lib/mount_tmpfs.c lib/mount_efs.c lib/mount_ffs.c \
@@ -475,13 +508,25 @@ libfsu_la_SOURCES = lib/fsu_mount.c lib/fsu_alias.c lib/mount_cd9660.c \
 	lib/pathadj.c lib/fattr.c lib/getmntopts.c lib/fsu_fts.c \
 	lib/fsu_dir.c lib/fsu_file.c lib/fsu_str2arg.c lib/getbsize.c \
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c \
-	lib/strpct.c lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
-	lib/rpc.c lib/net.c lib/getnfsargs_small.c
-netlibs = -lrumpnet_sockin -lrumpnet_net -lrumpnet
+	lib/strpct.c $(am__append_2) lib/mount_nfs.c lib/snprintb.c \
+	lib/udp_xfer.c lib/rpc.c lib/net.c lib/getnfsargs_small.c
+@ENABLE_SMBFS_FALSE@netlibs = -lrumpnet_sockin -lrumpnet_net -lrumpnet
+
+#libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
+@ENABLE_SMBFS_TRUE@netlibs = -lrumpdev_netsmb -lrumpdev \
+@ENABLE_SMBFS_TRUE@	-lrumpkern_crypto -lrumpnet_sockin \
+@ENABLE_SMBFS_TRUE@	-lrumpnet_net -lrumpnet
+@ENABLE_SMBFS_TRUE@libnetsmb_la_SOURCES = lib/smb/cfopt.c lib/smb/file.c lib/smb/mbuf.c	\
+@ENABLE_SMBFS_TRUE@	lib/smb/nb_name.c lib/smb/nbns_rq.c lib/smb/print.c 		\
+@ENABLE_SMBFS_TRUE@	lib/smb/rcfile.c lib/smb/smb_kernelops.c lib/smb/ctx.c		\
+@ENABLE_SMBFS_TRUE@	lib/smb/kiconv.c lib/smb/nb.c lib/smb/nb_net.c lib/smb/nls.c	\
+@ENABLE_SMBFS_TRUE@	lib/smb/rap.c lib/smb/rq.c lib/smb/subr.c
+
 @STATIC_RUMPKERNEL_FALSE@component_libs = 
 @STATIC_RUMPKERNEL_TRUE@component_libs = -lrumpfs_ffs -lrumpfs_ext2fs -lrumpfs_msdos -lrumpfs_cd9660
-binlibs = libfsu.la -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \
-	-lrumpuser $(EXTRA_LIBS) $(component_libs) $(netlibs)
+binlibs = libfsu.la $(am__append_5) $(EXTRA_LIBS) $(component_libs) \
+	$(netlibs) -lrumpvfs -lrumpdev_disk -lrumpdev -lrump \
+	-lrumpuser
 fsu_cat_SOURCES = src/fsu_cat.c
 fsu_cat_LDADD = $(LINKER_NO_AS_NEEDED) $(binlibs)
 fsu_chflags_SOURCES = src/chflags.c
@@ -668,6 +713,7 @@ lib/compat.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/humanize_number.lo: lib/$(am__dirstamp) \
 	lib/$(DEPDIR)/$(am__dirstamp)
 lib/strpct.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
+lib/mount_smbfs.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/mount_nfs.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/snprintb.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
 lib/udp_xfer.lo: lib/$(am__dirstamp) lib/$(DEPDIR)/$(am__dirstamp)
@@ -677,6 +723,46 @@ lib/getnfsargs_small.lo: lib/$(am__dirstamp) \
 	lib/$(DEPDIR)/$(am__dirstamp)
 libfsu.la: $(libfsu_la_OBJECTS) $(libfsu_la_DEPENDENCIES) $(EXTRA_libfsu_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(LINK) -rpath $(libdir) $(libfsu_la_OBJECTS) $(libfsu_la_LIBADD) $(LIBS)
+lib/smb/$(am__dirstamp):
+	@$(MKDIR_P) lib/smb
+	@: > lib/smb/$(am__dirstamp)
+lib/smb/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) lib/smb/$(DEPDIR)
+	@: > lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/cfopt.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/file.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/mbuf.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/nb_name.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/nbns_rq.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/print.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/rcfile.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/smb_kernelops.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/ctx.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/kiconv.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/nb.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/nb_net.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/nls.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/rap.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/rq.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+lib/smb/subr.lo: lib/smb/$(am__dirstamp) \
+	lib/smb/$(DEPDIR)/$(am__dirstamp)
+libnetsmb.la: $(libnetsmb_la_OBJECTS) $(libnetsmb_la_DEPENDENCIES) $(EXTRA_libnetsmb_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK) $(am_libnetsmb_la_rpath) $(libnetsmb_la_OBJECTS) $(libnetsmb_la_LIBADD) $(LIBS)
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
@@ -860,6 +946,8 @@ mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 	-rm -f lib/*.$(OBJEXT)
 	-rm -f lib/*.lo
+	-rm -f lib/smb/*.$(OBJEXT)
+	-rm -f lib/smb/*.lo
 	-rm -f src/*.$(OBJEXT)
 
 distclean-compile:
@@ -887,6 +975,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_msdos.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_nfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_ntfs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_smbfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_sysvbfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_tmpfs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/mount_udf.Plo@am__quote@
@@ -898,6 +987,22 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/stat_flags.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/strpct.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@lib/$(DEPDIR)/udp_xfer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/cfopt.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/ctx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/file.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/kiconv.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/mbuf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/nb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/nb_name.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/nb_net.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/nbns_rq.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/nls.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/print.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/rap.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/rcfile.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/rq.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/smb_kernelops.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@lib/smb/$(DEPDIR)/subr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chflags.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chmod.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/chown.Po@am__quote@
@@ -964,6 +1069,7 @@ mostlyclean-libtool:
 clean-libtool:
 	-rm -rf .libs _libs
 	-rm -rf lib/.libs lib/_libs
+	-rm -rf lib/smb/.libs lib/smb/_libs
 
 distclean-libtool:
 	-rm -f libtool config.lt
@@ -1307,6 +1413,8 @@ distclean-generic:
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
 	-rm -f lib/$(DEPDIR)/$(am__dirstamp)
 	-rm -f lib/$(am__dirstamp)
+	-rm -f lib/smb/$(DEPDIR)/$(am__dirstamp)
+	-rm -f lib/smb/$(am__dirstamp)
 	-rm -f src/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/$(am__dirstamp)
 
@@ -1320,7 +1428,7 @@ clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-	-rm -rf lib/$(DEPDIR) src/$(DEPDIR)
+	-rm -rf lib/$(DEPDIR) lib/smb/$(DEPDIR) src/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-libtool distclean-tags
@@ -1369,7 +1477,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
-	-rm -rf lib/$(DEPDIR) src/$(DEPDIR)
+	-rm -rf lib/$(DEPDIR) lib/smb/$(DEPDIR) src/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

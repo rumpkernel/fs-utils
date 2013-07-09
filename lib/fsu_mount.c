@@ -421,11 +421,6 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 
 	fs = mntdp->mntd_fs;
 
-	rv = fs->fs_parseargs(mntdp->mntd_argc, mntdp->mntd_argv, fs->fs_args,
-	    &(mntdp->mntd_flags), mntdp->mntd_canon_dev, mntdp->mntd_canon_dir);
-	if (rv != 0)
-		return -1;
-
 	/*
 	 * Switch the default process to the native syscalls.
 	 * The bad thing about this is that it will fail in unobvious
@@ -434,6 +429,11 @@ mount_struct(_Bool verbose, struct mount_data_s *mntdp)
 	 */
 	rump_i_know_what_i_am_doing_with_sysents = 1;
 	rump_pub_lwproc_sysent_usenative();
+
+	rv = fs->fs_parseargs(mntdp->mntd_argc, mntdp->mntd_argv, fs->fs_args,
+	    &(mntdp->mntd_flags), mntdp->mntd_canon_dev, mntdp->mntd_canon_dir);
+	if (rv != 0)
+		return -1;
 
 	if (rump_sys_mkdir(MOUNT_DIRECTORY, 0777) == -1 && errno != EEXIST)
 		err(-1, "mkdir");

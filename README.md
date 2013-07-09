@@ -22,7 +22,7 @@ utilities.
 Supported File Systems
 ----------------------
 - block device based file systems: cd9660, efs, ext2, hfs, ffs, fat, lfs, ntfs, sysvbfs, udf, v7fs
-- network based file systems: nfs
+- network based file systems: nfs, smbfs (experimental, add --enable-smbfs to the configure script to enable it)
 
 Utilities
 ---------
