@@ -88,8 +88,8 @@ nbns_resolvename(const char *name, struct nb_ctx *ctx, struct sockaddr **adpp)
 	dest = &rqp->nr_dest;
 	*dest = ctx->nb_ns;
 	dest->sin_family = AF_INET;
-#if HAVE_STRUCT_SOCKADDR_SA_LEN
-	dest->sa_len = sizeof(*dest);
+#if HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+	dest->sin_len = sizeof(*dest);
 #else
 	nb_translate_sockaddr((struct sockaddr *)dest, sizeof(*dest));
 #endif
