@@ -402,8 +402,20 @@ copy_dir_rec(const char *from_p, char *to_p, int flags)
 	else
 		rv = rump_sys_mkdir(to_p, root->sb.st_mode);
 	if (rv == -1) {
-		warn("%s", to_p);
-		goto out;
+		if (errno == EEXIST) {
+			if (flags & FSU_ECP_GET)
+				rv = stat(to_p, &sb);
+			else
+				rv = rump_sys_stat(to_p, &sb);
+			if (!S_ISDIR(sb.st_mode)) {
+				errno = ENOTDIR;
+				warn("%s", to_p);
+				goto out;
+			}
+		} else {
+			warn("%s", to_p);
+			goto out;
+		}
 	}
 
 	if (!(flags & FSU_ECP_GET)) {
