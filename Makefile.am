@@ -5,9 +5,7 @@ AM_CPPFLAGS= -I${srcdir}/lib -D'__COPYRIGHT(x)=' -D'__RCSID(x)='
 AM_CPPFLAGS+=-D_BSD_SOURCE
 AM_CPPFLAGS+=-DMOUNT_NOMAIN
 AM_CPPFLAGS+=-DINET6
-if ENABLE_SMBFS
 AM_CPPFLAGS+=-DWITH_SMBFS
-endif
 
 noinst_HEADERS= fs-utils.h
 
@@ -42,7 +40,6 @@ libfsu_la_SOURCES= lib/fsu_mount.c lib/fsu_alias.c			\
 	lib/stat_flags.c lib/compat.c lib/humanize_number.c lib/strpct.c
 
 #libfsu_la_AM_CPPFLAGS=	-DMOUNT_NOMAIN
-if ENABLE_SMBFS
 netlibs= -lrumpdev_netsmb -lrumpdev -lrumpkern_crypto
 
 libfsu_la_SOURCES+= lib/mount_smbfs.c
@@ -53,9 +50,6 @@ libnetsmb_la_SOURCES= lib/smb/cfopt.c lib/smb/file.c lib/smb/mbuf.c	\
 	lib/smb/rcfile.c lib/smb/smb_kernelops.c lib/smb/ctx.c		\
 	lib/smb/kiconv.c lib/smb/nb.c lib/smb/nb_net.c lib/smb/nls.c	\
 	lib/smb/rap.c lib/smb/rq.c lib/smb/subr.c
-else
-netlibs=
-endif
 
 AM_CPPFLAGS+=-I${srcdir}/lib/external -DNO_PMAP_CACHE
 libfsu_la_SOURCES+= lib/mount_nfs.c lib/snprintb.c lib/udp_xfer.c \
@@ -81,9 +75,7 @@ bin_PROGRAMS= fsu_cat fsu_chmod fsu_cp fsu_diff fsu_ecp		\
 	fsu_mkfifo fsu_touch fsu_chown fsu_stat fsu_df
 
 binlibs= libfsu.la
-if ENABLE_SMBFS
 binlibs+= libnetsmb.la
-endif
 binlibs+= $(EXTRA_LIBS) $(component_libs) $(netlibs)
 binlibs+= -lrumpvfs -lrumpdev_disk -lrumpdev -lrump -lrumpuser
 
