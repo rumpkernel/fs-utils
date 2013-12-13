@@ -1,5 +1,5 @@
 AC_PREREQ([2.66])
-AC_INIT([fs-utils], [0.01], [http://github.com/stacktic/fs-utils])
+AC_INIT([fs-utils], [1.10], [http://github.com/stacktic/fs-utils])
 
 AC_CONFIG_SRCDIR([lib/fattr.c])
 AC_CONFIG_HEADERS([config.h])
