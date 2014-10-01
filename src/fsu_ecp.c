@@ -104,6 +104,9 @@ main(int argc, char *argv[])
 		return -1;
 	}
 
+	umask (0);
+	rump_sys_umask (0);
+
 	for (rv = 0, cur_arg = 0; cur_arg < argc-1; ++cur_arg) {
 		len = strlen(argv[cur_arg]);
 		while (len != 1 && argv[cur_arg][len - 1] == '/')
@@ -608,22 +611,25 @@ copy_file(const char *from, const char *to, int flags)
 	else
 		rv = rump_sys_stat(from, &from_stat);
 	if (rv == -1) {
-		warn("%s", from);
+		warn("stat %s", from);
 		return -1;
 	}
 
 	if (flags & FSU_ECP_GET) {
-		fdto = open(to, O_WRONLY|O_CREAT|O_EXCL, 0777);
 		fdfrom = rump_sys_open(from, O_RDONLY);
+		fdto = open(to, O_WRONLY|O_CREAT|O_EXCL,
+				from_stat.st_mode & (~S_IFMT));
 	} else if (flags & FSU_ECP_PUT) {
 		fdfrom = open(from, O_RDONLY);
-		fdto = rump_sys_open(to, from_stat.st_mode|O_CREAT, 0777);
+		fdto = rump_sys_open(to, O_WRONLY|O_CREAT|O_EXCL,
+				from_stat.st_mode & (~S_IFMT));
 	} else {
 		fdfrom = rump_sys_open(from, O_RDONLY);
-		fdto = rump_sys_open(to, from_stat.st_mode|O_CREAT, 0777);
+		fdto = rump_sys_open(to, O_WRONLY|O_CREAT|O_EXCL,
+				from_stat.st_mode & (~S_IFMT));
 	}
-	if (rv == -1) {
-		warn("%s", to);
+	if (fdfrom == -1 || fdto == -1) {
+		warn("open %s", to);
 		return -1;
 	}
 
@@ -634,7 +640,7 @@ copy_file(const char *from, const char *to, int flags)
 		else
 			rd = rump_sys_read(fdfrom, buf, sizeof(buf));
 		if (rd == -1) {
-			warn("%s", from);
+			warn("read %s", from);
 			rv = -1;
 			goto out;
 		}
@@ -643,7 +649,7 @@ copy_file(const char *from, const char *to, int flags)
 		else
 			wr = rump_sys_write(fdto, buf, rd);
 		if (wr == -1 || wr != rd) {
-			warn("%s", to);
+			warn("write %s", to);
 			rv = -1;
 			goto out;
 		}
