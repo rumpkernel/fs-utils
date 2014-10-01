@@ -245,14 +245,31 @@ fsu_mount(int *argc, char **argv[], int mode)
 	if (fflag || alias == NULL) {
 		if (realpath(fsdevice, afsdev) != NULL)
 			fsdevice = afsdev;
-		if (stat(fsdevice, &sb) == 0 && S_ISREG(sb.st_mode)) {
-			rump_pub_etfs_register(RUMPFSDEV, fsdevice,
+		rv = stat(fsdevice, &sb);
+		if (rv == -1)
+			warn("%s", fsdevice);
+		else if (!(S_ISREG(sb.st_mode) || S_ISBLK(sb.st_mode))) {
+			warnx("%s: Not a regular file or block device",
+			    fsdevice);
+			rv = -1;
+		} else {
+			rv = rump_pub_etfs_register(RUMPFSDEV, fsdevice,
 			    RUMP_ETFS_BLK);
-			mntd.mntd_fsdevice = fsdevice;
-			fsdevice = strdup(RUMPFSDEV);
+			if (rv == -1) {
+				warn("rump_pub_etfs_register(%s)", fsdevice);
+			} else {
+				mntd.mntd_fsdevice = fsdevice;
+				fsdevice = strdup(RUMPFSDEV);
+				rv = mount_fstype(fst, fsdevice, mntopts,
+				    puffsexec, specopts, &mntd, verbose);
+				if (rv == -1) {
+					warnx("%s: "
+					    "Invalid or unknown filesystem type"
+					    ", retry with -v for details",
+					    mntd.mntd_fsdevice);
+				}
+			}
 		}
-		rv = mount_fstype(fst, fsdevice, mntopts, puffsexec, specopts,
-		    &mntd, verbose);
 	}
 
 	free(mntd.mntd_argv);
