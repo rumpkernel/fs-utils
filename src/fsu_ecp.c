@@ -613,9 +613,9 @@ copy_file(const char *from, const char *to, int flags)
 	}
 
 	if (flags & FSU_ECP_GET) {
+		fdfrom = rump_sys_open(from, O_RDONLY);
 		fdto = open(to, O_WRONLY|O_CREAT,
                         from_stat.st_mode & (~S_IFMT));
-		fdfrom = rump_sys_open(from, O_RDONLY);
 	} else if (flags & FSU_ECP_PUT) {
 		fdfrom = open(from, O_RDONLY);
 		fdto = rump_sys_open(to, O_WRONLY|O_CREAT,
