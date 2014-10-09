@@ -608,7 +608,7 @@ copy_file(const char *from, const char *to, int flags)
 	else
 		rv = rump_sys_stat(from, &from_stat);
 	if (rv == -1) {
-		warn("%s", from);
+		warn("stat %s", from);
 		return -1;
 	}
 
@@ -622,8 +622,12 @@ copy_file(const char *from, const char *to, int flags)
 		fdfrom = rump_sys_open(from, O_RDONLY);
 		fdto = rump_sys_open(to, from_stat.st_mode|O_CREAT, 0777);
 	}
-	if (rv == -1) {
-		warn("%s", to);
+	if (fdfrom == -1) {
+		warn("open %s", from);
+		return -1;
+	}
+	if (fdto == -1) {
+		warn("open %s", to);
 		return -1;
 	}
 
@@ -634,7 +638,7 @@ copy_file(const char *from, const char *to, int flags)
 		else
 			rd = rump_sys_read(fdfrom, buf, sizeof(buf));
 		if (rd == -1) {
-			warn("%s", from);
+			warn("read %s", from);
 			rv = -1;
 			goto out;
 		}
@@ -643,7 +647,7 @@ copy_file(const char *from, const char *to, int flags)
 		else
 			wr = rump_sys_write(fdto, buf, rd);
 		if (wr == -1 || wr != rd) {
-			warn("%s", to);
+			warn("write %s", to);
 			rv = -1;
 			goto out;
 		}
