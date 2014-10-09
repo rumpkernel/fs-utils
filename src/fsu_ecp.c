@@ -104,6 +104,9 @@ main(int argc, char *argv[])
 		return -1;
 	}
 
+        umask (0);
+        rump_sys_umask (0);
+
 	for (rv = 0, cur_arg = 0; cur_arg < argc-1; ++cur_arg) {
 		len = strlen(argv[cur_arg]);
 		while (len != 1 && argv[cur_arg][len - 1] == '/')
