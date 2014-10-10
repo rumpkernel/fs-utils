@@ -255,8 +255,9 @@ fsu_mount(int *argc, char **argv[], int mode)
 		} else {
 			rv = rump_pub_etfs_register(RUMPFSDEV, fsdevice,
 			    RUMP_ETFS_BLK);
-			if (rv == -1) {
-				warn("rump_pub_etfs_register(%s)", fsdevice);
+			if (rv != 0) {
+				warnx("%s: rump_pub_etfs_register failed "
+						"(error=%d)", fsdevice, rv);
 			} else {
 				mntd.mntd_fsdevice = fsdevice;
 				fsdevice = strdup(RUMPFSDEV);
