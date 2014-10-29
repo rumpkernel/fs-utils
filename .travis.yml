@@ -4,11 +4,9 @@ before_script:
   - git submodule update --init
   - ./buildrump.sh/buildrump.sh -s rumpsrc -o rumpobj -V MKSTATICLIB=no -q -j4
 
-env:
-  - LDFLAGS='-Lrump/lib -Wl,-Rrump/lib'
-  - CPPFLAGS='-Irump/include'
-
 script:
+  - export LDFLAGS='-Lrump/lib -Wl,-Rrump/lib'
+  - export CPPFLAGS='-Irump/include'
   - ./configure
   - make
 
