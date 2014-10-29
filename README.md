@@ -148,7 +148,7 @@ The links for some of packages are provided by the
 You can download and install the packages manually, but in this case you
 first need to ensure that rump kernel components are installed
 (available as binary packages
-[here](https://github.com/anttikantee/buildrump.sh)).
+[here](http://repo.rumpkernel.org/buildrump.sh)).
 It is recommended to add the OBS repositories for the right distro
 and architecture to the package manager. This way, dependencies will
 be automatically resolved and updates will installed when available.
@@ -162,7 +162,7 @@ When building from source, you must first ensure the prerequisites are
 available.  fs-utils uses file system drivers provided by rump kernels.
 Build and install them in the following manner:
 
-- Clone the buildrump.sh repository (http://github.com/anttikantee/buildrump.sh)
+- Clone the buildrump.sh repository (repo.rumpkernel.org/buildrump.sh)
 - Build and install: `./buildrump.sh -d destbase checkout fullbuild`
 
 The destbase directory can be e.g. `/usr/local`.
