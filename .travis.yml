@@ -2,7 +2,7 @@ language: c
 
 before_script:
   - git submodule update --init
-  - ./buildrump.sh/buildrump.sh -s rumpsrc -o rumpobj -V MKSTATICLIB=no -q -j4
+  - ./buildrump.sh/buildrump.sh -s rumpsrc -o rumpobj -V MKSTATICLIB=no -q -j4 checkout fullbuild
 
 script:
   - export LDFLAGS='-Lrump/lib -Wl,-Rrump/lib'
