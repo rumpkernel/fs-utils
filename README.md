@@ -162,7 +162,7 @@ When building from source, you must first ensure the prerequisites are
 available.  fs-utils uses file system drivers provided by rump kernels.
 Build and install them in the following manner:
 
-- Clone the buildrump.sh repository (repo.rumpkernel.org/buildrump.sh)
+- Clone the buildrump.sh repository (http://repo.rumpkernel.org/buildrump.sh)
 - Build and install: `./buildrump.sh -d destbase checkout fullbuild`
 
 The destbase directory can be e.g. `/usr/local`.
