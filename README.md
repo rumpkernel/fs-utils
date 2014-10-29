@@ -1,4 +1,4 @@
-fs-utils: File System Access Utilities in Userland
+fs-utils: File System Access Utilities in Userland [![Build Status](https://travis-ci.org/rumpkernel/fs-utils.png?branch=master)](https://travis-ci.org/rumpkernel/fs-utils)
 ==================================================
 
 About
