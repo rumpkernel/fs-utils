@@ -771,7 +771,7 @@ enable_static
 with_pic
 enable_fast_install
 with_gnu_ld
-with_libtool_sysroot
+with_sysroot
 enable_libtool_lock
 enable_largefile
 '
@@ -1425,7 +1425,7 @@ Optional Packages:
   --with-pic[=PKGS]       try to use only PIC/non-PIC objects [default=use
                           both]
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
-  --with-libtool-sysroot=DIR Search for dependent libraries within DIR
+  --with-sysroot=DIR Search for dependent libraries within DIR
                         (or the compiler's sysroot if not specified).
 
 Some influential environment variables:
@@ -5092,7 +5092,8 @@ else
     ;;
   *)
     lt_cv_sys_max_cmd_len=`(getconf ARG_MAX) 2> /dev/null`
-    if test -n "$lt_cv_sys_max_cmd_len"; then
+    if test -n "$lt_cv_sys_max_cmd_len" && \
+	test undefined != "$lt_cv_sys_max_cmd_len"; then
       lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len \/ 4`
       lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len \* 3`
     else
@@ -5493,10 +5494,6 @@ freebsd* | dragonfly*)
   fi
   ;;
 
-gnu*)
-  lt_cv_deplibs_check_method=pass_all
-  ;;
-
 haiku*)
   lt_cv_deplibs_check_method=pass_all
   ;;
@@ -5535,11 +5532,11 @@ irix5* | irix6* | nonstopux*)
   ;;
 
 # This must be glibc/ELF.
-linux* | k*bsd*-gnu | kopensolaris*-gnu)
+linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-netbsd*)
+netbsd* | netbsdelf*-gnu)
   if echo __ELF__ | $CC -E - | $GREP __ELF__ > /dev/null; then
     lt_cv_deplibs_check_method='match_pattern /lib[^/]+(\.so\.[0-9]+\.[0-9]+|_pic\.a)$'
   else
@@ -6517,29 +6514,29 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for sysroot" >&5
 $as_echo_n "checking for sysroot... " >&6; }
 
-# Check whether --with-libtool-sysroot was given.
-if test "${with_libtool_sysroot+set}" = set; then :
-  withval=$with_libtool_sysroot;
+# Check whether --with-sysroot was given.
+if test "${with_sysroot+set}" = set; then :
+  withval=$with_sysroot;
 else
-  with_libtool_sysroot=no
+  with_sysroot=no
 fi
 
 
 lt_sysroot=
-case ${with_libtool_sysroot} in #(
+case ${with_sysroot} in #(
  yes)
    if test "$GCC" = yes; then
      lt_sysroot=`$CC --print-sysroot 2>/dev/null`
    fi
    ;; #(
  /*)
-   lt_sysroot=`echo "$with_libtool_sysroot" | sed -e "$sed_quote_subst"`
+   lt_sysroot=`echo "$with_sysroot" | sed -e "$sed_quote_subst"`
    ;; #(
  no|'')
    ;; #(
  *)
-   { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${with_libtool_sysroot}" >&5
-$as_echo "${with_libtool_sysroot}" >&6; }
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${with_sysroot}" >&5
+$as_echo "${with_sysroot}" >&6; }
    as_fn_error $? "The sysroot must be an absolute path." "$LINENO" 5
    ;;
 esac
@@ -6617,7 +6614,7 @@ ia64-*-hpux*)
   rm -rf conftest*
   ;;
 
-x86_64-*kfreebsd*-gnu|x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*| \
+x86_64-*kfreebsd*-gnu|x86_64-*linux*|powerpc*-*linux*| \
 s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
   # Find out which ABI we are using.
   echo 'int i;' > conftest.$ac_ext
@@ -6633,9 +6630,19 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
 	    LD="${LD-ld} -m elf_i386_fbsd"
 	    ;;
 	  x86_64-*linux*)
-	    LD="${LD-ld} -m elf_i386"
+	    case `/usr/bin/file conftest.o` in
+	      *x86-64*)
+		LD="${LD-ld} -m elf32_x86_64"
+		;;
+	      *)
+		LD="${LD-ld} -m elf_i386"
+		;;
+	    esac
 	    ;;
-	  ppc64-*linux*|powerpc64-*linux*)
+	  powerpc64le-*)
+	    LD="${LD-ld} -m elf32lppclinux"
+	    ;;
+	  powerpc64-*)
 	    LD="${LD-ld} -m elf32ppclinux"
 	    ;;
 	  s390x-*linux*)
@@ -6654,7 +6661,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
 	  x86_64-*linux*)
 	    LD="${LD-ld} -m elf_x86_64"
 	    ;;
-	  ppc*-*linux*|powerpc*-*linux*)
+	  powerpcle-*)
+	    LD="${LD-ld} -m elf64lppc"
+	    ;;
+	  powerpc-*)
 	    LD="${LD-ld} -m elf64ppc"
 	    ;;
 	  s390*-*linux*|s390*-*tpf*)
@@ -8462,7 +8472,7 @@ lt_prog_compiler_static=
       lt_prog_compiler_static='-non_shared'
       ;;
 
-    linux* | k*bsd*-gnu | kopensolaris*-gnu)
+    linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
       case $cc_basename in
       # old Intel for x86_64 which still supported -KPIC.
       ecc*)
@@ -8940,6 +8950,9 @@ $as_echo_n "checking whether the $compiler linker ($LD) supports shared librarie
   openbsd*)
     with_gnu_ld=no
     ;;
+  linux* | k*bsd*-gnu | gnu*)
+    link_all_deplibs=no
+    ;;
   esac
 
   ld_shlibs=yes
@@ -9161,7 +9174,7 @@ _LT_EOF
       fi
       ;;
 
-    netbsd*)
+    netbsd* | netbsdelf*-gnu)
       if echo __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
 	archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
 	wlarc=
@@ -9338,6 +9351,7 @@ _LT_EOF
 	if test "$aix_use_runtimelinking" = yes; then
 	  shared_flag="$shared_flag "'${wl}-G'
 	fi
+	link_all_deplibs=no
       else
 	# not using gcc
 	if test "$host_cpu" = ia64; then
@@ -9791,7 +9805,7 @@ $as_echo "$lt_cv_irix_exported_symbol" >&6; }
       link_all_deplibs=yes
       ;;
 
-    netbsd*)
+    netbsd* | netbsdelf*-gnu)
       if echo __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
 	archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'  # a.out
       else
@@ -10628,17 +10642,6 @@ freebsd* | dragonfly*)
   esac
   ;;
 
-gnu*)
-  version_type=linux # correct to gnu/linux during the next big refactor
-  need_lib_prefix=no
-  need_version=no
-  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}${major} ${libname}${shared_ext}'
-  soname_spec='${libname}${release}${shared_ext}$major'
-  shlibpath_var=LD_LIBRARY_PATH
-  shlibpath_overrides_runpath=no
-  hardcode_into_libs=yes
-  ;;
-
 haiku*)
   version_type=linux # correct to gnu/linux during the next big refactor
   need_lib_prefix=no
@@ -10755,7 +10758,7 @@ linux*oldld* | linux*aout* | linux*coff*)
   ;;
 
 # This must be glibc/ELF.
-linux* | k*bsd*-gnu | kopensolaris*-gnu)
+linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   version_type=linux # correct to gnu/linux during the next big refactor
   need_lib_prefix=no
   need_version=no
@@ -10817,6 +10820,18 @@ fi
   # people can always --disable-shared, the test was removed, and we
   # assume the GNU/Linux dynamic linker is in use.
   dynamic_linker='GNU/Linux ld.so'
+  ;;
+
+netbsdelf*-gnu)
+  version_type=linux
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major ${libname}${shared_ext}'
+  soname_spec='${libname}${release}${shared_ext}$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  hardcode_into_libs=yes
+  dynamic_linker='NetBSD ld.elf_so'
   ;;
 
 netbsd*)
