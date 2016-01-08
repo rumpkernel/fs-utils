@@ -9,7 +9,7 @@ script:
   - export CPPFLAGS='-Irump/include'
   - ./configure
   - make
-  - ./fsu_cat -t sysvbfs buildrump.sh/tests/fstest_img/sysvbfs_le.img ./README | egrep "^Is that a small file system in your pocket or aren't you happy to see me?$"
+  - ./fsu_cat -t sysvbfs buildrump.sh/tests/fstest_img/sysvbfs_le.img ./README | grep 'Is that a small file system'
 
 notifications:
   irc:
